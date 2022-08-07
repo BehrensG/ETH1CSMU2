@@ -334,16 +334,28 @@
       "Measure"
     ],
     [
-      "fccb5c07-50f2-48a9-965b-9ab052d16311",
-      "VREF"
-    ],
-    [
       "21c5268a-7df1-413b-8dfc-3c21c6718d67",
       "Control"
     ],
     [
       "3a644252-ed23-44df-80e7-4e1c292a7b4d",
       "Frontend"
+    ],
+    [
+      "e18d2576-cacb-49ee-98d9-d91c481fdd25",
+      "Trigger"
+    ],
+    [
+      "180d7338-f277-4314-8ac2-592c979a19d1",
+      "Power"
+    ],
+    [
+      "dec85a75-7f52-4c89-9761-38b6fa83ce57",
+      "Source"
+    ],
+    [
+      "0c81277b-5d84-4603-bb73-0d53abefbe99",
+      "MCU"
     ]
   ],
   "text_variables": {}
