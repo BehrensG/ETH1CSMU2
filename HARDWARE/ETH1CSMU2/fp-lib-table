@@ -1,3 +1,3 @@
 (fp_lib_table
-  (lib (name "ETH1CSMU2")(type "KiCad")(uri "N:/Exchange/behg/ETH1CSMU2/HARDWARE/lib/pcb/ETH1CSMU2.pretty")(options "")(descr ""))
+  (lib (name "ETH1CSMU2")(type "KiCad")(uri "/home/grzegorz/git/ETH1CSMU2/HARDWARE/lib/pcb/ETH1CSMU2.pretty")(options "")(descr ""))
 )
