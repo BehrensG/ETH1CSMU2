@@ -2706,7 +2706,7 @@
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 4269f507-e13d-4946-b3f9-978c747b28cc)
   )
-  (hierarchical_label "DAC_~{RST}" (shape input) (at 116.84 55.88 180)
+  (hierarchical_label "DAC1_~{RST}" (shape input) (at 116.84 55.88 180)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 44430636-d922-46cc-8976-affc6c459978)
   )
