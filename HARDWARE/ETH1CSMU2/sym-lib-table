@@ -1,3 +1,4 @@
 (sym_lib_table
-  (lib (name "ETH1CSMU2")(type "KiCad")(uri "/home/grzegorz/git/ETH1CSMU2/HARDWARE/lib/sch/ETH1CSMU2.kicad_sym")(options "")(descr ""))
+  (lib (name "ETH1CSMU2_LINUX")(type "KiCad")(uri "/home/grzegorz/git/ETH1CSMU2/HARDWARE/lib/sch/ETH1CSMU2.kicad_sym")(options "")(descr "")(disabled))
+  (lib (name "ETH1CSMU2")(type "KiCad")(uri "N:/Exchange/behg/ETH1CSMU2/HARDWARE/lib/sch/ETH1CSMU2.kicad_sym")(options "")(descr ""))
 )
