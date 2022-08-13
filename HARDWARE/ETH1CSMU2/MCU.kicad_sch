@@ -1271,6 +1271,7 @@
     )
   )
 
+
   (junction (at 157.48 276.86) (diameter 0) (color 0 0 0 0)
     (uuid 0a37f421-5019-4b92-8a31-ba7be6272918)
   )
@@ -2884,9 +2885,17 @@
     (effects (font (size 1.27 1.27)) (justify left))
     (uuid df1623f2-9c5b-40d0-b6e9-27f3db7b035c)
   )
+  (hierarchical_label "DAC_OFFS_SDA" (shape bidirectional) (at 71.12 147.32 180)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid e706e8aa-669b-4228-b2c9-2dfa95cdf314)
+  )
   (hierarchical_label "SPI1_SCK" (shape output) (at 81.28 93.98 180)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid f279f9ed-de24-4aaa-ba31-8e7064d3c8c0)
+  )
+  (hierarchical_label "DAC_OFFS_SCL" (shape bidirectional) (at 71.12 101.6 180)
+    (effects (font (size 1.27 1.27)) (justify right))
+    (uuid f9706c1f-5d52-41ba-8421-94cd2017def1)
   )
 
   (symbol (lib_id "Device:R") (at 39.37 247.65 180) (unit 1)
