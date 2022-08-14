@@ -878,7 +878,6 @@
     )
   )
 
-
   (junction (at 92.71 52.07) (diameter 0) (color 0 0 0 0)
     (uuid 0fd557f5-8fbe-49eb-84d4-6be194d5c940)
   )
@@ -1605,8 +1604,8 @@
     (in_bom yes) (on_board yes)
     (uuid 409b7aba-7727-4727-a3d4-c4ca316badc6)
     (property "Reference" "U301" (id 0) (at 243.84 38.9382 0))
-    (property "Value" "ULN2003AS16" (id 1) (at 243.84 41.2496 0))
-    (property "Footprint" "Package_SO:TSSOP-16_4.4x5mm_P0.65mm" (id 2) (at 242.57 69.85 0)
+    (property "Value" "ULN2003AIDE4" (id 1) (at 243.84 41.2496 0))
+    (property "Footprint" "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm" (id 2) (at 242.57 69.85 0)
       (effects (font (size 1.27 1.27)) (justify left) hide)
     )
     (property "Datasheet" "http://www.ti.com/lit/ds/symlink/uln2003a.pdf" (id 3) (at 241.3 60.96 0)
