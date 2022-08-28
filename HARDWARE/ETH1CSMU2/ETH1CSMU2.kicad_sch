@@ -3002,7 +3002,7 @@
       (reference "C929") (unit 1) (value "100p") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
     )
     (path "/dec85a75-7f52-4c89-9761-38b6fa83ce57/6ab40edf-b7e4-40b7-8074-01e52aa26a83"
-      (reference "C930") (unit 1) (value "10n") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
+      (reference "C930") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
     )
     (path "/dec85a75-7f52-4c89-9761-38b6fa83ce57/8eb3405f-89db-451e-9e9f-76a7dac2b211"
       (reference "C931") (unit 1) (value "68p") (footprint "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder")
