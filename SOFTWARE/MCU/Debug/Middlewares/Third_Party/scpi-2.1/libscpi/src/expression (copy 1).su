@@ -1,0 +1,7 @@
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:52:27:numericRange	24	static
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:83:20:SCPI_ExprNumericListEntry	48	static
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:134:20:SCPI_ExprNumericListEntryInt	64	static
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:165:20:SCPI_ExprNumericListEntryDouble	64	static
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:191:27:channelSpec	40	static
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:225:27:channelRange	56	static
+../Middlewares/Third_Party/scpi-2.1/libscpi/src/expression (copy 1).c:266:20:SCPI_ExprChannelListEntry	72	static
