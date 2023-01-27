@@ -107,6 +107,14 @@ void Error_Handler(void);
 #define SR_DAT_GPIO_Port GPIOG
 #define EEPROM_WP_Pin GPIO_PIN_4
 #define EEPROM_WP_GPIO_Port GPIOG
+#define MCU_CURR_SENS_1kR_Pin GPIO_PIN_5
+#define MCU_CURR_SENS_1kR_GPIO_Port GPIOG
+#define MCU_CURR_SENS_100R_Pin GPIO_PIN_6
+#define MCU_CURR_SENS_100R_GPIO_Port GPIOG
+#define MCU_CURR_SENS_10R_Pin GPIO_PIN_7
+#define MCU_CURR_SENS_10R_GPIO_Port GPIOG
+#define MCU_CURR_SENS_1R_Pin GPIO_PIN_8
+#define MCU_CURR_SENS_1R_GPIO_Port GPIOG
 #define DAC1_nRST_Pin GPIO_PIN_11
 #define DAC1_nRST_GPIO_Port GPIOA
 #define DAC1_LDAC_Pin GPIO_PIN_12
@@ -117,6 +125,7 @@ void Error_Handler(void);
 #define ADC1_RVS2_GPIO_Port GPIOD
 #define DAC2_nLDAC_Pin GPIO_PIN_12
 #define DAC2_nLDAC_GPIO_Port GPIOG
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

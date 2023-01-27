@@ -38,17 +38,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "stm32f7xx_hal_cortex.h"
+
 #include "scpi_def.h"
 #include "scpi/scpi.h"
-#include "cmsis_os.h"
+//#include "cmsis_os.h"
 
 
 
 static scpi_result_t SCPI_Rst(scpi_t * context)
 {
 
-	HAL_NVIC_SystemReset();
     return SCPI_RES_OK;
 }
 
