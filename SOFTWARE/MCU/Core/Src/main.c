@@ -26,6 +26,7 @@
 #include "scpi_server.h"
 #include "LED.h"
 #include "DWT_Delay.h"
+#include "bsp.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -146,6 +147,7 @@ int main(void)
   MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init();
+  BSP_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */
