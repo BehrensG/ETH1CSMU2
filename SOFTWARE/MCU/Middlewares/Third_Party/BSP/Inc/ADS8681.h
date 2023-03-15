@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_ADS8681_H_
 #define THIRD_PARTY_BSP_INC_ADS8681_H_
 
-#include "main.h"
+#include "bsp.h"
 
 #define DEVICE_ID_REG 		0x00
 #define RST_PWRCTL_REG		0x04
@@ -44,9 +44,9 @@
 #define SPI_TIMEOUT			5000
 #define SPI_MAX_DELAY		10000
 
-BSP_StatusTypeDef ADS8681_Init(void);
-BSP_StatusTypeDef ADS8681_Raw_Data(uint16_t* raw_data);
-BSP_StatusTypeDef ADS8681_Set_Range(uint8_t* range);
+BSP_StatusTypeDef ADS8681_Init();
+BSP_StatusTypeDef ADS8681_RawData(uint16_t* raw_data);
+BSP_StatusTypeDef ADS8681_SetRange(uint8_t* range);
 
 
 #endif /* THIRD_PARTY_BSP_INC_ADS8681_H_ */

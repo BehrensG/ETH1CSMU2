@@ -29,7 +29,6 @@ extern "C" {
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f7xx_hal.h"
 
-#include "stm32f7xx_ll_spi.h"
 #include "stm32f7xx_ll_system.h"
 #include "stm32f7xx_ll_gpio.h"
 #include "stm32f7xx_ll_exti.h"
@@ -68,6 +67,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SPI4_NSS_Pin LL_GPIO_PIN_4
+#define SPI4_NSS_GPIO_Port GPIOE
 #define DDS_nDIV10_Pin LL_GPIO_PIN_13
 #define DDS_nDIV10_GPIO_Port GPIOC
 #define DDS_DIV8_Pin LL_GPIO_PIN_14
@@ -76,6 +77,10 @@ void Error_Handler(void);
 #define DDS_DIV4_GPIO_Port GPIOC
 #define DDS_DIV2_Pin LL_GPIO_PIN_0
 #define DDS_DIV2_GPIO_Port GPIOF
+#define SPI5_NSS_Pin LL_GPIO_PIN_6
+#define SPI5_NSS_GPIO_Port GPIOF
+#define SPI1_NSS_Pin LL_GPIO_PIN_4
+#define SPI1_NSS_GPIO_Port GPIOA
 #define LED_BLUE_Pin LL_GPIO_PIN_2
 #define LED_BLUE_GPIO_Port GPIOB
 #define LED_RED_Pin LL_GPIO_PIN_11
@@ -102,6 +107,8 @@ void Error_Handler(void);
 #define CXN_REL2_GPIO_Port GPIOB
 #define CXN_REL1_Pin LL_GPIO_PIN_11
 #define CXN_REL1_GPIO_Port GPIOB
+#define SPI2_NSS_Pin LL_GPIO_PIN_12
+#define SPI2_NSS_GPIO_Port GPIOB
 #define MCU_nTDS_Pin LL_GPIO_PIN_9
 #define MCU_nTDS_GPIO_Port GPIOD
 #define MCU_nISNK_Pin LL_GPIO_PIN_10
@@ -130,6 +137,8 @@ void Error_Handler(void);
 #define DAC1_nRST_GPIO_Port GPIOA
 #define DAC1_LDAC_Pin LL_GPIO_PIN_12
 #define DAC1_LDAC_GPIO_Port GPIOA
+#define SPI3_NSS_Pin LL_GPIO_PIN_15
+#define SPI3_NSS_GPIO_Port GPIOA
 #define ADC1_RVS1_Pin LL_GPIO_PIN_0
 #define ADC1_RVS1_GPIO_Port GPIOD
 #define ADC1_RVS2_Pin LL_GPIO_PIN_1

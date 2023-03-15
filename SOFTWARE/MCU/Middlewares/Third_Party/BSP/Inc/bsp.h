@@ -8,6 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_BSP_H_
 #define THIRD_PARTY_BSP_INC_BSP_H_
 
+#include "main.h"
 
 /*************************************** ETHERNET ***************************************/
 
@@ -54,6 +55,8 @@ typedef enum
 #define EEPROM_CFG_SIZE 	120
 #define STRING_LENGTH 		16
 
+#define PASSWORD "ETH1CSMU2"
+
 #pragma pack(push, 1)
 
 // size 64
@@ -86,7 +89,7 @@ typedef union bsp_eeprom_union
 		// Size 64
 		bsp_scpi_info_t info;
 		// Size 16
-		int8_t service_password[PASSWORD_LENGTH];
+		int8_t service_password[STRING_LENGTH];
 		// Size 16
 		int8_t calib_string[STRING_LENGTH];
 		// Size 4
@@ -102,7 +105,7 @@ typedef union bsp_eeprom_union
 // size 17
 typedef struct bsp_security
 {
-	scpi_bool_t status;
+	uint8_t status;
 
 }bsp_security_t;
 
@@ -124,6 +127,38 @@ typedef struct bsp_temperature
 
 }bsp_temperature_t;
 
+typedef struct _bsp_config
+{
+	float frequency;
+	float voltage;
+	uint16_t volt_gain;
+	uint8_t volt_gain_index;
+	uint16_t curr_gain;
+	uint8_t curr_gain_index;
+	uint32_t resistor_value;
+	uint8_t resistor_index;
+	uint8_t adc_select;
+	uint8_t function;
+	uint8_t format1;
+	uint8_t format2;
+
+}bsp_config_t;
+
+typedef struct _bsp_dds
+{
+	uint8_t divider;
+}bsp_dds_t;
+
+typedef struct _bsp_adc_ads8681
+{
+	float zero_offset;
+	uint8_t range;
+}bsp_adc_ads8681_t;
+
+typedef struct _bsp_sn74hc595_t
+{
+	uint8_t shift_reg[2];
+}bsp_sn74hc595_t;
 
 struct _bsp
 {
@@ -134,6 +169,10 @@ struct _bsp
 	bsp_ip4_lan_t ip4;
 	uint8_t default_cfg;
 	uint8_t data_format;
+	bsp_config_t config;
+	bsp_dds_t dds;
+	bsp_adc_ads8681_t ads8681[2];
+	bsp_sn74hc595_t sn74hc595;
 };
 
 enum trigger_enum

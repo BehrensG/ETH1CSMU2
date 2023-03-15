@@ -5,11 +5,11 @@
  *      Author: grzegorz
  */
 
+#include "bsp.h"
+#include "EEPROM.h"
 #include <string.h>
 
-#include "bsp.h"
 #include "scpi_def.h"
-#include "eeprom.h"
 
 struct _bsp bsp;
 
@@ -51,21 +51,12 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.ip4.netmask[3] = NETMASK_ADDRESS_3;
 
 
-	bsp.eeprom.structure.calib_adc[0].gain = (float)1.0;
-	bsp.eeprom.structure.calib_adc[0].offset = (float)0.0;
-	bsp.eeprom.structure.calib_adc[0].valid = TRUE;
-	bsp.eeprom.structure.calib_adc[1].gain = (float)1.0;
-	bsp.eeprom.structure.calib_adc[1].offset = (float)0.0;
-	bsp.eeprom.structure.calib_adc[1].valid = TRUE;
-	bsp.eeprom.structure.calib_adc[2].gain = (float)1.0;
-	bsp.eeprom.structure.calib_adc[2].offset = (float)0.0;
-	bsp.eeprom.structure.calib_adc[2].valid = TRUE;
 
-	strncpy(bsp.eeprom.structure.service_password, PASSWORD, PASSWORD_LENGTH);
-	strncpy(bsp.eeprom.structure.info.manufacturer, SCPI_IDN1, SCPI_MANUFACTURER_STRING_LENGTH);
-	strncpy(bsp.eeprom.structure.info.device, SCPI_IDN2, SCPI_DEVICE_STRING_LENGTH);
-	strncpy(bsp.eeprom.structure.info.serial_number, SCPI_IDN4, SCPI_SERIALNUMBER_STRING_LENGTH);
-	strncpy(bsp.eeprom.structure.info.software_version, SCPI_IDN3, SCPI_SOFTWAREVERSION_STRING_LENGTH);
+	strncpy(bsp.eeprom.structure.service_password, PASSWORD, STRING_LENGTH);
+	strncpy(bsp.eeprom.structure.info.manufacturer, SCPI_IDN1, STRING_LENGTH);
+	strncpy(bsp.eeprom.structure.info.device, SCPI_IDN2, STRING_LENGTH);
+	strncpy(bsp.eeprom.structure.info.serial_number, SCPI_IDN4, STRING_LENGTH);
+	strncpy(bsp.eeprom.structure.info.software_version, SCPI_IDN3, STRING_LENGTH);
 	memset(bsp.eeprom.structure.calib_string, 0, sizeof(bsp.eeprom.structure.calib_string));
 
 }

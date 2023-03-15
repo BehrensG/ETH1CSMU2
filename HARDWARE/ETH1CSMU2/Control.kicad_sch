@@ -965,7 +965,7 @@
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 8c38fc2d-7fb3-4836-9e99-0a6761d4bbb8)
   )
-  (hierarchical_label "SING_SEL" (shape output) (at 78.74 90.17 180) (fields_autoplaced)
+  (hierarchical_label "SIGN_SEL" (shape output) (at 78.74 90.17 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 9061be31-922e-4e65-b0f9-bc8cf56169d6)
   )
