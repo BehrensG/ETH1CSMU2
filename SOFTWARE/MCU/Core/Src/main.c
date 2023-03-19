@@ -187,7 +187,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+ // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of LEDTask */
   LEDTaskHandle = osThreadNew(StartLEDTask, NULL, &LEDTask_attributes);
@@ -468,8 +468,8 @@ static void MX_SPI3_Init(void)
   hspi3.Instance = SPI3;
   hspi3.Init.Mode = SPI_MODE_MASTER;
   hspi3.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi3.Init.DataSize = SPI_DATASIZE_4BIT;
-  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi3.Init.DataSize = SPI_DATASIZE_16BIT;
+  hspi3.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
   hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
@@ -548,11 +548,11 @@ static void MX_SPI5_Init(void)
   hspi5.Instance = SPI5;
   hspi5.Init.Mode = SPI_MODE_MASTER;
   hspi5.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi5.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi5.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi5.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi5.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi5.Init.NSS = SPI_NSS_SOFT;
-  hspi5.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi5.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi5.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi5.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi5.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -589,7 +589,34 @@ static void MX_GPIO_Init(void)
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);
 
   /**/
-  LL_GPIO_ResetOutputPin(SPI4_NSS_GPIO_Port, SPI4_NSS_Pin);
+  LL_GPIO_SetOutputPin(SPI4_NSS_GPIO_Port, SPI4_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI5_NSS_GPIO_Port, SPI5_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI2_NSS_GPIO_Port, SPI2_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(EEPROM_WP_GPIO_Port, EEPROM_WP_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DAC1_nRST_GPIO_Port, DAC1_nRST_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI3_NSS_GPIO_Port, SPI3_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DAC2_nLDAC_GPIO_Port, DAC2_nLDAC_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(DDS_nDIV10_GPIO_Port, DDS_nDIV10_Pin);
@@ -602,12 +629,6 @@ static void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_ResetOutputPin(DDS_DIV2_GPIO_Port, DDS_DIV2_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(SPI5_NSS_GPIO_Port, SPI5_NSS_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
@@ -637,9 +658,6 @@ static void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(CXN_REL1_GPIO_Port, CXN_REL1_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(SPI2_NSS_GPIO_Port, SPI2_NSS_Pin);
-
-  /**/
   LL_GPIO_ResetOutputPin(SR_LAT_GPIO_Port, SR_LAT_Pin);
 
   /**/
@@ -661,25 +679,7 @@ static void MX_GPIO_Init(void)
   LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
 
   /**/
-  LL_GPIO_ResetOutputPin(DAC1_nRST_GPIO_Port, DAC1_nRST_Pin);
-
-  /**/
   LL_GPIO_ResetOutputPin(DAC1_LDAC_GPIO_Port, DAC1_LDAC_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(SPI3_NSS_GPIO_Port, SPI3_NSS_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(DAC2_nLDAC_GPIO_Port, DAC2_nLDAC_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(LED_RED_GPIO_Port, LED_RED_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(EEPROM_WP_GPIO_Port, EEPROM_WP_Pin);
 
   /**/
   GPIO_InitStruct.Pin = SPI4_NSS_Pin;
@@ -724,7 +724,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = SPI5_NSS_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(SPI5_NSS_GPIO_Port, &GPIO_InitStruct);
@@ -948,7 +948,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = DAC2_nLDAC_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(DAC2_nLDAC_GPIO_Port, &GPIO_InitStruct);

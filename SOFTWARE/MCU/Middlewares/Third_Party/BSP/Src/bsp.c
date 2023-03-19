@@ -5,10 +5,10 @@
  *      Author: grzegorz
  */
 
-#include "bsp.h"
-#include "EEPROM.h"
 #include <string.h>
 
+#include "bsp.h"
+#include "EEPROM.h"
 #include "scpi_def.h"
 
 struct _bsp bsp;
@@ -52,7 +52,7 @@ void BSP_Init_DefualtEEPROM()
 
 
 
-	strncpy(bsp.eeprom.structure.service_password, PASSWORD, STRING_LENGTH);
+	strncpy(bsp.eeprom.structure.password, PASSWORD, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.manufacturer, SCPI_IDN1, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.device, SCPI_IDN2, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.serial_number, SCPI_IDN4, STRING_LENGTH);

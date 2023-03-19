@@ -10,6 +10,10 @@
 
 #include "main.h"
 
+#define MAXROW 6    /* maximum number of rows */
+#define MAXCOL 1    /* maximum number of columns */
+#define MAXDIM 1    /* maximum number of dimensions */
+
 /*************************************** ETHERNET ***************************************/
 
 #define IP_ADDRESS_0 192
@@ -89,7 +93,7 @@ typedef union bsp_eeprom_union
 		// Size 64
 		bsp_scpi_info_t info;
 		// Size 16
-		int8_t service_password[STRING_LENGTH];
+		int8_t password[STRING_LENGTH];
 		// Size 16
 		int8_t calib_string[STRING_LENGTH];
 		// Size 4
@@ -127,6 +131,12 @@ typedef struct bsp_temperature
 
 }bsp_temperature_t;
 
+typedef struct _bsp_config_relay
+{
+	uint8_t state[MAXROW];
+
+}bsp_config_relay_t;
+
 typedef struct _bsp_config
 {
 	float frequency;
@@ -139,6 +149,7 @@ typedef struct _bsp_config
 	uint8_t resistor_index;
 	uint8_t adc_select;
 	uint8_t function;
+	bsp_config_relay_t relay;
 	uint8_t format1;
 	uint8_t format2;
 

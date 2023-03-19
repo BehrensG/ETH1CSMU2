@@ -42,12 +42,140 @@
 #include "scpi_def.h"
 #include "scpi/scpi.h"
 //#include "cmsis_os.h"
+#include "scpi_system.h"
+#include "scpi_trigger.h"
+#include  "scpi_source.h"
+#include "scpi_fetch.h"
+#include "scpi_sense.h"
+#include "scpi_measure.h"
+#include "bsp.h"
 
+size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
+{
+    scpi_parameter_t channel_list_param;
+    // scpi_channel_value_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
+    size_t chanlst_idx; /* index for channel list */
+    size_t arr_idx = 0; /* index for array */
+    size_t n, m = 1; /* counters for row (n) and columns (m) */
+    scpi_expr_result_t res;
+
+    /* get channel list */
+    if (SCPI_Parameter(context, &channel_list_param, TRUE)) {
+        scpi_bool_t is_range;
+        int32_t values_from[MAXDIM];
+        int32_t values_to[MAXDIM];
+        size_t dimensions;
+
+        bool for_stop_row = FALSE; /* true if iteration for rows has to stop */
+        bool for_stop_col = FALSE; /* true if iteration for columns has to stop */
+        int32_t dir_row = 1; /* direction of counter for rows, +/-1 */
+        int32_t dir_col = 1; /* direction of counter for columns, +/-1 */
+
+        /* the next statement is valid usage and it gets only real number of dimensions for the first item (index 0) */
+        if (!SCPI_ExprChannelListEntry(context, &channel_list_param, 0, &is_range, NULL, NULL, 0, &dimensions)) {
+            chanlst_idx = 0; /* call first index */
+            arr_idx = 0; /* set arr_idx to 0 */
+            do { /* if valid, iterate over channel_list_param index while res == valid (do-while cause we have to do it once) */
+                res = SCPI_ExprChannelListEntry(context, &channel_list_param, chanlst_idx, &is_range, values_from, values_to, 4, &dimensions);
+                if (is_range == FALSE) { /* still can have multiple dimensions */
+                    if (dimensions == 1) {
+                        /* here we have our values
+                         * row == values_from[0]
+                         * col == 0 (fixed number)
+                         * call a function or something */
+                        array[arr_idx].row = values_from[0];
+                        array[arr_idx].col = 0;
+                    } else if (dimensions == 2) {
+                        /* here we have our values
+                         * row == values_fom[0]
+                         * col == values_from[1]
+                         * call a function or something */
+                        array[arr_idx].row = values_from[0];
+                        array[arr_idx].col = values_from[1];
+                    } else {
+                        return arr_idx = 0;
+                    }
+                    arr_idx++; /* inkrement array where we want to save our values to, not neccessary otherwise */
+                    if (arr_idx >= MAXROW * MAXCOL) {
+                        return arr_idx = 0;
+                    }
+                } else if (is_range == TRUE) {
+                    if (values_from[0] > values_to[0]) {
+                        dir_row = -1; /* we have to decrement from values_from */
+                    } else { /* if (values_from[0] < values_to[0]) */
+                        dir_row = +1; /* default, we increment from values_from */
+                    }
+
+                    /* iterating over rows, do ilwip nvic gpiot once -> set for_stop_row = false
+                     * needed if there is channel list index isn't at end yet */
+                    for_stop_row = FALSE;
+                    for (n = values_from[0]; for_stop_row == FALSE; n += dir_row) {
+                        /* usual case for ranges, 2 dimensions */
+                        if (dimensions == 2) {
+                            if (values_from[1] > values_to[1]) {
+                                dir_col = -1;
+                            } else if (values_from[1] < values_to[1]) {
+                                dir_col = +1;
+                            }
+                            /* iterating over columns, do it at least once -> set for_stop_col = false
+                             * needed if there is channel list index isn't at end yet */
+                            for_stop_col = FALSE;
+                            for (m = values_from[1]; for_stop_col == FALSE; m += dir_col) {
+                                /* here we have our values
+                                 * row == n
+                                 * col == m
+                                 * call a function or something */
+                                array[arr_idx].row = n;
+                                array[arr_idx].col = m;
+                                arr_idx++;
+                                if (arr_idx >= MAXROW * MAXCOL) {
+                                    return arr_idx = 0;
+                                }
+                                if (m == (size_t)values_to[1]) {
+                                    /* endpoint reached, stop column for-loop */
+                                    for_stop_col = TRUE;
+                                }
+                            }
+                            /* special case for range, example: (@2!1) */
+                        } else if (dimensions == 1) {
+                            /* here we have values
+                             * row == n
+                             * col == 0 (fixed number)
+                             * call function or sth. */
+                            array[arr_idx].row = n;
+                            array[arr_idx].col = 0;
+                            arr_idx++;
+                            if (arr_idx >= MAXROW * MAXCOL) {
+                                return arr_idx = 0;
+                            }
+                        }
+                        if (n == (size_t)values_to[0]) {
+                            /* endpoint reached, stop row for-loop */
+                            for_stop_row = TRUE;
+                        }
+                    }
+
+
+                } else {
+                    return arr_idx = 0;
+                }
+                /* increase index */
+                chanlst_idx++;
+            } while (SCPI_EXPR_OK == SCPI_ExprChannelListEntry(context, &channel_list_param, chanlst_idx, &is_range, values_from, values_to, 4, &dimensions));
+            /* while checks, whether incremented index is valid */
+        }
+        /* do something at the end if needed */
+        /* array[arr_idx].row = 0; */
+        /* array[arr_idx].col = 0; */
+    }
+    return arr_idx;
+}
 
 
 static scpi_result_t SCPI_Rst(scpi_t * context)
 {
 
+	NVIC_SystemReset();
     return SCPI_RES_OK;
 }
 
@@ -104,9 +232,63 @@ const scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
     {.pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
 
+	{.pattern = "SYSTem:COMMunicate:LAN:IPADdress", .callback = SCPI_SystemCommunicateLANIPAddress,},
+	{.pattern = "SYSTem:COMMunicate:LAN:IPADdress?", .callback = SCPI_SystemCommunicateLANIPAddressQ,},
+	{.pattern = "SYSTem:COMMunicate:LAN:SMASk", .callback = SCPI_SystemCommunicateLANIPSmask,},
+	{.pattern = "SYSTem:COMMunicate:LAN:SMASk?", .callback = SCPI_SystemCommunicateLANIPSmaskQ,},
+	{.pattern = "SYSTem:COMMunicate:LAN:GATEway", .callback = SCPI_SystemCommunicateLANGateway,},
+	{.pattern = "SYSTem:COMMunicate:LAN:GATEway?", .callback = SCPI_SystemCommunicateLANGatewayQ,},
+	{.pattern = "SYSTem:COMMunicate:LAN:MAC", .callback = SCPI_SystemCommunicateLANMAC,},
+	{.pattern = "SYSTem:COMMunicate:LAN:MAC?", .callback = SCPI_SystemCommunicateLANMACQ,},
+	{.pattern = "SYSTem:COMMunicate:LAN:PORT", .callback = SCPI_SystemCommunicateLANPort,},
+	{.pattern = "SYSTem:COMMunicate:LAN:PORT?", .callback = SCPI_SystemCommunicateLANPortQ,},
+	{.pattern = "SYSTem:COMMunication:LAN:UPDate", .callback = SCPI_SystemCommunicationLanUpdate,},
+	{.pattern = "SYSTem:SERVice:EEPROM", .callback = SCPI_SystemServiceEEPROM,},
+	{.pattern = "SYSTem:SERVice:ID", .callback = SCPI_SystemServiceID,},
+	{.pattern = "SYSTem:SECure:STATe", .callback = SCPI_SystemSecureState,},
+	{.pattern = "SYSTem:SECure:STATe?", .callback = SCPI_SystemSecureStateQ,},
+	{.pattern = "SYSTem:TEMPerature?", .callback = SCPI_SystemTemperatureQ,},
+	{.pattern = "SYSTem:TEMPerature:UNIT", .callback = SCPI_SystemTemperatureUnit,},
+	{.pattern = "SYSTem:TEMPerature:UNIT?", .callback = SCPI_SystemTemperatureUnitQ,},
+	{.pattern = "SYSTem:HUMIdity?", .callback = SCPI_SystemHumidityQ,},
+
+	{.pattern = "TRIGger:DELay", .callback = SCPI_TriggerDelay,},
+	{.pattern = "TRIGger:DELay?", .callback = SCPI_TriggerDelayQ,},
+	{.pattern = "TRIGger[:IMMediate]", .callback = SCPI_TriggerImmediate,},
+	{.pattern = "TRIGger:SOURce", .callback = SCPI_TriggerSource,},
+	{.pattern = "TRIGger:SOURce?", .callback = SCPI_TriggerSourceQ,},
+	{.pattern = "TRIGger:SLOPe", .callback = SCPI_TriggerSlope,},
+	{.pattern = "TRIGger:SLOPe?", .callback = SCPI_TriggerSlopeQ,},
+	{.pattern = "OUTput:TRIGger", .callback = SCPI_TriggerOutput,},
+	{.pattern = "OUTput:TRIGger:SLOPe", .callback = SCPI_TriggerOutputSlope,},
+	{.pattern = "OUTput:TRIGger:SLOPe?", .callback = SCPI_TriggerOutputSlopeQ,},
+	{.pattern = "*TRG", .callback = SCPI_TRG,},
+
+	{.pattern = "SOURce:CURRent:RANGe", .callback = SCPI_SourceCurrentRange,},
+	{.pattern = "SOURce:CURRent:RANGe?", .callback = SCPI_SourceCurrentRangeQ,},
+	{.pattern = "SOURce:CURRent:RANGe:AUTO", .callback = SCPI_SourceCurrentRangeAuto,},
+	{.pattern = "SOURce:RELAy:OUTput", .callback = SCPI_SourceRelayOutput,},
+	{.pattern = "SOURce:RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
+	{.pattern = "SOURce:FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
+	{.pattern = "SOURce:FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
+
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive", .callback = SCPI_SenseCurrentDCProtectionLevelPositive,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive?", .callback = SCPI_SenseCurrentDCProtectionLevelPositiveQ,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:NEGative", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:NEGative?", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
+
+	{.pattern = "FETCh?", .callback = SCPI_FetchQ,},
+	{.pattern = "FETCh:ARRay?", .callback = SCPI_FetchArrayQ,},
+	{.pattern = "FETCh:ARRay:CURRent?", .callback = SCPI_FetchArrayCurrentQ,},
+	{.pattern = "FETCh:ARRay:VOLTage?", .callback = SCPI_FetchArrayVoltageQ,},
+
+	{.pattern = "MEASure?", .callback = SCPI_MeasureQ,},
+	{.pattern = "MEASure:CURRent?", .callback = SCPI_MeasureCurrentQ,},
+	{.pattern = "MEASure:VOLTage?", .callback = SCPI_MeasureVoltageQ,},
 
 	{.pattern = "TS", .callback = SCPI_TS,},
-		SCPI_CMD_LIST_END
+
+	SCPI_CMD_LIST_END
 };
 
 scpi_interface_t scpi_interface = {
