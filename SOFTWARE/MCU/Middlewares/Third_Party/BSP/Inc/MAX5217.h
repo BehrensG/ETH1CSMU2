@@ -14,7 +14,7 @@
 #define VOLT_DIV		100
 #define VOLT_MID		1.25
 
-#define	MAX5217_ADDR	0x1C
+#define	MAX5217_ADDR	0x38
 
 #define CODE_LOAD		0x01
 #define	CODE			0x02

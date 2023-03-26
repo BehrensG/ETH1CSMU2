@@ -58,6 +58,7 @@
 #include "queue.h"
 #include "scpi_server.h"
 
+#include "LED.h"
 
 #define DEVICE_PORT 2000
 #define CONTROL_PORT 2001
@@ -311,7 +312,20 @@ static int processIo(user_data_t * user_data) {
 
     if (buflen > 0) {
 
+    	LED_Switch(LED_BUSY);
+
         SCPI_Input(&scpi_context, buf, buflen);
+
+        if(scpi_context.cmd_error)
+        {
+        	LED_Switch(LED_ERROR);
+
+        }
+        else
+        {
+        	LED_Switch(LED_IDLE);
+
+        }
 
     } else {
         //goto fail2;
@@ -415,7 +429,7 @@ static void scpi_server_thread(void *arg) {
         if (evt.cmd == SCPI_MSG_SET_ERROR) {
             setError(evt.param2);
         }
-        osDelay(pdMS_TO_TICKS(5));
+        osDelay(pdMS_TO_TICKS(2));
     }
 
     vTaskDelete(NULL);

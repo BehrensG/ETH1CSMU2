@@ -206,4 +206,6 @@ enum format_data_enum
 	DATA_FORMAT_REAL = 1
 };
 
+BSP_StatusTypeDef BSP_Init();
+
 #endif /* THIRD_PARTY_BSP_INC_BSP_H_ */

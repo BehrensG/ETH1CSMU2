@@ -25,7 +25,7 @@ static BSP_StatusTypeDef BSP_SPI1_Receive(uint32_t* buffer, uint32_t size, uint3
 {
 	uint16_t rx_tmp[4];
 
-		HAL_SPI_Receive(&hspi1, (uint8_t*)rx_tmp, 4, 10000);
+		HAL_SPI_Receive(&hspi1, rx_tmp, 4, 10000);
 		buffer[0] = rx_tmp[0] << 16 | rx_tmp[1];
 		buffer[1] = rx_tmp[2] << 16 | rx_tmp[3];
 
@@ -40,7 +40,7 @@ static BSP_StatusTypeDef BSP_SPI1_Transmit(uint32_t* buffer, uint32_t size, uint
 	tx_tmp[2] = (uint16_t) buffer[1];
 	tx_tmp[3] = (uint16_t)(buffer[1] >> 16);
 
-	HAL_SPI_Transmit(&hspi1, (uint8_t*)tx_tmp, 4, 10000);
+	HAL_SPI_Transmit(&hspi1, tx_tmp, 4, 10000);
 
     return BSP_OK;
 }

@@ -54,7 +54,7 @@ void SN74HC595_Clear(uint8_t* shift_reg);
 void SN74HC595_SetAll(bool_t val, uint8_t* shift_reg);
 void SN74HC595_SetPin(int32_t index, bool_t val, uint8_t* shift_reg);
 void SN74HC595_Update(uint8_t* shift_reg);
-void SN74HC595_Init(uint8_t* shift_reg);
+void SN74HC595_Init();
 
 
 #endif /* THIRD_PARTY_BSP_INC_74HC595_H_ */

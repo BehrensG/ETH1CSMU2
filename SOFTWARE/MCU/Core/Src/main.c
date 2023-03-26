@@ -30,9 +30,14 @@
 #include "74HC595.h"
 #include "AD9834.h"
 #include "MAX5217.h"
+#include "AD5322.h"
+#include "DAC8565.h"
+#include "bsp.h"
+#include "ADS8681.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
+typedef StaticQueue_t osStaticMessageQDef_t;
 /* USER CODE BEGIN PTD */
 
 /* USER CODE END PTD */
@@ -80,8 +85,14 @@ const osThreadAttr_t TriggerTask_attributes = {
 };
 /* Definitions for QueueLED */
 osMessageQueueId_t QueueLEDHandle;
+uint8_t QueueLEDBuffer[ 1 * sizeof( uint8_t ) ];
+osStaticMessageQDef_t QueueLEDControlBlock;
 const osMessageQueueAttr_t QueueLED_attributes = {
-  .name = "QueueLED"
+  .name = "QueueLED",
+  .cb_mem = &QueueLEDControlBlock,
+  .cb_size = sizeof(QueueLEDControlBlock),
+  .mq_mem = &QueueLEDBuffer,
+  .mq_size = sizeof(QueueLEDBuffer)
 };
 /* Definitions for QueueTrigger */
 osMessageQueueId_t QueueTriggerHandle;
@@ -152,11 +163,14 @@ int main(void)
   MX_SPI5_Init();
   MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
+  DAC8565_Init();
   DWT_Init();
   BSP_Init();
-  SN74HC595_Init(bsp.sn74hc595.shift_reg);
-  AD9834_Init();
+  SN74HC595_Init();
+  AD5322_Init();
   MAX5217_Init();
+  ADS8681_Init();
+//  AD9834_Init();
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -176,10 +190,10 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of QueueLED */
-  QueueLEDHandle = osMessageQueueNew (1, sizeof(uint16_t), &QueueLED_attributes);
+  QueueLEDHandle = osMessageQueueNew (1, sizeof(uint8_t), &QueueLED_attributes);
 
   /* creation of QueueTrigger */
-  QueueTriggerHandle = osMessageQueueNew (16, sizeof(uint16_t), &QueueTrigger_attributes);
+  QueueTriggerHandle = osMessageQueueNew (1, sizeof(uint8_t), &QueueTrigger_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -187,7 +201,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
- // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+//  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of LEDTask */
   LEDTaskHandle = osThreadNew(StartLEDTask, NULL, &LEDTask_attributes);
@@ -428,8 +442,8 @@ static void MX_SPI2_Init(void)
   hspi2.Instance = SPI2;
   hspi2.Init.Mode = SPI_MODE_MASTER;
   hspi2.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi2.Init.DataSize = SPI_DATASIZE_4BIT;
-  hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi2.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi2.Init.CLKPolarity = SPI_POLARITY_HIGH;
   hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi2.Init.NSS = SPI_NSS_SOFT;
   hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
@@ -604,10 +618,16 @@ static void MX_GPIO_Init(void)
   LL_GPIO_SetOutputPin(LED_RED_GPIO_Port, LED_RED_Pin);
 
   /**/
+  LL_GPIO_SetOutputPin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+  /**/
   LL_GPIO_SetOutputPin(SPI2_NSS_GPIO_Port, SPI2_NSS_Pin);
 
   /**/
   LL_GPIO_SetOutputPin(EEPROM_WP_GPIO_Port, EEPROM_WP_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
 
   /**/
   LL_GPIO_SetOutputPin(DAC1_nRST_GPIO_Port, DAC1_nRST_Pin);
@@ -629,9 +649,6 @@ static void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_ResetOutputPin(DDS_DIV2_GPIO_Port, DDS_DIV2_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);
@@ -674,9 +691,6 @@ static void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_ResetOutputPin(MCU_CURR_SENS_10R_GPIO_Port, MCU_CURR_SENS_10R_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(DAC1_LDAC_GPIO_Port, DAC1_LDAC_Pin);
@@ -1055,7 +1069,7 @@ void StartLEDTask(void *argument)
   /* USER CODE BEGIN StartLEDTask */
   /* Infinite loop */
 
-	uint8_t  led_color, tmp;
+	uint8_t  led_color = GREEN, tmp = GREEN;
 	osStatus_t status;
 
   for(;;)

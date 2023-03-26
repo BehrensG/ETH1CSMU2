@@ -8,7 +8,7 @@
 
 #include "74HC595.h"
 
-
+extern struct _bsp bsp;
 
 void SN74HC595_Delay()
 {
@@ -16,10 +16,12 @@ void SN74HC595_Delay()
 }
 
 //IO init
-void SN74HC595_Init(uint8_t* shift_reg)
+void SN74HC595_Init()
 {
+	uint8_t* shift_reg = &bsp.sn74hc595.shift_reg;
+
 	shift_reg[SR0] = SR0_V_G1 | SR0_C_G1| SR0_V_AZ;
-	shift_reg[SR1] = SR1_MCU_ENA | SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1;
+	shift_reg[SR1] = SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1;
 	SN74HC595_Update(shift_reg);
 
 }

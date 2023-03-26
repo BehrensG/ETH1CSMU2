@@ -50,6 +50,10 @@
 #include "scpi_measure.h"
 #include "bsp.h"
 
+#include "AD5322.h"
+#include "MAX5217.h"
+#include "DAC8565.h"
+
 size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
 {
     scpi_parameter_t channel_list_param;
@@ -199,7 +203,13 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
 
 scpi_result_t SCPI_TS(scpi_t * context)
 {
+	HAL_StatusTypeDef status = HAL_OK;
 
+
+	status = DAC8565_SetVOUT(VOUTA, 3.0);
+	status = DAC8565_SetVOUT(VOUTB, 3.0);
+	status = DAC8565_SetVOUT(VOUTC, 3.0);
+	status = DAC8565_SetVOUT(VOUTD, 3.0);
 
     return SCPI_RES_OK;
 }

@@ -20,6 +20,7 @@
 
 #define AD5322_DACB_ENABLE		0x8000
 
+
 HAL_StatusTypeDef AD5322_Init();
 HAL_StatusTypeDef AD5322_SetVOUTA(float voltage);
 HAL_StatusTypeDef AD5322_SetVOUTB(float voltage);

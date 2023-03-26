@@ -37,6 +37,7 @@
 "./Middlewares/Third_Party/BSP/Src/AD5322.o"
 "./Middlewares/Third_Party/BSP/Src/AD9834.o"
 "./Middlewares/Third_Party/BSP/Src/ADS8681.o"
+"./Middlewares/Third_Party/BSP/Src/DAC8565.o"
 "./Middlewares/Third_Party/BSP/Src/DDS.o"
 "./Middlewares/Third_Party/BSP/Src/DWT_Delay.o"
 "./Middlewares/Third_Party/BSP/Src/EE24.o"
