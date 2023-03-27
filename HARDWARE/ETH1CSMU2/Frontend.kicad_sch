@@ -2884,6 +2884,14 @@
     (uuid ff1706bc-9126-4576-9af4-8c0434c373c7)
   )
 
+  (text_box "For selected FGEN the LT1970 gain is x2."
+    (at 90.17 184.15 0) (size 77.47 27.94)
+    (stroke (width 0) (type default))
+    (fill (type none))
+    (effects (font (size 1.27 1.27)) (justify left top))
+    (uuid 6ef2f34e-47c4-4f7d-acc4-8a28e549f667)
+  )
+
   (text "Protection from abrust load shorts (do not populate when using LT1970A)"
     (at 92.71 217.17 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))

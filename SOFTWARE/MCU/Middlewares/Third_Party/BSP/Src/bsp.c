@@ -23,6 +23,7 @@ static void BSP_Init_Common()
 	bsp.trigger.count = 0;
 	bsp.data_format = DATA_FORMAT_ASCII;
 	bsp.security.status = 1;
+	bsp.dds.divider = 0;
 
 }
 

@@ -34,6 +34,7 @@
 #include "DAC8565.h"
 #include "bsp.h"
 #include "ADS8681.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -169,6 +170,7 @@ int main(void)
   SN74HC595_Init();
   AD5322_Init();
   MAX5217_Init();
+  AD5322_Init();
   ADS8681_Init();
 //  AD9834_Init();
   /* USER CODE END 2 */
@@ -201,7 +203,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
-//  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+ // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of LEDTask */
   LEDTaskHandle = osThreadNew(StartLEDTask, NULL, &LEDTask_attributes);
@@ -606,6 +608,18 @@ static void MX_GPIO_Init(void)
   LL_GPIO_SetOutputPin(SPI4_NSS_GPIO_Port, SPI4_NSS_Pin);
 
   /**/
+  LL_GPIO_SetOutputPin(DDS_nDIV10_GPIO_Port, DDS_nDIV10_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DDS_DIV8_GPIO_Port, DDS_DIV8_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DDS_DIV4_GPIO_Port, DDS_DIV4_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DDS_DIV2_GPIO_Port, DDS_DIV2_Pin);
+
+  /**/
   LL_GPIO_SetOutputPin(SPI5_NSS_GPIO_Port, SPI5_NSS_Pin);
 
   /**/
@@ -637,18 +651,6 @@ static void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_SetOutputPin(DAC2_nLDAC_GPIO_Port, DAC2_nLDAC_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(DDS_nDIV10_GPIO_Port, DDS_nDIV10_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(DDS_DIV8_GPIO_Port, DDS_DIV8_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(DDS_DIV4_GPIO_Port, DDS_DIV4_Pin);
-
-  /**/
-  LL_GPIO_ResetOutputPin(DDS_DIV2_GPIO_Port, DDS_DIV2_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);

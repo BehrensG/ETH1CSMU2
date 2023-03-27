@@ -13,8 +13,8 @@ static HAL_StatusTypeDef AD5322_Send(uint16_t* data);
 
 HAL_StatusTypeDef AD5322_Init()
 {
-	AD5322_SetVOUTA(0.1);
-	AD5322_SetVOUTB(0.0);
+	AD5322_SetVOUTA(1.2);
+	AD5322_SetVOUTB(-5);
 }
 
 HAL_StatusTypeDef AD5322_SetVOUTA(float voltage)
@@ -27,7 +27,7 @@ HAL_StatusTypeDef AD5322_SetVOUTA(float voltage)
 HAL_StatusTypeDef AD5322_SetVOUTB(float voltage)
 {
 	float tmp = (voltage/AD5322_VOLT_MULTI) + AD5322_VOLTB_REF/2;
-	uint16_t data = (uint16_t)(voltage/AD5322_VOUTB_LSB);
+	uint16_t data = (uint16_t)(tmp/AD5322_VOUTB_LSB);
 	data |= AD5322_DACB_ENABLE;
 
 	return AD5322_Send(&data);
