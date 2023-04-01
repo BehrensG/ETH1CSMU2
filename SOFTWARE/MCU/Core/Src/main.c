@@ -30,7 +30,6 @@
 #include "74HC595.h"
 #include "AD9834.h"
 #include "MAX5217.h"
-#include "AD5322.h"
 #include "DAC8565.h"
 #include "bsp.h"
 #include "ADS8681.h"
@@ -168,9 +167,7 @@ int main(void)
   DWT_Init();
   BSP_Init();
   SN74HC595_Init();
-  AD5322_Init();
   MAX5217_Init();
-  AD5322_Init();
   ADS8681_Init();
 //  AD9834_Init();
   /* USER CODE END 2 */
@@ -608,16 +605,16 @@ static void MX_GPIO_Init(void)
   LL_GPIO_SetOutputPin(SPI4_NSS_GPIO_Port, SPI4_NSS_Pin);
 
   /**/
-  LL_GPIO_SetOutputPin(DDS_nDIV10_GPIO_Port, DDS_nDIV10_Pin);
+  LL_GPIO_SetOutputPin(FGEN_nDIV10_GPIO_Port, FGEN_nDIV10_Pin);
 
   /**/
-  LL_GPIO_SetOutputPin(DDS_DIV8_GPIO_Port, DDS_DIV8_Pin);
+  LL_GPIO_SetOutputPin(FGEN_DIV8_GPIO_Port, FGEN_DIV8_Pin);
 
   /**/
-  LL_GPIO_SetOutputPin(DDS_DIV4_GPIO_Port, DDS_DIV4_Pin);
+  LL_GPIO_SetOutputPin(FGEN_DIV4_GPIO_Port, FGEN_DIV4_Pin);
 
   /**/
-  LL_GPIO_SetOutputPin(DDS_DIV2_GPIO_Port, DDS_DIV2_Pin);
+  LL_GPIO_SetOutputPin(FGEN_DIV2_GPIO_Port, FGEN_DIV2_Pin);
 
   /**/
   LL_GPIO_SetOutputPin(SPI5_NSS_GPIO_Port, SPI5_NSS_Pin);
@@ -706,36 +703,36 @@ static void MX_GPIO_Init(void)
   LL_GPIO_Init(SPI4_NSS_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = DDS_nDIV10_Pin;
+  GPIO_InitStruct.Pin = FGEN_nDIV10_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(DDS_nDIV10_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(FGEN_nDIV10_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = DDS_DIV8_Pin;
+  GPIO_InitStruct.Pin = FGEN_DIV8_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(DDS_DIV8_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(FGEN_DIV8_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = DDS_DIV4_Pin;
+  GPIO_InitStruct.Pin = FGEN_DIV4_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(DDS_DIV4_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(FGEN_DIV4_GPIO_Port, &GPIO_InitStruct);
 
   /**/
-  GPIO_InitStruct.Pin = DDS_DIV2_Pin;
+  GPIO_InitStruct.Pin = FGEN_DIV2_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
   GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
-  LL_GPIO_Init(DDS_DIV2_GPIO_Port, &GPIO_InitStruct);
+  LL_GPIO_Init(FGEN_DIV2_GPIO_Port, &GPIO_InitStruct);
 
   /**/
   GPIO_InitStruct.Pin = SPI5_NSS_Pin;

@@ -945,7 +945,7 @@
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 5b412a07-40e4-4ba4-a997-70b53a6d154a)
   )
-  (hierarchical_label "DDS_LPF" (shape output) (at 78.74 97.79 180) (fields_autoplaced)
+  (hierarchical_label "FGEN_LPF" (shape output) (at 78.74 97.79 180) (fields_autoplaced)
     (effects (font (size 1.27 1.27)) (justify right))
     (uuid 5b6d931a-74f4-4ae5-922d-42f022ff695e)
   )

@@ -69,14 +69,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define SPI4_NSS_Pin LL_GPIO_PIN_4
 #define SPI4_NSS_GPIO_Port GPIOE
-#define DDS_nDIV10_Pin LL_GPIO_PIN_13
-#define DDS_nDIV10_GPIO_Port GPIOC
-#define DDS_DIV8_Pin LL_GPIO_PIN_14
-#define DDS_DIV8_GPIO_Port GPIOC
-#define DDS_DIV4_Pin LL_GPIO_PIN_15
-#define DDS_DIV4_GPIO_Port GPIOC
-#define DDS_DIV2_Pin LL_GPIO_PIN_0
-#define DDS_DIV2_GPIO_Port GPIOF
+#define FGEN_nDIV10_Pin LL_GPIO_PIN_13
+#define FGEN_nDIV10_GPIO_Port GPIOC
+#define FGEN_DIV8_Pin LL_GPIO_PIN_14
+#define FGEN_DIV8_GPIO_Port GPIOC
+#define FGEN_DIV4_Pin LL_GPIO_PIN_15
+#define FGEN_DIV4_GPIO_Port GPIOC
+#define FGEN_DIV2_Pin LL_GPIO_PIN_0
+#define FGEN_DIV2_GPIO_Port GPIOF
 #define SPI5_NSS_Pin LL_GPIO_PIN_6
 #define SPI5_NSS_GPIO_Port GPIOF
 #define SPI1_NSS_Pin LL_GPIO_PIN_4

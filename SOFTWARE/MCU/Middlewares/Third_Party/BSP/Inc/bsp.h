@@ -137,10 +137,18 @@ typedef struct _bsp_config_relay
 
 }bsp_config_relay_t;
 
-typedef struct _bsp_config
+typedef struct bsp_config_fgen
 {
 	float frequency;
-	float voltage;
+	float amplitude;
+	float offset;
+
+}bsp_config_fgen_t;
+
+
+typedef struct _bsp_config
+{
+	bsp_config_fgen_t fgen;
 	uint16_t volt_gain;
 	uint8_t volt_gain_index;
 	uint16_t curr_gain;

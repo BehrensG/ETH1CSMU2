@@ -39,7 +39,7 @@ typedef enum
 #define	SR1_SIGN_SEL	0x04
 #define SR1_ATT_A0		0x08
 #define SR1_ATT_A1		0x10
-#define SR1_DDS_LPF		0x20
+#define SR1_FGEN_LPF	0x20
 #define SR_ADC_SEL		0x40
 
 #define	SR_INVERT_MASK	0xFF
