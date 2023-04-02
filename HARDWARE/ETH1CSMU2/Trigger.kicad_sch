@@ -1592,7 +1592,7 @@
     (uuid 98acde56-3bc7-4586-bd3f-8e59f722b83f)
   )
   (polyline (pts (xy 115.57 99.06) (xy 115.57 191.77))
-    (stroke (width 0) (type default))
+    (stroke (width 0) (type dash))
     (uuid 98c1fcef-7dc1-42f5-84d1-979390a4f931)
   )
 
@@ -1733,7 +1733,7 @@
     (uuid f4298f49-7adc-4497-960b-31569cc2afde)
   )
   (polyline (pts (xy 115.57 15.24) (xy 115.57 69.85))
-    (stroke (width 0) (type default))
+    (stroke (width 0) (type dash))
     (uuid f5363ae4-4595-48ee-96ee-89455bb5fa58)
   )
 

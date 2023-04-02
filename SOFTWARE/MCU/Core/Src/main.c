@@ -169,6 +169,7 @@ int main(void)
   SN74HC595_Init();
   MAX5217_Init();
   ADS8681_Init();
+  FGEN_Init();
 //  AD9834_Init();
   /* USER CODE END 2 */
 

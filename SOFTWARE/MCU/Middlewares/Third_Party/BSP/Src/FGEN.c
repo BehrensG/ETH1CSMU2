@@ -117,7 +117,7 @@ void FGEN_Attenuation(uint8_t attenuation)
 BSP_StatusTypeDef FGEN_Init()
 {
 	BSP_StatusTypeDef status = BSP_OK;
-	status = AD5322_Init();
+	status = FGEN_SetAmplitude(0.0);
 	status = AD9834_Init();
 
 	return status;

@@ -1810,7 +1810,7 @@
     (uuid 220753b7-3bba-4f36-a156-d0fc15605e35)
   )
   (polyline (pts (xy 81.28 97.79) (xy 406.4 97.79))
-    (stroke (width 0) (type default))
+    (stroke (width 0) (type dash))
     (uuid 224a4010-1cf8-41e5-ba35-c16075126319)
   )
 
@@ -1991,7 +1991,7 @@
     (uuid 412bf22b-daab-43fc-8c79-804353307bcc)
   )
   (polyline (pts (xy 81.28 12.7) (xy 81.28 279.4))
-    (stroke (width 0) (type default))
+    (stroke (width 0) (type dash))
     (uuid 417ef237-2a5c-41af-8a3d-6e1922191ee5)
   )
 
@@ -2885,7 +2885,7 @@
   )
 
   (text_box "For selected FGEN the LT1970 gain is x2."
-    (at 90.17 184.15 0) (size 77.47 27.94)
+    (at 99.06 167.64 0) (size 46.99 6.35)
     (stroke (width 0) (type default))
     (fill (type none))
     (effects (font (size 1.27 1.27)) (justify left top))
@@ -2897,12 +2897,12 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid ad43ce79-6851-462e-905e-4acb3809b3cf)
   )
-  (text "MISC" (at 15.24 16.51 0)
-    (effects (font (size 1.27 1.27)) (justify left bottom))
+  (text "MISC" (at 15.24 17.78 0)
+    (effects (font (size 2.54 2.54) (thickness 0.508) bold) (justify left bottom))
     (uuid ceda5f0e-829e-49d7-8abe-d4f69028a114)
   )
-  (text "GPIO\n" (at 83.82 16.51 0)
-    (effects (font (size 1.27 1.27)) (justify left bottom))
+  (text "GPIO\n" (at 85.09 17.78 0)
+    (effects (font (size 2.54 2.54) (thickness 0.508) bold) (justify left bottom))
     (uuid fcadda53-e061-407f-a2fe-67c19e8e003c)
   )
 
