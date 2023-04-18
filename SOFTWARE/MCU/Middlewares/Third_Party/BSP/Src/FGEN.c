@@ -118,6 +118,7 @@ BSP_StatusTypeDef FGEN_Init()
 {
 	BSP_StatusTypeDef status = BSP_OK;
 	status = FGEN_SetAmplitude(0.0);
+	status = FGEN_SetOffset(0.0);
 	status = AD9834_Init();
 
 	return status;

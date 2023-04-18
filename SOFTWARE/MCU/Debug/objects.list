@@ -35,6 +35,7 @@
 "./LWIP/Target/ethernetif.o"
 "./Middlewares/Third_Party/BSP/Src/74HC595.o"
 "./Middlewares/Third_Party/BSP/Src/AD5322.o"
+"./Middlewares/Third_Party/BSP/Src/AD7980.o"
 "./Middlewares/Third_Party/BSP/Src/AD9834.o"
 "./Middlewares/Third_Party/BSP/Src/ADS8681.o"
 "./Middlewares/Third_Party/BSP/Src/DAC8565.o"

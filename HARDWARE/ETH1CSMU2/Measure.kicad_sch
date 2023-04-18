@@ -6186,7 +6186,7 @@
   )
 
   (symbol (lib_id "Device:R") (at 388.62 154.94 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom yes) (on_board yes) (dnp yes)
     (uuid 665f98e3-403d-439d-906a-0e3489c43f51)
     (property "Reference" "R435" (at 388.62 149.86 90)
       (effects (font (size 1.27 1.27)))
@@ -7317,7 +7317,7 @@
   )
 
   (symbol (lib_id "Device:R") (at 359.41 121.92 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom yes) (on_board yes) (dnp yes)
     (uuid 953a1b2a-8163-4717-9be5-c27dd16ce88d)
     (property "Reference" "R431" (at 359.41 124.46 90)
       (effects (font (size 1.27 1.27)))

@@ -61,6 +61,7 @@ SPI_HandleTypeDef hspi2;
 SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi4;
 SPI_HandleTypeDef hspi5;
+DMA_HandleTypeDef hdma_spi4_rx;
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -107,13 +108,14 @@ extern struct _bsp bsp;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_I2C4_Init(void);
-static void MX_SPI1_Init(void);
-static void MX_SPI2_Init(void);
+static void MX_DMA_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_SPI4_Init(void);
 static void MX_SPI5_Init(void);
 static void MX_I2C3_Init(void);
+static void MX_I2C4_Init(void);
+static void MX_SPI1_Init(void);
+static void MX_SPI2_Init(void);
 void StartDefaultTask(void *argument);
 void StartLEDTask(void *argument);
 void StartTriggerTask(void *argument);
@@ -155,13 +157,14 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C4_Init();
-  MX_SPI1_Init();
-  MX_SPI2_Init();
+  MX_DMA_Init();
   MX_SPI3_Init();
   MX_SPI4_Init();
   MX_SPI5_Init();
   MX_I2C3_Init();
+  MX_I2C4_Init();
+  MX_SPI1_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
   DAC8565_Init();
   DWT_Init();
@@ -221,7 +224,6 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
-
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -521,8 +523,8 @@ static void MX_SPI4_Init(void)
   /* SPI4 parameter configuration*/
   hspi4.Instance = SPI4;
   hspi4.Init.Mode = SPI_MODE_MASTER;
-  hspi4.Init.Direction = SPI_DIRECTION_2LINES;
-  hspi4.Init.DataSize = SPI_DATASIZE_4BIT;
+  hspi4.Init.Direction = SPI_DIRECTION_2LINES_RXONLY;
+  hspi4.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi4.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi4.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi4.Init.NSS = SPI_NSS_SOFT;
@@ -584,6 +586,22 @@ static void MX_SPI5_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -592,6 +610,8 @@ static void MX_GPIO_Init(void)
 {
   LL_EXTI_InitTypeDef EXTI_InitStruct = {0};
   LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOE);
@@ -603,52 +623,7 @@ static void MX_GPIO_Init(void)
   LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOG);
 
   /**/
-  LL_GPIO_SetOutputPin(SPI4_NSS_GPIO_Port, SPI4_NSS_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(FGEN_nDIV10_GPIO_Port, FGEN_nDIV10_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(FGEN_DIV8_GPIO_Port, FGEN_DIV8_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(FGEN_DIV4_GPIO_Port, FGEN_DIV4_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(FGEN_DIV2_GPIO_Port, FGEN_DIV2_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(SPI5_NSS_GPIO_Port, SPI5_NSS_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(LED_RED_GPIO_Port, LED_RED_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(SPI2_NSS_GPIO_Port, SPI2_NSS_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(EEPROM_WP_GPIO_Port, EEPROM_WP_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(DAC1_nRST_GPIO_Port, DAC1_nRST_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(SPI3_NSS_GPIO_Port, SPI3_NSS_Pin);
-
-  /**/
-  LL_GPIO_SetOutputPin(DAC2_nLDAC_GPIO_Port, DAC2_nLDAC_Pin);
+  LL_GPIO_ResetOutputPin(SPI4_NSS_GPIO_Port, SPI4_NSS_Pin);
 
   /**/
   LL_GPIO_ResetOutputPin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);
@@ -694,6 +669,51 @@ static void MX_GPIO_Init(void)
 
   /**/
   LL_GPIO_ResetOutputPin(DAC1_LDAC_GPIO_Port, DAC1_LDAC_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(FGEN_nDIV10_GPIO_Port, FGEN_nDIV10_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(FGEN_DIV8_GPIO_Port, FGEN_DIV8_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(FGEN_DIV4_GPIO_Port, FGEN_DIV4_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(FGEN_DIV2_GPIO_Port, FGEN_DIV2_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI5_NSS_GPIO_Port, SPI5_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(LED_BLUE_GPIO_Port, LED_BLUE_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(LED_RED_GPIO_Port, LED_RED_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI2_NSS_GPIO_Port, SPI2_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(EEPROM_WP_GPIO_Port, EEPROM_WP_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DAC1_nRST_GPIO_Port, DAC1_nRST_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(SPI3_NSS_GPIO_Port, SPI3_NSS_Pin);
+
+  /**/
+  LL_GPIO_SetOutputPin(DAC2_nLDAC_GPIO_Port, DAC2_nLDAC_Pin);
 
   /**/
   GPIO_InitStruct.Pin = SPI4_NSS_Pin;
@@ -1031,6 +1051,8 @@ static void MX_GPIO_Init(void)
   /**/
   LL_GPIO_SetPinMode(MCU_nISRC_GPIO_Port, MCU_nISRC_Pin, LL_GPIO_MODE_INPUT);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */

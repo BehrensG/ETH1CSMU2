@@ -30,7 +30,6 @@ HAL_StatusTypeDef AD5322_SetVOUTB(float voltage)
 {
 
 	float tmp = (voltage/AD5322_VOLTB_GAIN) + AD5322_VOLTB_REF/2 - AD5322_OFFSET_ERR;
-	tmp = -1*tmp;
 	uint16_t data = (uint16_t)(tmp/AD5322_VOUTB_LSB);
 	data |= AD5322_DACB_ENABLE;
 

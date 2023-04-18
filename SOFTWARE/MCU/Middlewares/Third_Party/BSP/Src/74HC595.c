@@ -78,15 +78,37 @@ void SN74HC595_Clear(uint8_t* shift_reg){
 
 void LatchPinSet(PinState595 state)
 {
-    HAL_GPIO_WritePin(SR_LAT_GPIO_Port, SR_LAT_Pin, (GPIO_PinState)state);
+	if(GPIO_PIN_RESET == state)
+	{
+		LL_GPIO_ResetOutputPin(SR_LAT_GPIO_Port, SR_LAT_Pin);
+	}else
+	{
+		LL_GPIO_SetOutputPin(SR_LAT_GPIO_Port, SR_LAT_Pin);
+	}
+
+   // HAL_GPIO_WritePin(SR_LAT_GPIO_Port, SR_LAT_Pin, (GPIO_PinState)state);
 }
 
 void ClockPinSet(PinState595 state)
 {
-    HAL_GPIO_WritePin(SR_CLK_GPIO_Port, SR_CLK_Pin, (GPIO_PinState)state);
+	if(GPIO_PIN_RESET == state)
+	{
+		LL_GPIO_ResetOutputPin(SR_CLK_GPIO_Port, SR_CLK_Pin);
+	}else
+	{
+		LL_GPIO_SetOutputPin(SR_CLK_GPIO_Port, SR_CLK_Pin);
+	}
+   // HAL_GPIO_WritePin(SR_CLK_GPIO_Port, SR_CLK_Pin, (GPIO_PinState)state);
 }
 
 void SerialDataPinSet(PinState595 state)
 {
-    HAL_GPIO_WritePin(SR_DAT_GPIO_Port, SR_DAT_Pin, (GPIO_PinState)state);
+	if(GPIO_PIN_RESET == state)
+	{
+		LL_GPIO_ResetOutputPin(SR_DAT_GPIO_Port, SR_DAT_Pin);
+	}else
+	{
+		LL_GPIO_SetOutputPin(SR_DAT_GPIO_Port, SR_DAT_Pin);
+	}
+   // HAL_GPIO_WritePin(SR_DAT_GPIO_Port, SR_DAT_Pin, (GPIO_PinState)state);
 }

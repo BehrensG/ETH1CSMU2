@@ -24,7 +24,8 @@ static void BSP_Init_Common()
 	bsp.data_format = DATA_FORMAT_ASCII;
 	bsp.security.status = 1;
 	bsp.dds.divider = 0;
-
+	bsp.sn74hc595.shift_reg[0] = 0;
+	bsp.sn74hc595.shift_reg[1] = 0;
 }
 
 void BSP_Init_DefualtEEPROM()

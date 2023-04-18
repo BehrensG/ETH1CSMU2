@@ -55,6 +55,7 @@
 #include "MAX5217.h"
 #include "DAC8565.h"
 #include "FGEN.h"
+#include "AD7980.h"
 
 size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
 {
@@ -205,7 +206,7 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
 
 scpi_result_t SCPI_TS(scpi_t * context)
 {
-	float freq = 0.0, volt = 0.0;
+/*	float freq = 0.0, volt = 0.0;
 
 	if(!SCPI_ParamFloat(context, &volt, TRUE))
 	{
@@ -219,7 +220,16 @@ scpi_result_t SCPI_TS(scpi_t * context)
 
 	//AD5322_SetVOUTA(volt);
 	FGEN_SetAmplitude(volt);
-	FGEN_SetFrequency(freq);
+	FGEN_SetFrequency(freq); */
+	HAL_StatusTypeDef status;
+	uint16_t rx_data[2] = {0x0000,0x0000};
+	float* meas;
+	for(int x =0; x < 100; x++)
+	{
+	status = AD7980_ReadData(rx_data);
+	meas = AD7980_RXDataToVoltage(rx_data);
+	}
+	SCPI_ResultArrayFloat(context, meas, 2, SCPI_FORMAT_ASCII);
     return SCPI_RES_OK;
 }
 

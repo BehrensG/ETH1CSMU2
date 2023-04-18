@@ -1066,7 +1066,7 @@
   )
 
   (symbol (lib_id "Logic_LevelTranslator:SN74LVC1T45DBV") (at 154.94 139.7 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom yes) (on_board yes) (dnp yes)
     (uuid 29b6babb-6735-4bff-9bd9-5880711b0512)
     (property "Reference" "U506" (at 167.64 128.27 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -1746,7 +1746,7 @@
   )
 
   (symbol (lib_id "Device:R") (at 139.7 144.78 270) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom yes) (on_board yes) (dnp yes)
     (uuid c7824ab5-482d-43e1-bedf-f97e96dd4e3b)
     (property "Reference" "R501" (at 139.7 142.24 90)
       (effects (font (size 1.27 1.27)))
