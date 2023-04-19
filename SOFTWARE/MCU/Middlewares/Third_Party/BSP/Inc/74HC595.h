@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_74HC595_H_
 #define THIRD_PARTY_BSP_INC_74HC595_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define number_of_registers    2
 

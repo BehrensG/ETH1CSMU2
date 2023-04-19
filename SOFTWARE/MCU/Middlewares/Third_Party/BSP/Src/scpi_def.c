@@ -34,6 +34,7 @@
  *
  */
 
+#include <BSP.h>
 #include <FGEN.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,13 +50,13 @@
 #include "scpi_fetch.h"
 #include "scpi_sense.h"
 #include "scpi_measure.h"
-#include "bsp.h"
-
 #include "AD5322.h"
 #include "MAX5217.h"
 #include "DAC8565.h"
 #include "FGEN.h"
 #include "AD7980.h"
+
+extern struct _bsp bsp;
 
 size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
 {
@@ -204,6 +205,7 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
     return SCPI_RES_OK;
 }
 
+
 scpi_result_t SCPI_TS(scpi_t * context)
 {
 /*	float freq = 0.0, volt = 0.0;
@@ -222,13 +224,8 @@ scpi_result_t SCPI_TS(scpi_t * context)
 	FGEN_SetAmplitude(volt);
 	FGEN_SetFrequency(freq); */
 	HAL_StatusTypeDef status;
-	uint16_t rx_data[2] = {0x0000,0x0000};
-	float* meas;
-	for(int x =0; x < 100; x++)
-	{
-	status = AD7980_ReadData(rx_data);
-	meas = AD7980_RXDataToVoltage(rx_data);
-	}
+	status = AD7980_ReadData(1024);
+
 	SCPI_ResultArrayFloat(context, meas, 2, SCPI_FORMAT_ASCII);
     return SCPI_RES_OK;
 }

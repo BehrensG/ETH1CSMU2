@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_FGEN_H_
 #define THIRD_PARTY_BSP_INC_FGEN_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 typedef enum
 {

@@ -8,9 +8,9 @@
 #ifndef THIRD_PARTY_BSP_INC_SCPI_SOURCE_H_
 #define THIRD_PARTY_BSP_INC_SCPI_SOURCE_H_
 
+#include <BSP.h>
 #include "scpi/scpi.h"
 #include "cmsis_os.h"
-#include "bsp.h"
 
 scpi_result_t SCPI_SourceCurrentRange(scpi_t* context);
 scpi_result_t SCPI_SourceCurrentRangeQ(scpi_t* context);

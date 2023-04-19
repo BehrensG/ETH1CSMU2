@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_ADS8681_H_
 #define THIRD_PARTY_BSP_INC_ADS8681_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define DEVICE_ID_REG 		0x00
 #define RST_PWRCTL_REG		0x04

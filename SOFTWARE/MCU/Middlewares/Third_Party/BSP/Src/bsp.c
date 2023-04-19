@@ -5,9 +5,9 @@
  *      Author: grzegorz
  */
 
+#include <BSP.h>
 #include <string.h>
 
-#include "bsp.h"
 #include "EEPROM.h"
 #include "scpi_def.h"
 
@@ -23,7 +23,6 @@ static void BSP_Init_Common()
 	bsp.trigger.count = 0;
 	bsp.data_format = DATA_FORMAT_ASCII;
 	bsp.security.status = 1;
-	bsp.dds.divider = 0;
 	bsp.sn74hc595.shift_reg[0] = 0;
 	bsp.sn74hc595.shift_reg[1] = 0;
 }

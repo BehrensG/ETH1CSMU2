@@ -8,9 +8,9 @@
 #ifndef THIRD_PARTY_BSP_INC_SCPI_TRIGGER_H_
 #define THIRD_PARTY_BSP_INC_SCPI_TRIGGER_H_
 
+#include <BSP.h>
 #include "scpi/scpi.h"
 #include "cmsis_os.h"
-#include "bsp.h"
 
 #define SLOPE_POS 1
 #define SLOPE_NEG 2

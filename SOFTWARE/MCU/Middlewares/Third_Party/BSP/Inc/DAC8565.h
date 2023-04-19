@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_DAC8565_H_
 #define THIRD_PARTY_BSP_INC_DAC8565_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define DAC8565_BUFFA		0x00
 #define DAC8565_BUFFB		0x02

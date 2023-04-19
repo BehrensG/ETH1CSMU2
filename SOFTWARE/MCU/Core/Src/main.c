@@ -23,7 +23,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "bsp.h"
 #include "scpi_server.h"
 #include "LED.h"
 #include "DWT_Delay.h"
@@ -31,7 +30,6 @@
 #include "AD9834.h"
 #include "MAX5217.h"
 #include "DAC8565.h"
-#include "bsp.h"
 #include "ADS8681.h"
 
 /* USER CODE END Includes */
@@ -67,21 +65,21 @@ DMA_HandleTypeDef hdma_spi4_rx;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 508 * 4,
+  .stack_size = 254 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for LEDTask */
 osThreadId_t LEDTaskHandle;
 const osThreadAttr_t LEDTask_attributes = {
   .name = "LEDTask",
-  .stack_size = 508 * 4,
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for TriggerTask */
 osThreadId_t TriggerTaskHandle;
 const osThreadAttr_t TriggerTask_attributes = {
   .name = "TriggerTask",
-  .stack_size = 508 * 4,
+  .stack_size = 254 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for QueueLED */
@@ -204,7 +202,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* creation of defaultTask */
- // defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of LEDTask */
   LEDTaskHandle = osThreadNew(StartLEDTask, NULL, &LEDTask_attributes);

@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_GPIO_H_
 #define THIRD_PARTY_BSP_INC_GPIO_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define GPIO_ON		1
 #define GPIO_OFF	0

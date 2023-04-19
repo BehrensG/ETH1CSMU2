@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_HDC1080_H_
 #define THIRD_PARTY_BSP_INC_HDC1080_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define HDC1080_ADDR 			0x40
 #define HDC1080_TEMPERATURE 	0x00

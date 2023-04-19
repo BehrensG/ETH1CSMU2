@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_AD5322_H_
 #define THIRD_PARTY_BSP_INC_AD5322_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define AD5322_VOUTA_LSB		3.0517578125E-4
 #define AD5322_VOUTB_LSB		6.103515625E-4

@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_MAX5217_H_
 #define THIRD_PARTY_BSP_INC_MAX5217_H_
 
-#include "bsp.h"
+#include <BSP.h>
 
 #define MAX5217_LSB		3.814697265625E-5
 #define VOLT_DIV		100

@@ -145,28 +145,38 @@ typedef struct bsp_config_fgen
 
 }bsp_config_fgen_t;
 
+#define ADC_SAMPLE_SIZE	2048
+
+typedef struct bsp_adc
+{
+	uint8_t gain;
+	uint16_t rx_data[ADC_SAMPLE_SIZE];
+
+}bsp_adc_t;
+
+typedef struct bsp_config_adc
+{
+	uint16_t samples;
+	uint8_t select;
+
+}bsp_config_adc_t;
+
+typedef struct bsp_config_dds
+{
+	uint8_t divider;
+
+}bsp_config_dds_t;
+
 
 typedef struct _bsp_config
 {
 	bsp_config_fgen_t fgen;
-	uint16_t volt_gain;
-	uint8_t volt_gain_index;
-	uint16_t curr_gain;
-	uint8_t curr_gain_index;
-	uint32_t resistor_value;
-	uint8_t resistor_index;
-	uint8_t adc_select;
-	uint8_t function;
+	bsp_config_adc_t adc;
+	bsp_config_dds_t dds;
 	bsp_config_relay_t relay;
-	uint8_t format1;
-	uint8_t format2;
 
 }bsp_config_t;
 
-typedef struct _bsp_dds
-{
-	uint8_t divider;
-}bsp_dds_t;
 
 typedef struct _bsp_adc_ads8681
 {
@@ -189,9 +199,10 @@ struct _bsp
 	uint8_t default_cfg;
 	uint8_t data_format;
 	bsp_config_t config;
-	bsp_dds_t dds;
+	bsp_config_dds_t dds;
 	bsp_adc_ads8681_t ads8681[2];
 	bsp_sn74hc595_t sn74hc595;
+	bsp_adc_t adc[2];
 };
 
 enum trigger_enum
