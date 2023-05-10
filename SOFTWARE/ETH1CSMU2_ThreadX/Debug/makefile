@@ -10,17 +10,16 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include NetXDuo/App/subdir.mk
--include Middlewares/scpi-2.1/libscpi/src/subdir.mk
 -include Middlewares/ST/threadx/utility/low_power/subdir.mk
 -include Middlewares/ST/threadx/ports/cortex_m7/gnu/src/subdir.mk
 -include Middlewares/ST/threadx/common/src/subdir.mk
+-include Middlewares/ST/scpi-2.1/libscpi/src/subdir.mk
 -include Middlewares/ST/netxduo/common/src/subdir.mk
 -include Middlewares/ST/netxduo/common/drivers/ethernet/lan8742/subdir.mk
 -include Middlewares/ST/netxduo/common/drivers/ethernet/subdir.mk
 -include Middlewares/ST/netxduo/addons/sntp/subdir.mk
 -include Middlewares/ST/netxduo/addons/ppp/subdir.mk
 -include Middlewares/ST/netxduo/addons/auto_ip/subdir.mk
--include Middlewares/BSP/Src/subdir.mk
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Drivers/BSP/Components/lan8742/subdir.mk
 -include Core/Startup/subdir.mk

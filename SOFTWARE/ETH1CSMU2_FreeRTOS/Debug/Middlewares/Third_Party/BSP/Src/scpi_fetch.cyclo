@@ -1,0 +1,4 @@
+scpi_fetch.c:25:15:SCPI_FetchQ	1
+scpi_fetch.c:44:15:SCPI_FetchArrayQ	1
+scpi_fetch.c:63:15:SCPI_FetchArrayVoltageQ	1
+scpi_fetch.c:82:15:SCPI_FetchArrayCurrentQ	1

@@ -1,0 +1,3 @@
+../Middlewares/Third_Party/BSP/Src/HDC1080.c:12:26:HDC1080_read_reg	40	static
+../Middlewares/Third_Party/BSP/Src/HDC1080.c:73:19:HDC1080_measure_temperature	24	static
+../Middlewares/Third_Party/BSP/Src/HDC1080.c:90:19:HDC1080_measure_humidity	24	static

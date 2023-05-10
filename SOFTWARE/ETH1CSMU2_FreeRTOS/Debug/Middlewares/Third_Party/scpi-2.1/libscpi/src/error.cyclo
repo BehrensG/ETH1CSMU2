@@ -1,0 +1,10 @@
+error.c:55:6:SCPI_ErrorInit	1
+error.c:63:13:SCPI_ErrorEmitEmpty	5
+error.c:78:13:SCPI_ErrorEmit	3
+error.c:90:6:SCPI_ErrorClear	1
+error.c:108:13:SCPI_ErrorPop	3
+error.c:123:9:SCPI_ErrorCount	1
+error.c:131:20:SCPI_ErrorAddInternal	2
+error.c:173:6:SCPI_ErrorPushEx	8
+error.c:202:6:SCPI_ErrorPush	1
+error.c:212:14:SCPI_ErrorTranslate	48

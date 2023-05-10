@@ -1,0 +1,7 @@
+expression.c:52:27:numericRange	4
+expression.c:83:20:SCPI_ExprNumericListEntry	12
+expression.c:134:20:SCPI_ExprNumericListEntryInt	3
+expression.c:165:20:SCPI_ExprNumericListEntryDouble	3
+expression.c:191:27:channelSpec	5
+expression.c:225:27:channelRange	6
+expression.c:266:20:SCPI_ExprChannelListEntry	18

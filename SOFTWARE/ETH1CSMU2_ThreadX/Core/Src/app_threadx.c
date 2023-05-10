@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "scpi_def.h"
+#include "main.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,7 +44,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-UCHAR* tx_memory_ptr;
+UCHAR* 			tx_memory_ptr;
+TX_THREAD 		tx_scpi_server_thread;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,6 +71,23 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 
   /* USER CODE BEGIN App_ThreadX_Init */
 
+
+	if(TX_SUCCESS != tx_byte_allocate(byte_pool, (VOID **) &tx_memory_ptr, TX_SCPI_THREAD_MEM_SIZE, TX_NO_WAIT))
+	{
+		LL_GPIO_ResetOutputPin(LED_RED_GPIO_Port, LED_RED_Pin);
+		return TX_POOL_ERROR;
+	}
+
+	ret = tx_thread_create(&tx_scpi_server_thread,
+							"SCPI server",
+							tx_scpi_server_thread_entry,
+							TX_SCPI_THREAD_INPUT_VAL,
+							tx_memory_ptr,
+							TX_SCPI_THREAD_MEM_SIZE,
+							TX_SCPI_THREAD_PRIO,
+							TX_SCPI_THREAD_PRIO,
+							TX_NO_TIME_SLICE,
+							TX_AUTO_START);
 
   /* USER CODE END App_ThreadX_Init */
 

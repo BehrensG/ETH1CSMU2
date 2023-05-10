@@ -1,0 +1,4 @@
+scpi_sense.c:10:15:SCPI_SenseCurrentDCProtectionLevelPositive	1
+scpi_sense.c:15:15:SCPI_SenseCurrentDCProtectionLevelPositiveQ	1
+scpi_sense.c:20:15:SCPI_SenseCurrentDCProtectionLevelNegative	1
+scpi_sense.c:25:15:SCPI_SenseCurrentDCProtectionLevelNegativeQ	1

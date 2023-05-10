@@ -51,34 +51,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := ETH1CSMU2
+BUILD_ARTIFACT_NAME := ETH1CSMU2_FreeRTOS
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-ETH1CSMU2.elf \
+ETH1CSMU2_FreeRTOS.elf \
 
 MAP_FILES += \
-ETH1CSMU2.map \
+ETH1CSMU2_FreeRTOS.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-ETH1CSMU2.list \
+ETH1CSMU2_FreeRTOS.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: ETH1CSMU2.elf secondary-outputs
+main-build: ETH1CSMU2_FreeRTOS.elf secondary-outputs
 
 # Tool invocations
-ETH1CSMU2.elf ETH1CSMU2.map: $(OBJS) $(USER_OBJS) /home/grzegorz/git/ETH1CSMU2/SOFTWARE/MCU/STM32F746ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "ETH1CSMU2.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/grzegorz/git/ETH1CSMU2/SOFTWARE/MCU/STM32F746ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ETH1CSMU2.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+ETH1CSMU2_FreeRTOS.elf ETH1CSMU2_FreeRTOS.map: $(OBJS) $(USER_OBJS) /home/grzegorz/git/ETH1CSMU2/SOFTWARE/ETH1CSMU2_FreeRTOS/STM32F746ZGTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "ETH1CSMU2_FreeRTOS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"/home/grzegorz/git/ETH1CSMU2/SOFTWARE/ETH1CSMU2_FreeRTOS/STM32F746ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ETH1CSMU2_FreeRTOS.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -87,14 +87,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-ETH1CSMU2.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "ETH1CSMU2.list"
+ETH1CSMU2_FreeRTOS.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "ETH1CSMU2_FreeRTOS.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) ETH1CSMU2.elf ETH1CSMU2.list ETH1CSMU2.map default.size.stdout
+	-$(RM) ETH1CSMU2_FreeRTOS.elf ETH1CSMU2_FreeRTOS.list ETH1CSMU2_FreeRTOS.map default.size.stdout
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

@@ -67,6 +67,9 @@ UINT MX_NetXDuo_Init(VOID *memory_ptr);
 
 #define DEFAULT_MEMORY_SIZE		1024
 
+#define LINK_UP					0
+#define LINK_DOWN				1
+
 /* USER CODE END PD */
 
 /* USER CODE BEGIN 1 */

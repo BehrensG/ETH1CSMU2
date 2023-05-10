@@ -1,0 +1,4 @@
+../Middlewares/Third_Party/BSP/Src/scpi_fetch.c:25:15:SCPI_FetchQ	16	static
+../Middlewares/Third_Party/BSP/Src/scpi_fetch.c:44:15:SCPI_FetchArrayQ	16	static
+../Middlewares/Third_Party/BSP/Src/scpi_fetch.c:63:15:SCPI_FetchArrayVoltageQ	16	static
+../Middlewares/Third_Party/BSP/Src/scpi_fetch.c:82:15:SCPI_FetchArrayCurrentQ	16	static

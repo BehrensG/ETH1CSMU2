@@ -1,0 +1,4 @@
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	16	static
+../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	16	static
+../Middlewares/Third_Party/BSP/Src/AD7980.c:16:19:AD7980_ReadData	24	static
+../Middlewares/Third_Party/BSP/Src/AD7980.c:34:8:AD7980_RXDataToVoltage	16	static

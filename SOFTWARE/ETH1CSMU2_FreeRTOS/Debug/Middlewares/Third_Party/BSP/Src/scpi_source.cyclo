@@ -1,0 +1,7 @@
+scpi_source.c:27:15:SCPI_SourceCurrentRange	1
+scpi_source.c:43:15:SCPI_SourceCurrentRangeQ	1
+scpi_source.c:60:15:SCPI_SourceCurrentRangeAuto	1
+scpi_source.c:65:15:SCPI_SourceFunctionMode	1
+scpi_source.c:70:15:SCPI_SourceFunctionModeQ	1
+scpi_source.c:76:15:SCPI_SourceRelayOutput	5
+scpi_source.c:106:15:SCPI_SourceRelayOutputQ	1

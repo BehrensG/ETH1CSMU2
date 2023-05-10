@@ -1,0 +1,4 @@
+EE24.c:27:6:ee24_isConnected	2
+EE24.c:38:6:ee24_write	6
+EE24.c:94:6:ee24_read	3
+EE24.c:124:6:ee24_eraseChip	3

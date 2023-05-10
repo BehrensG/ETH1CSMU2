@@ -1,0 +1,14 @@
+minimal.c:50:15:SCPI_Stub	1
+minimal.c:60:15:SCPI_StubQ	1
+minimal.c:70:15:SCPI_SystemVersionQ	1
+minimal.c:80:15:SCPI_SystemErrorNextQ	1
+minimal.c:95:15:SCPI_SystemErrorCountQ	1
+minimal.c:106:15:SCPI_StatusQuestionableConditionQ	1
+minimal.c:118:15:SCPI_StatusQuestionableEventQ	1
+minimal.c:133:15:SCPI_StatusQuestionableEnableQ	1
+minimal.c:145:15:SCPI_StatusQuestionableEnable	2
+minimal.c:158:15:SCPI_StatusOperationConditionQ	1
+minimal.c:170:15:SCPI_StatusOperationEventQ	1
+minimal.c:185:16:SCPI_StatusOperationEnableQ	1
+minimal.c:197:15:SCPI_StatusOperationEnable	2
+minimal.c:210:15:SCPI_StatusPreset	1
