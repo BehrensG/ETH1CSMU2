@@ -13,7 +13,6 @@ RM := rm -rf
 -include Middlewares/ST/threadx/utility/low_power/subdir.mk
 -include Middlewares/ST/threadx/ports/cortex_m7/gnu/src/subdir.mk
 -include Middlewares/ST/threadx/common/src/subdir.mk
--include Middlewares/ST/scpi-2.1/libscpi/src/subdir.mk
 -include Middlewares/ST/netxduo/common/src/subdir.mk
 -include Middlewares/ST/netxduo/common/drivers/ethernet/lan8742/subdir.mk
 -include Middlewares/ST/netxduo/common/drivers/ethernet/subdir.mk
@@ -22,6 +21,7 @@ RM := rm -rf
 -include Middlewares/ST/netxduo/addons/auto_ip/subdir.mk
 -include Drivers/STM32F7xx_HAL_Driver/Src/subdir.mk
 -include Drivers/BSP/Components/lan8742/subdir.mk
+-include Core/scpi-2.1/libscpi/src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include AZURE_RTOS/App/subdir.mk

@@ -25,6 +25,7 @@ SUBDIRS := \
 AZURE_RTOS/App \
 Core/Src \
 Core/Startup \
+Core/scpi-2.1/libscpi/src \
 Drivers/BSP/Components/lan8742 \
 Drivers/STM32F7xx_HAL_Driver/Src \
 Middlewares/ST/netxduo/addons/auto_ip \
@@ -33,7 +34,6 @@ Middlewares/ST/netxduo/addons/sntp \
 Middlewares/ST/netxduo/common/drivers/ethernet/lan8742 \
 Middlewares/ST/netxduo/common/drivers/ethernet \
 Middlewares/ST/netxduo/common/src \
-Middlewares/ST/scpi-2.1/libscpi/src \
 Middlewares/ST/threadx/common/src \
 Middlewares/ST/threadx/ports/cortex_m7/gnu/src \
 Middlewares/ST/threadx/utility/low_power \
