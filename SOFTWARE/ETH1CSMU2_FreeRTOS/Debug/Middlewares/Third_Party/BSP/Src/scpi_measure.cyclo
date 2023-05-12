@@ -1,3 +1,0 @@
-scpi_measure.c:11:15:SCPI_MeasureQ	1
-scpi_measure.c:16:15:SCPI_MeasureCurrentQ	1
-scpi_measure.c:21:15:SCPI_MeasureVoltageQ	1

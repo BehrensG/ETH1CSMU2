@@ -37,7 +37,8 @@ size_t SCPI_Write(scpi_t * context, const char * data, size_t len)
     	ret = nx_packet_data_append(scpi_packet, (VOID *)data, len, &nx_ipv4_packet_pool, NX_WAIT_FOREVER);
     	if(nx_tcp_socket_send(&nx_ipv4_tcp_socket, scpi_packet, NX_WAIT_FOREVER) == NX_SUCCESS)
         {
-
+    		ret = nx_packet_release(scpi_packet);
+    		tx_thread_sleep(5);
         	return 0;
 
         }

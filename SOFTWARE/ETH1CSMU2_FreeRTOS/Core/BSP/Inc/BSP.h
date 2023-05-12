@@ -145,12 +145,12 @@ typedef struct bsp_config_fgen
 
 }bsp_config_fgen_t;
 
-#define ADC_SAMPLE_SIZE	2048
+#define ADC_SAMPLE_SIZE	10000
 
 typedef struct bsp_adc
 {
 	uint8_t gain;
-	uint16_t data[ADC_SAMPLE_SIZE];
+	//uint16_t data[ADC_SAMPLE_SIZE];
 	float meas[ADC_SAMPLE_SIZE];
 
 }bsp_adc_t;

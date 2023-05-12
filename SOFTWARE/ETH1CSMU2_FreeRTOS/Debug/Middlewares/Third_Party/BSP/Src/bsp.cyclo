@@ -1,5 +1,0 @@
-stm32f7xx_ll_gpio.h:771:26:LL_GPIO_ReadInputPort	1
-bsp.c:16:13:BSP_Init_Common	1
-bsp.c:30:6:BSP_Init_DefualtEEPROM	1
-bsp.c:65:13:BSP_Init_IP4Current	1
-bsp.c:90:19:BSP_Init	6

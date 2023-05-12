@@ -1,7 +1,0 @@
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	16	static
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	16	static
-../Middlewares/Third_Party/BSP/Src/EEPROM.c:18:19:EEPROM_Erase	8	static
-../Middlewares/Third_Party/BSP/Src/EEPROM.c:45:6:EEPROM_WriteProtect	16	static
-../Middlewares/Third_Party/BSP/Src/EEPROM.c:57:19:EEPROM_Write	24	static
-../Middlewares/Third_Party/BSP/Src/EEPROM.c:95:19:EEPROM_Read	16	static
-../Middlewares/Third_Party/BSP/Src/EEPROM.c:120:19:EEPROM_Status	16	static

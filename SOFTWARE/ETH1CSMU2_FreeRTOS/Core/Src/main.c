@@ -17,13 +17,13 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <SCPI_Server.h>
 #include "main.h"
 #include "cmsis_os.h"
 #include "lwip.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "scpi_server.h"
 #include "LED.h"
 #include "DWT_Delay.h"
 #include "74HC595.h"
@@ -819,7 +819,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = CXN_REL6_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_MEDIUM;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(CXN_REL6_GPIO_Port, &GPIO_InitStruct);
@@ -827,7 +827,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = CXN_REL5_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_MEDIUM;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(CXN_REL5_GPIO_Port, &GPIO_InitStruct);
@@ -835,7 +835,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = CXN_REL4_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_MEDIUM;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(CXN_REL4_GPIO_Port, &GPIO_InitStruct);
@@ -843,7 +843,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = CXN_REL3_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_MEDIUM;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(CXN_REL3_GPIO_Port, &GPIO_InitStruct);
@@ -851,7 +851,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = CXN_REL2_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_MEDIUM;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(CXN_REL2_GPIO_Port, &GPIO_InitStruct);
@@ -859,7 +859,7 @@ static void MX_GPIO_Init(void)
   /**/
   GPIO_InitStruct.Pin = CXN_REL1_Pin;
   GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_MEDIUM;
   GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
   GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
   LL_GPIO_Init(CXN_REL1_GPIO_Port, &GPIO_InitStruct);

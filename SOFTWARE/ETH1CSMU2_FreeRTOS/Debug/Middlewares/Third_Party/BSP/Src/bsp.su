@@ -1,5 +1,0 @@
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:771:26:LL_GPIO_ReadInputPort	16	static
-../Middlewares/Third_Party/BSP/Src/bsp.c:16:13:BSP_Init_Common	4	static
-../Middlewares/Third_Party/BSP/Src/bsp.c:30:6:BSP_Init_DefualtEEPROM	8	static
-../Middlewares/Third_Party/BSP/Src/bsp.c:65:13:BSP_Init_IP4Current	4	static
-../Middlewares/Third_Party/BSP/Src/bsp.c:90:19:BSP_Init	16	static

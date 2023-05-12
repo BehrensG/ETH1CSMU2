@@ -1,7 +1,0 @@
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:27:15:SCPI_SourceCurrentRange	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:43:15:SCPI_SourceCurrentRangeQ	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:60:15:SCPI_SourceCurrentRangeAuto	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:65:15:SCPI_SourceFunctionMode	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:70:15:SCPI_SourceFunctionModeQ	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:76:15:SCPI_SourceRelayOutput	80	static
-../Middlewares/Third_Party/BSP/Src/scpi_source.c:106:15:SCPI_SourceRelayOutputQ	16	static

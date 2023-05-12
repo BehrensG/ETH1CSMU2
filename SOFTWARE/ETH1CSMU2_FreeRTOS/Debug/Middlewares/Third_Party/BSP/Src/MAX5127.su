@@ -1,2 +1,0 @@
-../Middlewares/Third_Party/BSP/Src/MAX5127.c:12:6:MAX5217_Init	8	static
-../Middlewares/Third_Party/BSP/Src/MAX5127.c:19:19:MAX5217_SetVoltage	40	static

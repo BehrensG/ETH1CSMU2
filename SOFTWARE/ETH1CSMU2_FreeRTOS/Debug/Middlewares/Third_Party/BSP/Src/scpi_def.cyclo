@@ -1,5 +1,0 @@
-core_cm7.h:2147:34:__NVIC_SystemReset	1
-scpi_def.c:61:8:SCPI_GetChannels	20
-scpi_def.c:183:22:SCPI_Rst	0
-scpi_def.c:190:22:SCPI_IdnQ	3
-scpi_def.c:209:15:SCPI_TS	1

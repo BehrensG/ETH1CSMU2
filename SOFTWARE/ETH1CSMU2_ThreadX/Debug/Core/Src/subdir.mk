@@ -13,6 +13,7 @@ C_SRCS += \
 ../Core/Src/AD7980.c \
 ../Core/Src/AD9834.c \
 ../Core/Src/ADS8681.c \
+../Core/Src/BSP.c \
 ../Core/Src/DAC8565.c \
 ../Core/Src/DWT_Delay.c \
 ../Core/Src/EE24.c \
@@ -22,7 +23,6 @@ C_SRCS += \
 ../Core/Src/HDC1080.c \
 ../Core/Src/MAX5127.c \
 ../Core/Src/app_threadx.c \
-../Core/Src/bsp.c \
 ../Core/Src/main.c \
 ../Core/Src/scpi_def.c \
 ../Core/Src/scpi_fetch.c \
@@ -45,6 +45,7 @@ OBJS += \
 ./Core/Src/AD7980.o \
 ./Core/Src/AD9834.o \
 ./Core/Src/ADS8681.o \
+./Core/Src/BSP.o \
 ./Core/Src/DAC8565.o \
 ./Core/Src/DWT_Delay.o \
 ./Core/Src/EE24.o \
@@ -54,7 +55,6 @@ OBJS += \
 ./Core/Src/HDC1080.o \
 ./Core/Src/MAX5127.o \
 ./Core/Src/app_threadx.o \
-./Core/Src/bsp.o \
 ./Core/Src/main.o \
 ./Core/Src/scpi_def.o \
 ./Core/Src/scpi_fetch.o \
@@ -81,6 +81,7 @@ C_DEPS += \
 ./Core/Src/AD7980.d \
 ./Core/Src/AD9834.d \
 ./Core/Src/ADS8681.d \
+./Core/Src/BSP.d \
 ./Core/Src/DAC8565.d \
 ./Core/Src/DWT_Delay.d \
 ./Core/Src/EE24.d \
@@ -90,7 +91,6 @@ C_DEPS += \
 ./Core/Src/HDC1080.d \
 ./Core/Src/MAX5127.d \
 ./Core/Src/app_threadx.d \
-./Core/Src/bsp.d \
 ./Core/Src/main.d \
 ./Core/Src/scpi_def.d \
 ./Core/Src/scpi_fetch.d \
@@ -117,7 +117,7 @@ Core/Src/%.o: ../Core/Src/%.s Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/74HC595.cyclo ./Core/Src/74HC595.d ./Core/Src/74HC595.o ./Core/Src/74HC595.su ./Core/Src/AD5322.cyclo ./Core/Src/AD5322.d ./Core/Src/AD5322.o ./Core/Src/AD5322.su ./Core/Src/AD7980.cyclo ./Core/Src/AD7980.d ./Core/Src/AD7980.o ./Core/Src/AD7980.su ./Core/Src/AD9834.cyclo ./Core/Src/AD9834.d ./Core/Src/AD9834.o ./Core/Src/AD9834.su ./Core/Src/ADS8681.cyclo ./Core/Src/ADS8681.d ./Core/Src/ADS8681.o ./Core/Src/ADS8681.su ./Core/Src/DAC8565.cyclo ./Core/Src/DAC8565.d ./Core/Src/DAC8565.o ./Core/Src/DAC8565.su ./Core/Src/DWT_Delay.cyclo ./Core/Src/DWT_Delay.d ./Core/Src/DWT_Delay.o ./Core/Src/DWT_Delay.su ./Core/Src/EE24.cyclo ./Core/Src/EE24.d ./Core/Src/EE24.o ./Core/Src/EE24.su ./Core/Src/EEPROM.cyclo ./Core/Src/EEPROM.d ./Core/Src/EEPROM.o ./Core/Src/EEPROM.su ./Core/Src/FGEN.cyclo ./Core/Src/FGEN.d ./Core/Src/FGEN.o ./Core/Src/FGEN.su ./Core/Src/GPIO.cyclo ./Core/Src/GPIO.d ./Core/Src/GPIO.o ./Core/Src/GPIO.su ./Core/Src/HDC1080.cyclo ./Core/Src/HDC1080.d ./Core/Src/HDC1080.o ./Core/Src/HDC1080.su ./Core/Src/MAX5127.cyclo ./Core/Src/MAX5127.d ./Core/Src/MAX5127.o ./Core/Src/MAX5127.su ./Core/Src/app_threadx.cyclo ./Core/Src/app_threadx.d ./Core/Src/app_threadx.o ./Core/Src/app_threadx.su ./Core/Src/bsp.cyclo ./Core/Src/bsp.d ./Core/Src/bsp.o ./Core/Src/bsp.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/scpi_def.cyclo ./Core/Src/scpi_def.d ./Core/Src/scpi_def.o ./Core/Src/scpi_def.su ./Core/Src/scpi_fetch.cyclo ./Core/Src/scpi_fetch.d ./Core/Src/scpi_fetch.o ./Core/Src/scpi_fetch.su ./Core/Src/scpi_measure.cyclo ./Core/Src/scpi_measure.d ./Core/Src/scpi_measure.o ./Core/Src/scpi_measure.su ./Core/Src/scpi_sense.cyclo ./Core/Src/scpi_sense.d ./Core/Src/scpi_sense.o ./Core/Src/scpi_sense.su ./Core/Src/scpi_server.cyclo ./Core/Src/scpi_server.d ./Core/Src/scpi_server.o ./Core/Src/scpi_server.su ./Core/Src/scpi_source.cyclo ./Core/Src/scpi_source.d ./Core/Src/scpi_source.o ./Core/Src/scpi_source.su ./Core/Src/scpi_system.cyclo ./Core/Src/scpi_system.d ./Core/Src/scpi_system.o ./Core/Src/scpi_system.su ./Core/Src/scpi_trigger.cyclo ./Core/Src/scpi_trigger.d ./Core/Src/scpi_trigger.o ./Core/Src/scpi_trigger.su ./Core/Src/stm32f7xx_hal_msp.cyclo ./Core/Src/stm32f7xx_hal_msp.d ./Core/Src/stm32f7xx_hal_msp.o ./Core/Src/stm32f7xx_hal_msp.su ./Core/Src/stm32f7xx_hal_timebase_tim.cyclo ./Core/Src/stm32f7xx_hal_timebase_tim.d ./Core/Src/stm32f7xx_hal_timebase_tim.o ./Core/Src/stm32f7xx_hal_timebase_tim.su ./Core/Src/stm32f7xx_it.cyclo ./Core/Src/stm32f7xx_it.d ./Core/Src/stm32f7xx_it.o ./Core/Src/stm32f7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f7xx.cyclo ./Core/Src/system_stm32f7xx.d ./Core/Src/system_stm32f7xx.o ./Core/Src/system_stm32f7xx.su ./Core/Src/tx_initialize_low_level.d ./Core/Src/tx_initialize_low_level.o
+	-$(RM) ./Core/Src/74HC595.cyclo ./Core/Src/74HC595.d ./Core/Src/74HC595.o ./Core/Src/74HC595.su ./Core/Src/AD5322.cyclo ./Core/Src/AD5322.d ./Core/Src/AD5322.o ./Core/Src/AD5322.su ./Core/Src/AD7980.cyclo ./Core/Src/AD7980.d ./Core/Src/AD7980.o ./Core/Src/AD7980.su ./Core/Src/AD9834.cyclo ./Core/Src/AD9834.d ./Core/Src/AD9834.o ./Core/Src/AD9834.su ./Core/Src/ADS8681.cyclo ./Core/Src/ADS8681.d ./Core/Src/ADS8681.o ./Core/Src/ADS8681.su ./Core/Src/BSP.cyclo ./Core/Src/BSP.d ./Core/Src/BSP.o ./Core/Src/BSP.su ./Core/Src/DAC8565.cyclo ./Core/Src/DAC8565.d ./Core/Src/DAC8565.o ./Core/Src/DAC8565.su ./Core/Src/DWT_Delay.cyclo ./Core/Src/DWT_Delay.d ./Core/Src/DWT_Delay.o ./Core/Src/DWT_Delay.su ./Core/Src/EE24.cyclo ./Core/Src/EE24.d ./Core/Src/EE24.o ./Core/Src/EE24.su ./Core/Src/EEPROM.cyclo ./Core/Src/EEPROM.d ./Core/Src/EEPROM.o ./Core/Src/EEPROM.su ./Core/Src/FGEN.cyclo ./Core/Src/FGEN.d ./Core/Src/FGEN.o ./Core/Src/FGEN.su ./Core/Src/GPIO.cyclo ./Core/Src/GPIO.d ./Core/Src/GPIO.o ./Core/Src/GPIO.su ./Core/Src/HDC1080.cyclo ./Core/Src/HDC1080.d ./Core/Src/HDC1080.o ./Core/Src/HDC1080.su ./Core/Src/MAX5127.cyclo ./Core/Src/MAX5127.d ./Core/Src/MAX5127.o ./Core/Src/MAX5127.su ./Core/Src/app_threadx.cyclo ./Core/Src/app_threadx.d ./Core/Src/app_threadx.o ./Core/Src/app_threadx.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/scpi_def.cyclo ./Core/Src/scpi_def.d ./Core/Src/scpi_def.o ./Core/Src/scpi_def.su ./Core/Src/scpi_fetch.cyclo ./Core/Src/scpi_fetch.d ./Core/Src/scpi_fetch.o ./Core/Src/scpi_fetch.su ./Core/Src/scpi_measure.cyclo ./Core/Src/scpi_measure.d ./Core/Src/scpi_measure.o ./Core/Src/scpi_measure.su ./Core/Src/scpi_sense.cyclo ./Core/Src/scpi_sense.d ./Core/Src/scpi_sense.o ./Core/Src/scpi_sense.su ./Core/Src/scpi_server.cyclo ./Core/Src/scpi_server.d ./Core/Src/scpi_server.o ./Core/Src/scpi_server.su ./Core/Src/scpi_source.cyclo ./Core/Src/scpi_source.d ./Core/Src/scpi_source.o ./Core/Src/scpi_source.su ./Core/Src/scpi_system.cyclo ./Core/Src/scpi_system.d ./Core/Src/scpi_system.o ./Core/Src/scpi_system.su ./Core/Src/scpi_trigger.cyclo ./Core/Src/scpi_trigger.d ./Core/Src/scpi_trigger.o ./Core/Src/scpi_trigger.su ./Core/Src/stm32f7xx_hal_msp.cyclo ./Core/Src/stm32f7xx_hal_msp.d ./Core/Src/stm32f7xx_hal_msp.o ./Core/Src/stm32f7xx_hal_msp.su ./Core/Src/stm32f7xx_hal_timebase_tim.cyclo ./Core/Src/stm32f7xx_hal_timebase_tim.d ./Core/Src/stm32f7xx_hal_timebase_tim.o ./Core/Src/stm32f7xx_hal_timebase_tim.su ./Core/Src/stm32f7xx_it.cyclo ./Core/Src/stm32f7xx_it.d ./Core/Src/stm32f7xx_it.o ./Core/Src/stm32f7xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32f7xx.cyclo ./Core/Src/system_stm32f7xx.d ./Core/Src/system_stm32f7xx.o ./Core/Src/system_stm32f7xx.su ./Core/Src/tx_initialize_low_level.d ./Core/Src/tx_initialize_low_level.o
 
 .PHONY: clean-Core-2f-Src
 

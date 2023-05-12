@@ -1,3 +1,0 @@
-../Middlewares/Third_Party/BSP/Src/scpi_measure.c:11:15:SCPI_MeasureQ	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_measure.c:16:15:SCPI_MeasureCurrentQ	16	static
-../Middlewares/Third_Party/BSP/Src/scpi_measure.c:21:15:SCPI_MeasureVoltageQ	16	static

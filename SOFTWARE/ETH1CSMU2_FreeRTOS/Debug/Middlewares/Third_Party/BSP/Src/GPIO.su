@@ -1,5 +1,0 @@
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	16	static
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	16	static
-../Middlewares/Third_Party/BSP/Src/GPIO.c:4:6:CXN_Relays_Control	16	static
-../Middlewares/Third_Party/BSP/Src/GPIO.c:17:6:CXN_Relays_AllOff	8	static
-../Middlewares/Third_Party/BSP/Src/GPIO.c:28:6:AQY212_Photomos	16	static

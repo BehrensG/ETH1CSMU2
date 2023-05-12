@@ -39,17 +39,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <SCPI_Def.h>
+#include <SCPI_Fetch.h>
+#include <SCPI_Measure.h>
+#include <SCPI_Sense.h>
+#include <SCPI_Source.h>
+#include <SCPI_System.h>
+#include <SCPI_Trigger.h>
 
 
-#include "scpi_def.h"
 #include "scpi/scpi.h"
 //#include "cmsis_os.h"
-#include "scpi_system.h"
-#include "scpi_trigger.h"
-#include  "scpi_source.h"
-#include "scpi_fetch.h"
-#include "scpi_sense.h"
-#include "scpi_measure.h"
 #include "AD5322.h"
 #include "MAX5217.h"
 #include "DAC8565.h"
@@ -208,14 +208,26 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
 
 scpi_result_t SCPI_TS(scpi_t * context)
 {
+/*	float freq = 0.0, volt = 0.0;
 
+	if(!SCPI_ParamFloat(context, &volt, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	if(!SCPI_ParamFloat(context, &freq, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	//AD5322_SetVOUTA(volt);
+	FGEN_SetAmplitude(volt);
+	FGEN_SetFrequency(freq); */
 	HAL_StatusTypeDef status;
-	status = AD7980_ReadData(ADC_SAMPLE_SIZE);
-	AD7980_RXDataToVoltage(ADC_SAMPLE_SIZE);
-	SCPI_ResultArrayFloat(context, bsp.adc[AD7980_VOLT_CH].meas, ADC_SAMPLE_SIZE, SCPI_FORMAT_ASCII);
-	SCPI_ResultArrayFloat(context, bsp.adc[AD7980_CURR_CH].meas, ADC_SAMPLE_SIZE, SCPI_FORMAT_ASCII);
+	status = AD7980_ReadData(10000);
 
-	//SCPI_ResultArrayFloat(context, meas, 2, SCPI_FORMAT_ASCII);
+	//SCPI_ResultCharacters(context, TCP_Package(bsp.adc[0].meas, 0, 1000), strlen(TCP_Package(bsp.adc[0].meas, 0, 1000)));
+	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[1].meas, 0, 1000), strlen(TCP_Package(bsp.adc[1].meas, 0, 1000)));
     return SCPI_RES_OK;
 }
 

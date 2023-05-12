@@ -1,7 +1,0 @@
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	16	static
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	16	static
-../Middlewares/Third_Party/BSP/Src/DAC8565.c:17:6:DAC8565_Init	8	static
-../Middlewares/Third_Party/BSP/Src/DAC8565.c:26:19:DAC8565_SetVOUT	24	static
-../Middlewares/Third_Party/BSP/Src/DAC8565.c:42:26:DAC8565_SetOneChannel	24	static
-../Middlewares/Third_Party/BSP/Src/DAC8565.c:67:26:DAC8565_SetAllChannels	24	static
-../Middlewares/Third_Party/BSP/Src/DAC8565.c:85:26:DAC8565_DisableInteralReference	16	static

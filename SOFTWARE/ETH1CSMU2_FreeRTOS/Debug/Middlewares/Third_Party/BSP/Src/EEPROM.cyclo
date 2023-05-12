@@ -1,7 +1,0 @@
-stm32f7xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	1
-stm32f7xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	1
-EEPROM.c:18:19:EEPROM_Erase	3
-EEPROM.c:45:6:EEPROM_WriteProtect	3
-EEPROM.c:57:19:EEPROM_Write	4
-EEPROM.c:95:19:EEPROM_Read	3
-EEPROM.c:120:19:EEPROM_Status	4

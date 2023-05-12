@@ -1,3 +1,0 @@
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:881:22:LL_GPIO_SetOutputPin	16	static
-../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_ll_gpio.h:910:22:LL_GPIO_ResetOutputPin	16	static
-../Middlewares/Third_Party/BSP/Src/LED.c:17:6:LED_Switch	16	static
