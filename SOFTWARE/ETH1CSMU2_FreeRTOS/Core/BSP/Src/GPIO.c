@@ -1,7 +1,9 @@
 
 #include "GPIO.h"
 
-void CXN_Relays_Control(gpio_state gpio, uint8_t state)
+extern struct _bsp bsp;
+
+void CXN_Relays_Control(cxn_gpio_select gpio, uint8_t state)
 {
 	switch(gpio)
 	{
@@ -25,6 +27,12 @@ void CXN_Relays_AllOff()
 }
 
 
-void AQY212_Photomos(gpio_state gpio, uint8_t state)
+void DG419_Switch(dg419_gpio_select dg419, uint8_t state)
 {
+	switch(dg419)
+	{
+	case DG419_SIGN_SEL: (state)? (bsp.sn74hc595.shift_reg[SR1] &= ~(SR1_SIGN_SEL)) : (bsp.sn74hc595.shift_reg[SR1] |= SR1_SIGN_SEL); break;
+
+	}
+	SN74HC595_Update(&bsp.sn74hc595.shift_reg);
 }

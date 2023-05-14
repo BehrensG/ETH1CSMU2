@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "BSP.h"
 
-#define TCP_PACKGE_SIZE 9500
+#define TCP_PACKGE_SIZE 10000
 
 
 char* TCP_Package(float* meas, uint16_t start, uint16_t size)
@@ -39,8 +39,8 @@ char* TCP_Package(float* meas, uint16_t start, uint16_t size)
 			ptr += snprintf(tcp_package + ptr, sizeof(tcp_package) - ptr, "%.4f,", meas[start+x]);
 		}
 
-
 	}
+	ptr += snprintf(tcp_package + ptr, sizeof(tcp_package), "\r\n", 2);
 
 	return tcp_package;
 }

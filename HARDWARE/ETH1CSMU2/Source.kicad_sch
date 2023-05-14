@@ -4330,7 +4330,7 @@
   )
 
   (symbol (lib_id "Device:C") (at 242.57 138.43 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom yes) (on_board yes) (dnp yes)
     (uuid 1b7db69e-6ee0-4d63-9886-3cf40a5d6b50)
     (property "Reference" "C934" (at 242.57 132.08 90)
       (effects (font (size 1.27 1.27)))
@@ -7663,7 +7663,7 @@
   )
 
   (symbol (lib_id "Device:R") (at 242.57 128.27 90) (unit 1)
-    (in_bom yes) (on_board yes) (dnp yes)
+    (in_bom yes) (on_board yes) (dnp no)
     (uuid cd7c7d38-1e5b-4cf0-ac13-3f39c6ef4622)
     (property "Reference" "R920" (at 242.57 123.19 90)
       (effects (font (size 1.27 1.27)))

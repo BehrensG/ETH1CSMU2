@@ -21,7 +21,7 @@ void SN74HC595_Init()
 	uint8_t* shift_reg = &bsp.sn74hc595.shift_reg;
 
 	shift_reg[SR0] = SR0_V_G1 | SR0_C_G1| SR0_V_AZ;
-	shift_reg[SR1] = SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1;
+	shift_reg[SR1] = SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1 | SR1_SIGN_SEL;
 	SN74HC595_Update(shift_reg);
 
 }

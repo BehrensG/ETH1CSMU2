@@ -142,15 +142,16 @@ typedef struct bsp_config_fgen
 	float frequency;
 	float amplitude;
 	float offset;
+	uint8_t gain;
 
 }bsp_config_fgen_t;
 
 #define ADC_SAMPLE_SIZE	10000
+#define ARB_SIZE		10000
 
 typedef struct bsp_adc
 {
 	uint8_t gain;
-	//uint16_t data[ADC_SAMPLE_SIZE];
 	float meas[ADC_SAMPLE_SIZE];
 
 }bsp_adc_t;
@@ -168,13 +169,42 @@ typedef struct bsp_config_dds
 
 }bsp_config_dds_t;
 
+typedef enum e_func_mode
+{
+	DC = 1,
+	ARB = 2,
+	SINE = 3
+}e_func_mode_t;
+
+typedef struct bsp_config_arb
+{
+	uint16_t size;
+	float data[ARB_SIZE];
+	uint32_t delay;
+}bsp_config_arb_t;
+
+typedef struct bsp_config_dc
+{
+	uint8_t gain;
+	float value;
+}bsp_config_dc_t;
+
+typedef struct bsp_config_meas
+{
+	uint8_t enable;
+}bsp_config_meas_t;
 
 typedef struct _bsp_config
 {
 	bsp_config_fgen_t fgen;
+	bsp_config_arb_t arb;
+	bsp_config_dc_t dc;
 	bsp_config_adc_t adc;
 	bsp_config_dds_t dds;
 	bsp_config_relay_t relay;
+	bsp_config_meas_t measure;
+	e_func_mode_t mode;
+
 
 }bsp_config_t;
 

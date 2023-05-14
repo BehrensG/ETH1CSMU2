@@ -2884,7 +2884,7 @@
     (uuid ff1706bc-9126-4576-9af4-8c0434c373c7)
   )
 
-  (text_box "For selected FGEN the LT1970 gain is x2."
+  (text_box "For selected FGEN the LT1970 gain is x2.\nFor DC the LT1970 gain is x3."
     (at 99.06 167.64 0) (size 46.99 6.35)
     (stroke (width 0) (type default))
     (fill (type none))

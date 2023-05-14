@@ -48,13 +48,12 @@
 #include <SCPI_Trigger.h>
 
 
-#include "scpi/scpi.h"
-//#include "cmsis_os.h"
 #include "AD5322.h"
 #include "MAX5217.h"
 #include "DAC8565.h"
 #include "FGEN.h"
 #include "AD7980.h"
+#include "scpi/scpi.h"
 
 extern struct _bsp bsp;
 
@@ -208,26 +207,9 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
 
 scpi_result_t SCPI_TS(scpi_t * context)
 {
-/*	float freq = 0.0, volt = 0.0;
-
-	if(!SCPI_ParamFloat(context, &volt, TRUE))
-	{
-		return SCPI_RES_ERR;
-	}
-
-	if(!SCPI_ParamFloat(context, &freq, TRUE))
-	{
-		return SCPI_RES_ERR;
-	}
-
-	//AD5322_SetVOUTA(volt);
-	FGEN_SetAmplitude(volt);
-	FGEN_SetFrequency(freq); */
-	HAL_StatusTypeDef status;
-	status = AD7980_ReadData(10000);
-
-	//SCPI_ResultCharacters(context, TCP_Package(bsp.adc[0].meas, 0, 1000), strlen(TCP_Package(bsp.adc[0].meas, 0, 1000)));
-	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[1].meas, 0, 1000), strlen(TCP_Package(bsp.adc[1].meas, 0, 1000)));
+	bsp.config.arb.data[0] = 1;
+	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[0].meas, 0, 1000), 10000);
+	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[1].meas, 0, 1000), 10000);
     return SCPI_RES_OK;
 }
 
@@ -298,6 +280,8 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "[SOURce:]RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
 	{.pattern = "[SOURce:]FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
 	{.pattern = "[SOURce:]FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
+	{.pattern = "[SOURce:]FUNCtion[:SHAPe]", .callback = SCPI_SourceFunctionShape,},
+	{.pattern = "[SOURce:]FUNCtion[:SHAPe]?", .callback = SCPI_SourceFunctionShapeQ,},
 
 	{.pattern = "[SENSe:]CURRent:DC:PROTection[:LEVel]:POSitive", .callback = SCPI_SenseCurrentDCProtectionLevelPositive,},
 	{.pattern = "[SENSe:]CURRent:DC:PROTection[:LEVel]:POSitive?", .callback = SCPI_SenseCurrentDCProtectionLevelPositiveQ,},

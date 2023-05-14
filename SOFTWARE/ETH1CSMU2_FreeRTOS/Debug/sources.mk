@@ -41,5 +41,5 @@ Middlewares/Third_Party/LwIP/src/core/ipv6 \
 Middlewares/Third_Party/LwIP/src/netif \
 Middlewares/Third_Party/LwIP/src/netif/ppp \
 Middlewares/Third_Party/LwIP/system/OS \
-Middlewares/Third_Party/scpi-2.1/libscpi/src \
+Middlewares/Third_Party/scpi/libscpi/src \
 
