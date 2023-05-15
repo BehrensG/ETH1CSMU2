@@ -37,6 +37,13 @@ static void BSP_Init_Common()
 	bsp.config.arb.delay = 0;
 
 	bsp.config.measure.enable = 0;
+
+	for(uint8_t x = 0; x < MAXROW; x++)
+	{
+		bsp.config.relay.state[x] = 0;
+	}
+
+	bsp.config.mode = DC;
 }
 
 void BSP_Init_DefualtEEPROM()

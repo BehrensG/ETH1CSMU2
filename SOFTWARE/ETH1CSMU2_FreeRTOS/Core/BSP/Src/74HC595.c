@@ -18,10 +18,13 @@ void SN74HC595_Delay()
 //IO init
 void SN74HC595_Init()
 {
-	uint8_t* shift_reg = &bsp.sn74hc595.shift_reg;
+	uint8_t shift_reg[2];
+	bsp.sn74hc595.shift_reg[SR0] = SR0_V_G1 | SR0_C_G1| SR0_V_AZ;
+	bsp.sn74hc595.shift_reg[SR1] = SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1 | SR1_SIGN_SEL;
 
-	shift_reg[SR0] = SR0_V_G1 | SR0_C_G1| SR0_V_AZ;
-	shift_reg[SR1] = SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1 | SR1_SIGN_SEL;
+	shift_reg[SR0] = bsp.sn74hc595.shift_reg[SR0];
+	shift_reg[SR1] = bsp.sn74hc595.shift_reg[SR1];
+
 	SN74HC595_Update(shift_reg);
 
 }

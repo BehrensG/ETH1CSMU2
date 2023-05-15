@@ -5,10 +5,13 @@
  *      Author: grzegorz
  */
 
+#include <math.h>
+
 #include "SCPI_Def.h"
 #include "SCPI_Source.h"
 #include "GPIO.h"
 #include "DAC8565.h"
+#include "FGEN.h"
 
 extern struct _bsp bsp;
 
@@ -184,19 +187,19 @@ static scpi_result_t SourceFunctionShape_DC(scpi_t* context)
 
 		bsp.config.dc.value = (float)(value.content.value);
 
-		if((bsp.config.dc.value < SOURCE_DC_MAX_VAL) || (bsp.config.dc.value > SOURCE_DC_DEF_VAL))
+		if((bsp.config.dc.value <= SOURCE_DC_MAX_VAL) && (bsp.config.dc.value > SOURCE_DC_DEF_VAL))
 		{
 			tmp_volt = (float)(bsp.config.dc.value/bsp.config.dc.gain);
 
-			DAC8565_SetVOUT(VOUTA, tmp_volt);
+			DAC8565_SetVOUT(VOUTA, fabs(tmp_volt));
 			DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
 		}
-		else if((bsp.config.dc.value > SOURCE_DC_MIN_VAL) || (bsp.config.dc.value < SOURCE_DC_DEF_VAL))
+		else if((bsp.config.dc.value >= SOURCE_DC_MIN_VAL) && (bsp.config.dc.value < SOURCE_DC_DEF_VAL))
 		{
 			tmp_volt = (float)(bsp.config.dc.value/bsp.config.dc.gain);
 
 			DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
-			DAC8565_SetVOUT(VOUTB, tmp_volt);
+			DAC8565_SetVOUT(VOUTB, fabs(tmp_volt));
 		}
 		else if(SOURCE_DC_DEF_VAL == bsp.config.dc.value)
 		{
@@ -222,6 +225,7 @@ static scpi_result_t SINE_Offset(scpi_t * context);
 
 static scpi_result_t SourceFunctionShape_SINE(scpi_t* context)
 {
+	BSP_StatusTypeDef ret;
 	float tmp;
 	if(SCPI_RES_OK != SINE_Frequency(context))
 	{
@@ -243,6 +247,10 @@ static scpi_result_t SourceFunctionShape_SINE(scpi_t* context)
 		SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
 		return SCPI_RES_ERR;
 	}
+
+	ret = FGEN_SetAmplitude(bsp.config.fgen.amplitude);
+	ret = FGEN_SetFrequency(bsp.config.fgen.frequency);
+	ret = FGEN_SetOffset(bsp.config.fgen.offset);
 
 	return SCPI_RES_OK;
 }
@@ -291,7 +299,7 @@ static scpi_result_t SINE_Frequency(scpi_t * context)
 		}
 	}
 
-	bsp.config.fgen.frequency = freq.content.value;
+	bsp.config.fgen.frequency = (float)(freq.content.value);
 
 	return SCPI_RES_OK;
 }
@@ -341,7 +349,7 @@ static scpi_result_t SINE_Voltage(scpi_t * context)
 
 	}
 
-	bsp.config.fgen.amplitude = volt.content.value;
+	bsp.config.fgen.amplitude = (float)(fabs(volt.content.value));
 
 	return SCPI_RES_OK;
 }
@@ -391,7 +399,7 @@ static scpi_result_t SINE_Offset(scpi_t * context)
 
 	}
 
-	bsp.config.fgen.offset = offset.content.value;
+	bsp.config.fgen.offset = (float)(offset.content.value);
 
 	return SCPI_RES_OK;
 }
@@ -425,7 +433,7 @@ scpi_result_t SCPI_SourceRelayOutput(scpi_t * context)
 
 	for(uint8_t i = 0; i < channel_size; i++)
 	{
-		index = array[i].row;
+		index = array[i].row -1;
 		CXN_Relays_Control(index, state);
 		bsp.config.relay.state[index] = (uint8_t)state;
 	}
@@ -435,6 +443,6 @@ scpi_result_t SCPI_SourceRelayOutput(scpi_t * context)
 
 scpi_result_t SCPI_SourceRelayOutputQ(scpi_t * context)
 {
-	SCPI_ResultArrayUInt8(context, bsp.config.relay.state, MAXROW, SCPI_FORMAT_NORMAL);
+	SCPI_ResultArrayUInt8(context, bsp.config.relay.state, MAXROW, SCPI_FORMAT_ASCII);
 	return SCPI_RES_OK;
 }

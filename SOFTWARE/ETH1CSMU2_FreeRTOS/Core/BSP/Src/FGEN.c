@@ -73,15 +73,16 @@ static uint32_t FGEN_ConvertFrequency(float freq)
 
 BSP_StatusTypeDef FGEN_SetAmplitude(float amplitude)
 {
+
 	float tmp_amp = (float)(FGEN_AMPL_MAX - amplitude);
-	bsp.config.fgen.amplitude = amplitude;
+
 
 	return AD5322_SetVOUTA(tmp_amp);
 }
 
 BSP_StatusTypeDef FGEN_SetOffset(float offset)
 {
-	bsp.config.fgen.offset = offset;
+
 	return AD5322_SetVOUTB(offset);
 
 
@@ -92,8 +93,6 @@ BSP_StatusTypeDef FGEN_SetFrequency(float freq)
 	BSP_StatusTypeDef status = BSP_OK;
 
 	uint32_t freq28 = FGEN_ConvertFrequency(freq);
-
-	bsp.config.fgen.frequency = freq;
 
 	status = AD9834_SetFrequency(freq28);
 	if(BSP_OK != status){return status;}

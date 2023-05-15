@@ -152,7 +152,7 @@ size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
                             array[arr_idx].row = n;
                             array[arr_idx].col = 0;
                             arr_idx++;
-                            if (arr_idx >= MAXROW * MAXCOL) {
+                            if (arr_idx >= (MAXROW+1) * MAXCOL) {
                                 return arr_idx = 0;
                             }
                         }
@@ -273,20 +273,20 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "OUTput:TRIGger:SLOPe?", .callback = SCPI_TriggerOutputSlopeQ,},
 	{.pattern = "*TRG", .callback = SCPI_TRG,},
 
-	{.pattern = "[SOURce:]CURRent:RANGe", .callback = SCPI_SourceCurrentRange,},
-	{.pattern = "[SOURce:]CURRent:RANGe?", .callback = SCPI_SourceCurrentRangeQ,},
-	{.pattern = "[SOURce:]CURRent:RANGe:AUTO", .callback = SCPI_SourceCurrentRangeAuto,},
-	{.pattern = "[SOURce:]RELAy:OUTput", .callback = SCPI_SourceRelayOutput,},
-	{.pattern = "[SOURce:]RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
-	{.pattern = "[SOURce:]FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
-	{.pattern = "[SOURce:]FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
-	{.pattern = "[SOURce:]FUNCtion[:SHAPe]", .callback = SCPI_SourceFunctionShape,},
-	{.pattern = "[SOURce:]FUNCtion[:SHAPe]?", .callback = SCPI_SourceFunctionShapeQ,},
+	{.pattern = "SOURce:CURRent:RANGe", .callback = SCPI_SourceCurrentRange,},
+	{.pattern = "SOURce:CURRent:RANGe?", .callback = SCPI_SourceCurrentRangeQ,},
+	{.pattern = "SOURce:CURRent:RANGe:AUTO", .callback = SCPI_SourceCurrentRangeAuto,},
+	{.pattern = "SOURce:RELAy:OUTput", .callback = SCPI_SourceRelayOutput,},
+	{.pattern = "SOURce:RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
+	{.pattern = "SOURce:FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
+	{.pattern = "SOURce:FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
+	{.pattern = "SOURce:FUNCtion[:SHAPe]", .callback = SCPI_SourceFunctionShape,},
+	{.pattern = "SOURce:FUNCtion[:SHAPe]?", .callback = SCPI_SourceFunctionShapeQ,},
 
-	{.pattern = "[SENSe:]CURRent:DC:PROTection[:LEVel]:POSitive", .callback = SCPI_SenseCurrentDCProtectionLevelPositive,},
-	{.pattern = "[SENSe:]CURRent:DC:PROTection[:LEVel]:POSitive?", .callback = SCPI_SenseCurrentDCProtectionLevelPositiveQ,},
-	{.pattern = "[SENSe:]CURRent:DC:PROTection[:LEVel]:NEGative", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
-	{.pattern = "[SENSe:]CURRent:DC:PROTection[:LEVel]:NEGative?", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive", .callback = SCPI_SenseCurrentDCProtectionLevelPositive,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive?", .callback = SCPI_SenseCurrentDCProtectionLevelPositiveQ,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:NEGative", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
+	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:NEGative?", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
 
 	{.pattern = "FETCh?", .callback = SCPI_FetchQ,},
 	{.pattern = "FETCh:ARRay?", .callback = SCPI_FetchArrayQ,},
