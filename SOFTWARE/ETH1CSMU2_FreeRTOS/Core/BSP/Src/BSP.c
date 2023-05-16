@@ -34,7 +34,7 @@ static void BSP_Init_Common()
 	bsp.config.fgen.amplitude = 0.0;
 	bsp.config.fgen.frequency = 0.0;
 
-	bsp.config.arb.delay = 0;
+	bsp.config.list.delay = 0;
 
 	bsp.config.measure.enable = 0;
 
@@ -70,14 +70,34 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.ip4.netmask[2] = NETMASK_ADDRESS_2;
 	bsp.eeprom.structure.ip4.netmask[3] = NETMASK_ADDRESS_3;
 
+	bsp.eeprom.structure.calib.ad7980[0].gain[0] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[0].gain[1] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[0].gain[2] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[1].gain[0] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[1].gain[1] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[1].gain[2] = 1.0;
 
+	bsp.eeprom.structure.calib.ads8681[0].gain[0] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[0].gain[1] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[0].gain[2] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[1].gain[0] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[1].gain[1] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[1].gain[2] = 1.0;
 
-	strncpy(bsp.eeprom.structure.password, PASSWORD, STRING_LENGTH);
-	strncpy(bsp.eeprom.structure.info.manufacturer, SCPI_IDN1, STRING_LENGTH);
-	strncpy(bsp.eeprom.structure.info.device, SCPI_IDN2, STRING_LENGTH);
+	bsp.eeprom.structure.calib.calib_count = 1;
+
+	bsp.eeprom.structure.calib.dac8565.neg_gain = 1.0;
+	bsp.eeprom.structure.calib.dac8565.pos_gain = 1.0;
+	bsp.eeprom.structure.calib.dac8565.zero_offset = 0.0;
+
+	bsp.eeprom.structure.calib.fgen.amplitude_gain = 1.0;
+	bsp.eeprom.structure.calib.fgen.offset_gain = 1.0;
+	bsp.eeprom.structure.calib.fgen.zero_offset = 0.0;
+
+	strncpy(bsp.eeprom.structure.service.password, PASSWORD, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.serial_number, SCPI_IDN4, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.software_version, SCPI_IDN3, STRING_LENGTH);
-	memset(bsp.eeprom.structure.calib_string, 0, sizeof(bsp.eeprom.structure.calib_string));
+	memset(bsp.eeprom.structure.calib.string, 0, sizeof(bsp.eeprom.structure.calib.string));
 
 }
 

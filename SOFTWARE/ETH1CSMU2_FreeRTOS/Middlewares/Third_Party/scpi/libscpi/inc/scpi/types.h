@@ -1,29 +1,30 @@
 /*-
- * BSD 2-Clause License
+ * Copyright (c) 2013 Jan Breuer
+ *                    Richard.hmm
+ * Copyright (c) 2012 Jan Breuer
  *
- * Copyright (c) 2012-2018, Jan Breuer, Richard.hmm
- * All rights reserved.
+ * All Rights Reserved
  *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 /**
@@ -40,7 +41,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-
 #include "scpi/config.h"
 
 #if HAVE_STDBOOL
@@ -79,18 +79,8 @@ extern "C" {
         SCPI_REG_QUESE, /* QUEStionable status Enable Register */
         SCPI_REG_QUESC, /* QUEStionable status Condition Register */
 
-#if USE_CUSTOM_REGISTERS
-#ifndef USER_REGISTERS
-#error "No user registers defined"
-#else
-        USER_REGISTERS
-#endif
-#endif
-
-        /* number of registers */
-        SCPI_REG_COUNT,
-        /* last definition - a value for no register */
-        SCPI_REG_NONE
+        /* last definition - number of registers */
+        SCPI_REG_COUNT
     };
     typedef enum _scpi_reg_name_t scpi_reg_name_t;
 
@@ -115,53 +105,6 @@ extern "C" {
     typedef enum _scpi_ctrl_name_t scpi_ctrl_name_t;
 
     typedef uint16_t scpi_reg_val_t;
-
-    enum _scpi_reg_class_t {
-        SCPI_REG_CLASS_STB = 0,
-        SCPI_REG_CLASS_SRE,
-        SCPI_REG_CLASS_EVEN,
-        SCPI_REG_CLASS_ENAB,
-        SCPI_REG_CLASS_COND,
-        SCPI_REG_CLASS_NTR,
-        SCPI_REG_CLASS_PTR,
-    };
-    typedef enum _scpi_reg_class_t scpi_reg_class_t;
-
-    enum _scpi_reg_group_t {
-        SCPI_REG_GROUP_STB = 0,
-        SCPI_REG_GROUP_ESR,
-        SCPI_REG_GROUP_OPER,
-        SCPI_REG_GROUP_QUES,
-
-#if USE_CUSTOM_REGISTERS
-#ifndef USER_REGISTER_GROUPS
-#error "No user register groups defined"
-#else
-        USER_REGISTER_GROUPS
-#endif
-#endif
-
-        /* last definition - number of register groups */
-        SCPI_REG_GROUP_COUNT
-    };
-    typedef enum _scpi_reg_group_t scpi_reg_group_t;
-
-    struct _scpi_reg_info_t {
-        scpi_reg_class_t type;
-        scpi_reg_group_t group;
-    };
-    typedef struct _scpi_reg_info_t scpi_reg_info_t;
-
-    struct _scpi_reg_group_info_t {
-        scpi_reg_name_t event;
-        scpi_reg_name_t enable;
-        scpi_reg_name_t condition;
-        scpi_reg_name_t ptfilt;
-        scpi_reg_name_t ntfilt;
-        scpi_reg_name_t parent_reg;
-        scpi_reg_val_t parent_bit;
-    };
-    typedef struct _scpi_reg_group_info_t scpi_reg_group_info_t;
 
     /* scpi commands */
     enum _scpi_result_t {
@@ -429,7 +372,6 @@ extern "C" {
         scpi_interface_t * interface;
         int_fast16_t output_count;
         int_fast16_t input_count;
-        scpi_bool_t first_output;
         scpi_bool_t cmd_error;
         scpi_fifo_t error_queue;
 #if USE_DEVICE_DEPENDENT_ERROR_INFORMATION && !USE_MEMORY_ALLOCATION_FREE
@@ -440,7 +382,7 @@ extern "C" {
         void * user_context;
         scpi_parser_state_t parser_state;
         const char * idn[4];
-        size_t arbitrary_remaining;
+        size_t arbitrary_reminding;
     };
 
     enum _scpi_array_format_t {

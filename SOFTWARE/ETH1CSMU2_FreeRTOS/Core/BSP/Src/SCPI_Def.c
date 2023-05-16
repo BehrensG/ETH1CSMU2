@@ -207,7 +207,7 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
 
 scpi_result_t SCPI_TS(scpi_t * context)
 {
-	bsp.config.arb.data[0] = 1;
+	bsp.config.list.data[0] = 1;
 	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[0].meas, 0, 1000), 10000);
 	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[1].meas, 0, 1000), 10000);
     return SCPI_RES_OK;
@@ -276,12 +276,26 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:CURRent:RANGe", .callback = SCPI_SourceCurrentRange,},
 	{.pattern = "SOURce:CURRent:RANGe?", .callback = SCPI_SourceCurrentRangeQ,},
 	{.pattern = "SOURce:CURRent:RANGe:AUTO", .callback = SCPI_SourceCurrentRangeAuto,},
+
 	{.pattern = "SOURce:RELAy:OUTput", .callback = SCPI_SourceRelayOutput,},
 	{.pattern = "SOURce:RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
-	{.pattern = "SOURce:FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
-	{.pattern = "SOURce:FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
-	{.pattern = "SOURce:FUNCtion[:SHAPe]", .callback = SCPI_SourceFunctionShape,},
-	{.pattern = "SOURce:FUNCtion[:SHAPe]?", .callback = SCPI_SourceFunctionShapeQ,},
+
+	{.pattern = "SOURce:VOLTage:MODE", .callback = SCPI_SourceVoltageMode,},
+	{.pattern = "SOURce:VOLTage:MODE?", .callback = SCPI_SourceVoltageModeQ,},
+
+	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageLevelDCImmediate,}, //Changes the output level of the specified source channel immediately.
+	{.pattern = "SOURce:VOLTage:DC[:IMMediate]?", .callback = SCPI_SourceVoltageLevelDCImmediateQ,},
+
+	{.pattern = "SOURce:VOLTage:FGEN[:IMMediate]", .callback = SCPI_SourceVoltageFgenImmediate,},
+	{.pattern = "SOURce:VOLTage:FGEN[:IMMediate]?", .callback = SCPI_SourceVoltageFgenImmediateQ,},
+
+	{.pattern = "SOURce:VOLTage:LIST[:LOAD]", .callback = SCPI_SourceVoltageListLoad,}, //Sets the number of sweep steps for the current or voltage sweep output.
+	{.pattern = "SOURce:VOLTage:LIST[:LOAD]?", .callback = SCPI_SourceVoltageListLoadQ,},
+	{.pattern = "SOURce:VOLTage:LIST:APPend", .callback = SCPI_SourceVoltageListAppend,},
+	{.pattern = "SOURce:VOLTage:LIST:POINTs?", .callback = SCPI_SourceVoltageListPointsQ,},
+	{.pattern = "SOURce:VOLTage:LIST:STARt", .callback = SCPI_SourceVoltageListStart,},
+	{.pattern = "SOURce:VOLTage:LIST:STOP", .callback = SCPI_SourceVoltageListStop,},
+	{.pattern = "SOURce:VOLTage:LIST:DELay", .callback = SCPI_SourceVoltageListDelay,},
 
 	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive", .callback = SCPI_SenseCurrentDCProtectionLevelPositive,},
 	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive?", .callback = SCPI_SenseCurrentDCProtectionLevelPositiveQ,},

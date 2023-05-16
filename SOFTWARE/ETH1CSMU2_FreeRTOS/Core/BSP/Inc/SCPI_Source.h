@@ -33,10 +33,22 @@ scpi_result_t SCPI_SourceCurrentRangeAuto(scpi_t* context);
 scpi_result_t SCPI_SourceRelayOutput(scpi_t* context);
 scpi_result_t SCPI_SourceRelayOutputQ(scpi_t* context);
 
-scpi_result_t SCPI_SourceFunctionMode(scpi_t* context);
-scpi_result_t SCPI_SourceFunctionModeQ(scpi_t* context);
+scpi_result_t SCPI_SourceVoltageMode(scpi_t* context);
+scpi_result_t SCPI_SourceVoltageModeQ(scpi_t* context);
 
-scpi_result_t SCPI_SourceFunctionShape(scpi_t* context);
-scpi_result_t SCPI_SourceFunctionShapeQ(scpi_t* context);
+scpi_result_t SCPI_SourceVoltageLevelDCImmediate(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageLevelDCImmediateQ(scpi_t * context);
+
+scpi_result_t SCPI_SourceVoltageFgenImmediate(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageFgenImmediateQ(scpi_t * context);
+
+scpi_result_t SCPI_SourceVoltageListLoad(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListLoadQ(scpi_t * context);
+scpi_result_t SCPI_SourceVoltagePointsQ(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListAppend(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListPointsQ(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListStart(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListStop(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListDelay(scpi_t * context);
 
 #endif /* THIRD_PARTY_BSP_INC_SCPI_SOURCE_H_ */

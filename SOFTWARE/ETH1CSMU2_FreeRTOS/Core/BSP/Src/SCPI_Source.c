@@ -69,28 +69,28 @@ scpi_result_t SCPI_SourceCurrentRangeAuto(scpi_t* context)
 scpi_choice_def_t function_select[] =
 {
     {"DC", 1},
-    {"ARBitrary", 2},
+    {"LIST", 2},
 	{"SINE",3},
     SCPI_CHOICE_LIST_END
 };
 
 
 /*
- * [SOURce:]FUNCtion:MODE mode
+ * SOURce:VOLTage:MODE <mode>
  *
  * @INFO:
  * Select the output signal. Possible mode values are: DC, ARBitrary and SINE.
  *
  * @PARAMETERS:
- * 				mode		DC - Output a DC signal. Ranges from -12 to +12 volts.
- * 							ARBitrary - Load arbitrary waveform data set.
- * 							SINE - Use a sine wave with a offset.
+ * 				mode		DC - Select DC mode.
+ * 							LIST - Select LIST mode.
+ * 							SINE - Select SINE mode.
  *
  * @NOTE:
  * The selection of the source mode will have a influence on the parameters of [SOURce:]FUNCtion[:SHAPe].
  */
 
-scpi_result_t SCPI_SourceFunctionMode(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageMode(scpi_t* context)
 {
 	int32_t select = 0;
 
@@ -104,7 +104,7 @@ scpi_result_t SCPI_SourceFunctionMode(scpi_t* context)
 	switch(select)
 	{
 	case DC: DG419_Switch(DG419_SIGN_SEL,GPIO_OFF); break;
-	case ARB: DG419_Switch(DG419_SIGN_SEL,GPIO_OFF); break;
+	case LIST: DG419_Switch(DG419_SIGN_SEL,GPIO_OFF); break;
 	case SINE: DG419_Switch(DG419_SIGN_SEL,GPIO_ON); break;
 	}
 
@@ -112,56 +112,43 @@ scpi_result_t SCPI_SourceFunctionMode(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
-scpi_result_t SCPI_SourceFunctionModeQ(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageModeQ(scpi_t* context)
 {
 	switch(bsp.config.mode)
 	{
 		case DC: SCPI_ResultCharacters(context, "DC", 2); break;
-		case ARB: SCPI_ResultCharacters(context, "ARB", 3); break;
+		case LIST: SCPI_ResultCharacters(context, "LIST", 3); break;
 		case SINE: SCPI_ResultCharacters(context, "SINE", 4); break;
 	}
 	return SCPI_RES_OK;
 }
 
 /*
- * [SOURce:]FUNCtion[:SHAPe] dc_value
- * [SOURce:]FUNCtion[:SHAPe] header_block, arbitrary_block
- * [SOURce:]FUNCtion[:SHAPe] frequency, amplitude, offset
+ * SOURce:VOLTage:DC[:IMMediate] <dc_value>
  *
  * @INFO:
  * Set the output shape, according to the selected function mode.
  *
  * @PARAMETERS:
+ * 				<dc_voltage> - 	set the DC voltage, between -12.0 to 12.0 volts.
+ *								MINimum - -12.0 voltage
+ *								MAXimum - 12.0 voltage
+ *								DEFault - 0.0 voltage
  *
  * @NOTE:
  *
  */
 
-static scpi_result_t SourceFunctionShape_DC(scpi_t* context);
-static scpi_result_t SourceFunctionShape_ARB(scpi_t* context);
-static scpi_result_t SourceFunctionShape_SINE(scpi_t* context);
-
-scpi_result_t SCPI_SourceFunctionShape(scpi_t* context)
-{
-	scpi_result_t ret;
-
-	switch(bsp.config.mode)
-	{
-		case DC: ret = SourceFunctionShape_DC(context); break;
-		case ARB: ret = SourceFunctionShape_ARB(context); break;
-		case SINE: ret = SourceFunctionShape_SINE(context); break;
-	}
-
-
-	return ret;
-}
-
-
-static scpi_result_t SourceFunctionShape_DC(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageLevelDCImmediate(scpi_t* context)
 {
 	scpi_number_t value;
 	float tmp_volt;
 
+	if(DC != bsp.config.mode)
+	{
+		SCPI_ErrorPush(context, SCPI_ERROR_SETTINGS_CONFLICT);
+		return SCPI_RES_ERR;
+	}
 	if(!SCPI_ParamNumber(context, scpi_special_numbers_def, &value, TRUE))
 	{
 		return SCPI_RES_ERR;
@@ -206,24 +193,49 @@ static scpi_result_t SourceFunctionShape_DC(scpi_t* context)
 			DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
 			DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
 		}
-
-
 	}
 
 	return SCPI_RES_OK;
 }
 
-static scpi_result_t SourceFunctionShape_ARB(scpi_t* context)
+/*
+ * SOURce:VOLTage:DC[:IMMediate] <dc_value>
+ *
+ * @INFO:
+ * Set the output shape, according to the selected function mode.
+ *
+ * @PARAMETERS:
+ * 				<dc_voltage> - 	set the DC voltage, between -12.0 to 12.0 volts.
+ *								MINimum - -12.0 voltage
+ *								MAXimum - 12.0 voltage
+ *								DEFault - 0.0 voltage
+ *
+ * @NOTE:
+ *
+ */
+scpi_result_t SCPI_SourceVoltageLevelDCImmediateQ(scpi_t* context)
 {
+	SCPI_ResultFloat(context, bsp.config.dc.value);
 	return SCPI_RES_OK;
 }
 
+
+/*
+ * SOURce:VOLTage:FGEN frequency,amplitude,offset
+ *
+ * @INFO:
+ *
+ * @PARAMETERS:
+ *
+ * @NOTE:
+ *
+ */
 
 static scpi_result_t SINE_Frequency(scpi_t * context);
 static scpi_result_t SINE_Voltage(scpi_t * context);
 static scpi_result_t SINE_Offset(scpi_t * context);
 
-static scpi_result_t SourceFunctionShape_SINE(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageFgenImmediate(scpi_t* context)
 {
 	BSP_StatusTypeDef ret;
 	float tmp;
@@ -405,7 +417,7 @@ static scpi_result_t SINE_Offset(scpi_t * context)
 }
 
 
-scpi_result_t SCPI_SourceFunctionShapeQ(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageFgenImmediateQ(scpi_t* context)
 {
 
 	return SCPI_RES_OK;
@@ -433,7 +445,7 @@ scpi_result_t SCPI_SourceRelayOutput(scpi_t * context)
 
 	for(uint8_t i = 0; i < channel_size; i++)
 	{
-		index = array[i].row -1;
+		index = array[i].row;
 		CXN_Relays_Control(index, state);
 		bsp.config.relay.state[index] = (uint8_t)state;
 	}
@@ -444,5 +456,41 @@ scpi_result_t SCPI_SourceRelayOutput(scpi_t * context)
 scpi_result_t SCPI_SourceRelayOutputQ(scpi_t * context)
 {
 	SCPI_ResultArrayUInt8(context, bsp.config.relay.state, MAXROW, SCPI_FORMAT_ASCII);
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListLoad(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListLoadQ(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListAppend(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListPointsQ(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListStart(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListStop(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageListDelay(scpi_t * context)
+{
 	return SCPI_RES_OK;
 }

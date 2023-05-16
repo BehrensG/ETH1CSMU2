@@ -19,7 +19,7 @@
 #define IP_ADDRESS_0 192
 #define IP_ADDRESS_1 168
 #define IP_ADDRESS_2 1
-#define IP_ADDRESS_3 123
+#define IP_ADDRESS_3 130
 
 #define NETMASK_ADDRESS_0 255
 #define NETMASK_ADDRESS_1 255
@@ -56,7 +56,6 @@ typedef enum
   BSP_CALIB_OUT_OF_RANGE	= 0x0BU
 } BSP_StatusTypeDef;
 
-#define EEPROM_CFG_SIZE 	120
 #define STRING_LENGTH 		16
 
 #define PASSWORD "ETH1CSMU2"
@@ -66,8 +65,7 @@ typedef enum
 // size 64
 typedef struct bsp_scpi_info
 {
-	int8_t manufacturer[STRING_LENGTH];
-	int8_t device[STRING_LENGTH];
+
 	int8_t serial_number[STRING_LENGTH];
 	int8_t software_version[STRING_LENGTH];
 
@@ -84,20 +82,64 @@ typedef struct bsp_ip4_lan
 
 }bsp_ip4_lan_t;
 
+//size 12
+typedef struct bsp_dac8565
+{
+	float zero_offset;
+	float pos_gain;
+	float neg_gain;
+
+}bsp_dac8565_t;
+
+//size 12
+typedef struct bsp_fgen
+{
+	float zero_offset;
+	float amplitude_gain;
+	float offset_gain;
+
+}bsp_fgen_t;
+
+typedef struct bsp_ads8681
+{
+
+	float gain[3];
+
+}bsp_ads8681_t;
+
+typedef struct bsp_ad7980
+{
+
+	float gain[3];
+
+}bsp_ad7980_t;
+
+typedef struct bsp_calib
+{
+	bsp_dac8565_t dac8565;
+	bsp_fgen_t fgen;
+	uint32_t calib_count;
+	bsp_ads8681_t ads8681[2];
+	bsp_ad7980_t ad7980[2];
+	int8_t string[STRING_LENGTH];
+}bsp_calib_t;
+
+typedef struct bsp_service
+{
+	int8_t password[STRING_LENGTH];
+}bsp_service_t;
+
+#define EEPROM_CFG_SIZE 	sizeof(bsp_ip4_lan_t) + sizeof(bsp_scpi_info_t) + sizeof(bsp_calib_t) + sizeof(bsp_service_t)
+
 typedef union bsp_eeprom_union
 {
 	struct data
 	{
-		// Size 20
+
 		bsp_ip4_lan_t ip4;
-		// Size 64
 		bsp_scpi_info_t info;
-		// Size 16
-		int8_t password[STRING_LENGTH];
-		// Size 16
-		int8_t calib_string[STRING_LENGTH];
-		// Size 4
-		uint32_t calib_count;
+		bsp_service_t service;
+		bsp_calib_t calib;
 
 	}structure;
 	uint8_t bytes[EEPROM_CFG_SIZE];
@@ -106,7 +148,7 @@ typedef union bsp_eeprom_union
 
 #pragma pack(pop)
 
-// size 17
+
 typedef struct bsp_security
 {
 	uint8_t status;
@@ -147,7 +189,7 @@ typedef struct bsp_config_fgen
 }bsp_config_fgen_t;
 
 #define ADC_SAMPLE_SIZE	10000
-#define ARB_SIZE		10000
+#define LIST_SIZE		10000
 
 typedef struct bsp_adc
 {
@@ -172,14 +214,14 @@ typedef struct bsp_config_dds
 typedef enum e_func_mode
 {
 	DC = 1,
-	ARB = 2,
+	LIST = 2,
 	SINE = 3
 }e_func_mode_t;
 
 typedef struct bsp_config_arb
 {
 	uint16_t size;
-	float data[ARB_SIZE];
+	float data[LIST_SIZE];
 	uint32_t delay;
 }bsp_config_arb_t;
 
@@ -197,14 +239,13 @@ typedef struct bsp_config_meas
 typedef struct _bsp_config
 {
 	bsp_config_fgen_t fgen;
-	bsp_config_arb_t arb;
+	bsp_config_arb_t list;
 	bsp_config_dc_t dc;
 	bsp_config_adc_t adc;
 	bsp_config_dds_t dds;
 	bsp_config_relay_t relay;
 	bsp_config_meas_t measure;
 	e_func_mode_t mode;
-
 
 }bsp_config_t;
 

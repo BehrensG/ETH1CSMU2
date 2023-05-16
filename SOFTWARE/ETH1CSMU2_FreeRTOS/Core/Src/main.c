@@ -172,6 +172,7 @@ int main(void)
   MAX5217_Init();
   ADS8681_Init();
   FGEN_Init();
+  uint32_t tmp = EEPROM_CFG_SIZE;
 //  AD9834_Init();
   /* USER CODE END 2 */
 

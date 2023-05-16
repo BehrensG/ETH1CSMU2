@@ -615,7 +615,7 @@ scpi_result_t SCPI_SystemSecureState(scpi_t * context)
 	int32_t state = 0;
 	int8_t password_read[STRING_LENGTH] = {0};
 	size_t length = 0;
-	int8_t* password_reference = bsp.eeprom.structure.password;
+	int8_t* password_reference = bsp.eeprom.structure.service.password;
 
 	if(!SCPI_ParamChoice(context, security_state_select, &state, TRUE))
 	{
@@ -849,8 +849,6 @@ scpi_result_t SCPI_SystemServiceID(scpi_t * context)
 		return SCPI_RES_ERR;
 	}
 
-	strncpy(bsp.eeprom.structure.info.manufacturer,buffer,STRING_LENGTH);
-	strncpy(bsp.eeprom.structure.info.device,buffer,STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.software_version,buffer,STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.serial_number,buffer,STRING_LENGTH);
 

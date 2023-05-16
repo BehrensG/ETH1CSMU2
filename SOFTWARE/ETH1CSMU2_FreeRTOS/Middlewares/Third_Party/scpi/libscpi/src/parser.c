@@ -1,29 +1,28 @@
 /*-
- * BSD 2-Clause License
+ * Copyright (c) 2012-2013 Jan Breuer,
  *
- * Copyright (c) 2012-2018, Jan Breuer
- * All rights reserved.
+ * All Rights Reserved
  *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE AUTHORS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+ * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 /**
@@ -35,27 +34,26 @@
  *
  */
 
-#include "scpi/parser.h"
-
 #include <ctype.h>
 #include <string.h>
 
 #include "scpi/config.h"
-#include "scpi/constants.h"
+#include "scpi/parser.h"
+#include "parser_private.h"
+#include "lexer_private.h"
 #include "scpi/error.h"
+#include "scpi/constants.h"
 #include "scpi/utils.h"
-#include "src/lexer_private.h"
-#include "src/parser_private.h"
 
 /**
  * Write data to SCPI output
  * @param context
  * @param data
- * @param len - length of data to be written
+ * @param len - lenght of data to be written
  * @return number of bytes written
  */
 static size_t writeData(scpi_t * context, const char * data, size_t len) {
-    if ((len > 0) && (data != NULL)) {
+    if (len > 0) {
         return context->interface->write(context, data, len);
     } else {
         return 0;
@@ -94,7 +92,7 @@ static size_t writeDelimiter(scpi_t * context) {
  * @return number of characters written
  */
 static size_t writeNewLine(scpi_t * context) {
-    if (!context->first_output) {
+    if (context->output_count > 0) {
         size_t len;
 #ifndef SCPI_LINE_ENDING
 #error no termination character defined
@@ -128,17 +126,14 @@ static scpi_bool_t processCommand(scpi_t * context) {
     const scpi_command_t * cmd = context->param_list.cmd;
     lex_state_t * state = &context->param_list.lex_state;
     scpi_bool_t result = TRUE;
-    scpi_bool_t is_query = context->param_list.cmd_raw.data[context->param_list.cmd_raw.length - 1] == '?';
 
-    /* conditionally write ; */
-    if(!context->first_output && is_query) {
-        writeData(context, ";", 1);
-    }
+    /* conditionaly write ; */
+    writeSemicolon(context);
 
     context->cmd_error = FALSE;
     context->output_count = 0;
     context->input_count = 0;
-    context->arbitrary_remaining = 0;
+    context->arbitrary_reminding = 0;
 
     /* if callback exists - call command callback */
     if (cmd->callback != NULL) {
@@ -150,10 +145,6 @@ static scpi_bool_t processCommand(scpi_t * context) {
         } else {
             if (context->cmd_error) {
                 result = FALSE;
-            } else {
-                if(context->first_output && is_query) {
-                    context->first_output = FALSE;
-                }
             }
         }
     }
@@ -205,7 +196,6 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
 
     state = &context->parser_state;
     context->output_count = 0;
-    context->first_output = TRUE;
 
     while (1) {
         r = scpiParser_detectProgramMessageUnit(state, data, len);
@@ -230,7 +220,7 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
                 cmd_prev = state->programHeader;
             } else {
                 /* place undefined header with error */
-                /* calculate length of errorenous header and trim \r\n */
+                /* calculate length of errornouse header and trim \r\n */
                 size_t r2 = r;
                 while (r2 > 0 && (data[r2 - 1] == '\r' || data[r2 - 1] == '\n')) r2--;
                 SCPI_ErrorPushEx(context, SCPI_ERROR_UNDEFINED_HEADER, data, r2);
@@ -247,7 +237,7 @@ scpi_bool_t SCPI_Parse(scpi_t * context, char * data, int len) {
 
     }
 
-    /* conditionally write new line */
+    /* conditionaly write new line */
     writeNewLine(context);
 
     return result;
@@ -349,8 +339,7 @@ scpi_bool_t SCPI_Input(scpi_t * context, const char * data, int len) {
                 context->buffer.position -= totcmdlen;
                 totcmdlen = 0;
             } else {
-                if (context->parser_state.programHeader.type == SCPI_TOKEN_UNKNOWN
-                        && context->parser_state.termination == SCPI_MESSAGE_TERMINATION_NONE) break;
+                if (context->parser_state.programHeader.type == SCPI_TOKEN_UNKNOWN) break;
                 if (totcmdlen >= context->buffer.position) break;
             }
         }
@@ -515,7 +504,7 @@ size_t SCPI_ResultDouble(scpi_t * context, double val) {
 }
 
 /**
- * Write string within "" to the result
+ * Write string withn " to the result
  * @param context
  * @param data
  * @return
@@ -615,7 +604,6 @@ size_t SCPI_ResultError(scpi_t * context, scpi_error_t * error) {
  * @return
  */
 size_t SCPI_ResultArbitraryBlockHeader(scpi_t * context, size_t len) {
-    size_t result = 0;
     char block_header[12];
     size_t header_len;
     block_header[0] = '#';
@@ -624,10 +612,8 @@ size_t SCPI_ResultArbitraryBlockHeader(scpi_t * context, size_t len) {
     header_len = strlen(block_header + 2);
     block_header[1] = (char) (header_len + '0');
 
-    context->arbitrary_remaining = len;
-    result  = writeDelimiter(context);
-    result += writeData(context, block_header, header_len + 2);
-    return result;
+    context->arbitrary_reminding = len;
+    return writeData(context, block_header, header_len + 2);
 }
 
 /**
@@ -639,14 +625,14 @@ size_t SCPI_ResultArbitraryBlockHeader(scpi_t * context, size_t len) {
  */
 size_t SCPI_ResultArbitraryBlockData(scpi_t * context, const void * data, size_t len) {
 
-    if (context->arbitrary_remaining < len) {
+    if (context->arbitrary_reminding < len) {
         SCPI_ErrorPush(context, SCPI_ERROR_SYSTEM_ERROR);
         return 0;
     }
 
-    context->arbitrary_remaining -= len;
+    context->arbitrary_reminding -= len;
 
-    if (context->arbitrary_remaining == 0) {
+    if (context->arbitrary_reminding == 0) {
         context->output_count++;
     }
 
@@ -1411,6 +1397,13 @@ int scpiParser_parseAllProgramData(lex_state_t * state, scpi_token_t * token, in
     for (result = 1; result != 0; result = scpiLex_Comma(state, &tmp)) {
         token->len += result;
 
+        if (result == 0) {
+            token->type = SCPI_TOKEN_UNKNOWN;
+            token->len = 0;
+            paramCount = -1;
+            break;
+        }
+
         result = scpiParser_parseProgramData(state, &tmp);
         if (tmp.type != SCPI_TOKEN_UNKNOWN) {
             token->len += result;
@@ -1421,6 +1414,10 @@ int scpiParser_parseAllProgramData(lex_state_t * state, scpi_token_t * token, in
             break;
         }
         paramCount++;
+    }
+
+    if (token->len == -1) {
+        token->len = 0;
     }
 
     if (numberOfParameters != NULL) {
