@@ -25,6 +25,11 @@
 #define SOURCE_SINE_DEF_VAL				1.0f
 #define SOURCE_SINE_OFFSET_DEF_VAL		0.0f
 
+#define CURR_RANGE_200uA				2E-4f
+#define CURR_RANGE_2mA					2E-3f
+#define CURR_RANGE_20mA					2E-2f
+#define CURR_RANGE_200mA				2E-1f
+
 
 scpi_result_t SCPI_SourceCurrentRange(scpi_t* context);
 scpi_result_t SCPI_SourceCurrentRangeQ(scpi_t* context);

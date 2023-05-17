@@ -39,6 +39,16 @@ typedef enum
 	DG419_ADC2_CURR
 }dg419_gpio_select;
 
+
+
+typedef enum
+{
+	AQY212_CURR_RANGE_200uA = 0,
+	AQY212_CURR_RANGE_2mA,
+	AQY212_CURR_RANGE_20mA,
+	AQY212_CURR_RANGE_200mA
+}aqy212_switch;
+
 typedef enum
 {
 	DG444_GAIN_NONE = 0,

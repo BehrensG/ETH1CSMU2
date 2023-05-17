@@ -27,9 +27,44 @@ extern struct _bsp bsp;
  * @NOTE:
  *
  */
+static int8_t CURR_RangeSelect(float value, float* curr_val, uint8_t* index, float* resistor)
+{
+	float curr_range[4] = {CURR_RANGE_200uA, CURR_RANGE_2mA, CURR_RANGE_20mA, CURR_RANGE_200mA};
+	float resistors[4] = {1000, 100, 10, 1};
 
+	for(uint8_t x = 0; x < 4; x++)
+	{
+		if(value == curr_range[x])
+		{
+			*curr_val = curr_range[x];
+			*index = x;
+			*resistor = resistors[x];
+			return 1;
+		}
+	}
+
+	return 0;
+}
 scpi_result_t SCPI_SourceCurrentRange(scpi_t* context)
 {
+
+	float value, curr_val, resistor;
+	uint8_t index;
+	if(!SCPI_ParamFloat(context, &value, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	if(!CURR_RangeSelect(value, &curr_val, &index, &resistor))
+	{
+		SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
+		return SCPI_RES_ERR;
+	}
+
+	bsp.config.curr_range.index = index;
+	bsp.config.curr_range.value = curr_val;
+	bsp.config.curr_range.resistor = resistor;
+
 	return SCPI_RES_OK;
 }
 
@@ -46,6 +81,7 @@ scpi_result_t SCPI_SourceCurrentRange(scpi_t* context)
 
 scpi_result_t SCPI_SourceCurrentRangeQ(scpi_t* context)
 {
+	SCPI_ResultFloat(context, bsp.config.curr_range.value);
 	return SCPI_RES_OK;
 }
 

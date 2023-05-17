@@ -41,3 +41,38 @@ void DG419_Switch(dg419_gpio_select dg419, uint8_t state)
 
 	SN74HC595_Update(shift_reg);
 }
+
+void AQY212_Switch(aqy212_switch aqy212)
+{
+	switch(aqy212)
+	{
+		case AQY212_CURR_RANGE_200uA:
+			{
+				LL_GPIO_SetOutputPin(MCU_CURR_SENS_1kR_GPIO_Port, MCU_CURR_SENS_1kR_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_100R_GPIO_Port, MCU_CURR_SENS_100R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_10R_GPIO_Port, MCU_CURR_SENS_10R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
+			}; break;
+		case AQY212_CURR_RANGE_2mA:
+			{
+				LL_GPIO_SetOutputPin(MCU_CURR_SENS_100R_GPIO_Port, MCU_CURR_SENS_100R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1kR_GPIO_Port, MCU_CURR_SENS_1kR_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_10R_GPIO_Port, MCU_CURR_SENS_10R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
+			}; break;
+		case AQY212_CURR_RANGE_20mA:
+			{
+				LL_GPIO_SetOutputPin(MCU_CURR_SENS_10R_GPIO_Port, MCU_CURR_SENS_10R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_100R_GPIO_Port, MCU_CURR_SENS_100R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1kR_GPIO_Port, MCU_CURR_SENS_1kR_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
+			}; break;
+		case AQY212_CURR_RANGE_200mA:
+			{
+				LL_GPIO_SetOutputPin(MCU_CURR_SENS_1R_GPIO_Port, MCU_CURR_SENS_1R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_100R_GPIO_Port, MCU_CURR_SENS_100R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_10R_GPIO_Port, MCU_CURR_SENS_10R_Pin);
+				LL_GPIO_ResetOutputPin(MCU_CURR_SENS_1kR_GPIO_Port, MCU_CURR_SENS_1kR_Pin);
+			}; break;
+	}
+}

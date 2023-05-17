@@ -36,6 +36,7 @@ typedef enum
 BSP_StatusTypeDef FGEN_SetFrequency(float freq);
 BSP_StatusTypeDef FGEN_SetAmplitude(float amplitude);
 BSP_StatusTypeDef FGEN_SetOffset(float offset);
+BSP_StatusTypeDef FGEN_Init();
 
 void FGEN_Attenuation(uint8_t attenuation);
 void FGEN_ClockDivider(dds_clk_div_e clk_div);

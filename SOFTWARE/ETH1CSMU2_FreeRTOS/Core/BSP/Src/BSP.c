@@ -38,6 +38,10 @@ static void BSP_Init_Common()
 
 	bsp.config.measure.enable = 0;
 
+	bsp.config.curr_range.value = 0.2f;
+	bsp.config.curr_range.index = 3;
+	bsp.config.curr_range.resistor = 1.0;
+
 	for(uint8_t x = 0; x < MAXROW; x++)
 	{
 		bsp.config.relay.state[x] = 0;
@@ -73,6 +77,7 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.calib.ad7980[0].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[0].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[0].gain[2] = 1.0;
+
 	bsp.eeprom.structure.calib.ad7980[1].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[1].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[1].gain[2] = 1.0;
@@ -80,6 +85,7 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.calib.ads8681[0].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[0].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[0].gain[2] = 1.0;
+
 	bsp.eeprom.structure.calib.ads8681[1].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[1].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[1].gain[2] = 1.0;

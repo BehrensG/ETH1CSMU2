@@ -236,6 +236,13 @@ typedef struct bsp_config_meas
 	uint8_t enable;
 }bsp_config_meas_t;
 
+typedef struct bsp_config_curr_range
+{
+	uint8_t index;
+	float value;
+	float resistor;
+}bsp_config_curr_range_t;
+
 typedef struct _bsp_config
 {
 	bsp_config_fgen_t fgen;
@@ -246,6 +253,7 @@ typedef struct _bsp_config
 	bsp_config_relay_t relay;
 	bsp_config_meas_t measure;
 	e_func_mode_t mode;
+	bsp_config_curr_range_t curr_range;
 
 }bsp_config_t;
 
