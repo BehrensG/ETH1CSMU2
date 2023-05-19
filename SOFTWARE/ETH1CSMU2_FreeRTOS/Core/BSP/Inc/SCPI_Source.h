@@ -41,8 +41,8 @@ scpi_result_t SCPI_SourceRelayOutputQ(scpi_t* context);
 scpi_result_t SCPI_SourceVoltageMode(scpi_t* context);
 scpi_result_t SCPI_SourceVoltageModeQ(scpi_t* context);
 
-scpi_result_t SCPI_SourceVoltageLevelDCImmediate(scpi_t * context);
-scpi_result_t SCPI_SourceVoltageLevelDCImmediateQ(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageDCImmediateQ(scpi_t * context);
 
 scpi_result_t SCPI_SourceVoltageFgenImmediate(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageFgenImmediateQ(scpi_t * context);

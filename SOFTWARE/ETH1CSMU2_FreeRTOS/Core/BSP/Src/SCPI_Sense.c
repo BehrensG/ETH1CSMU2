@@ -5,7 +5,7 @@
  *      Author: grzegorz
  */
 
-#include <SCPI_Sense.h>
+#include "SCPI_Sense.h"
 
 scpi_result_t SCPI_SenseCurrentDCProtectionLevelPositive(scpi_t* context)
 {

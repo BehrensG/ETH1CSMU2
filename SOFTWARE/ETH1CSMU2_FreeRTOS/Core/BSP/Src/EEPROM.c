@@ -5,12 +5,11 @@
  *      Author: grzegorz
  */
 
-
-#include <EEPROM.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "EEPROM.h"
 
 void EEPROM_WriteProtect(GPIO_PinState state);
 

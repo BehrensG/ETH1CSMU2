@@ -12,7 +12,7 @@
 double ADS8681_LSB[5] = {0.000375000, 0.000312500, 0.000187500, 0.000156250, 0.000078125};
 
 extern SPI_HandleTypeDef hspi1;
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 
 static BSP_StatusTypeDef ADS8681_SetID();
 static BSP_StatusTypeDef ADS8681_SetDataOutput();

@@ -34,20 +34,20 @@
  *
  */
 
-#include <BSP.h>
-#include <FGEN.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SCPI_Def.h>
-#include <SCPI_Fetch.h>
-#include <SCPI_Measure.h>
-#include <SCPI_Sense.h>
-#include <SCPI_Source.h>
-#include <SCPI_System.h>
-#include <SCPI_Trigger.h>
 
+#include "SCPI_Def.h"
+#include "SCPI_Fetch.h"
+#include "SCPI_Measure.h"
+#include "SCPI_Sense.h"
+#include "SCPI_Source.h"
+#include "SCPI_System.h"
+#include "SCPI_Trigger.h"
+#include "SCPI_Calibration.h"
 
+#include "BSP.h"
 #include "AD5322.h"
 #include "MAX5217.h"
 #include "DAC8565.h"
@@ -55,7 +55,7 @@
 #include "AD7980.h"
 #include "scpi/scpi.h"
 
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 
 size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
 {
@@ -283,8 +283,8 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:VOLTage:MODE", .callback = SCPI_SourceVoltageMode,},
 	{.pattern = "SOURce:VOLTage:MODE?", .callback = SCPI_SourceVoltageModeQ,},
 
-	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageLevelDCImmediate,}, //Changes the output level of the specified source channel immediately.
-	{.pattern = "SOURce:VOLTage:DC[:IMMediate]?", .callback = SCPI_SourceVoltageLevelDCImmediateQ,},
+	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageDCImmediate,}, //Changes the output level of the specified source channel immediately.
+	{.pattern = "SOURce:VOLTage:DC[:IMMediate]?", .callback = SCPI_SourceVoltageDCImmediateQ,},
 
 	{.pattern = "SOURce:VOLTage:FGEN[:IMMediate]", .callback = SCPI_SourceVoltageFgenImmediate,},
 	{.pattern = "SOURce:VOLTage:FGEN[:IMMediate]?", .callback = SCPI_SourceVoltageFgenImmediateQ,},
@@ -310,6 +310,18 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "MEASure?", .callback = SCPI_MeasureQ,},
 	{.pattern = "MEASure:CURRent?", .callback = SCPI_MeasureCurrentQ,},
 	{.pattern = "MEASure:VOLTage?", .callback = SCPI_MeasureVoltageQ,},
+
+	{.pattern = "CALIbration:VOLTage:ADC1[:VALue]", .callback = SCPI_CalibrationVoltageADC1Value,},
+	{.pattern = "CALIbration:VOLTage:ADC2[:VALue]", .callback = SCPI_CalibrationVoltageADC2Value,},
+	{.pattern = "CALIbration:VOLTage:DC[:VALue]", .callback = SCPI_CalibrationVoltageDCValue,},
+	{.pattern = "CALIbration:VOLTage:FGEN:OFFset[:VALue]", .callback = SCPI_CalibrationFGENOffsetValue,},
+	{.pattern = "CALIbration:VOLTage:FGEN:AMPLitude[:VALue]", .callback = SCPI_CalibrationFGENAmplitudeValue,},
+	{.pattern = "CALIbration:CURRent:ADC1[:VALue]", .callback = SCPI_CalibrationCurrentADC1Value,},
+	{.pattern = "CALIbration:CURRent:ADC2[:VALue]", .callback = SCPI_CalibrationCurrentADC2Value,},
+	{.pattern = "CALIbration:STATe?", .callback = SCPI_CalibrationStateQ,},
+	{.pattern = "CALIbration:STORe", .callback = SCPI_CalibrationStore,},
+	{.pattern = "CALIbration:COUNt?", .callback = SCPI_CalibrationCountQ,},
+
 
 	{.pattern = "TS", .callback = SCPI_TS,},
 

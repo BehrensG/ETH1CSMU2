@@ -13,7 +13,7 @@
 #include "DAC8565.h"
 #include "FGEN.h"
 
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 
 /*
  * [SOURce]:CURRent:RANGe <range>
@@ -175,10 +175,36 @@ scpi_result_t SCPI_SourceVoltageModeQ(scpi_t* context)
  *
  */
 
-scpi_result_t SCPI_SourceVoltageLevelDCImmediate(scpi_t* context)
+static uint8_t SET_DCRange(float value)
+{
+
+	for(uint8_t x = 0; x < 3; x++)
+	{
+		if((bsp.config.dc.range[2] >= value) && (bsp.config.dc.range[1] < value))
+		{
+			return 2;
+		}
+		else if((bsp.config.dc.range[1] >= value) && (bsp.config.dc.range[0] < value))
+		{
+			return 1;
+		}
+		else if((bsp.config.dc.range[0] >= value))
+		{
+			return 0;
+		}
+		else
+		{
+			return 2;
+		}
+
+	}
+}
+
+scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 {
 	scpi_number_t value;
 	float tmp_volt;
+	uint8_t tmp_index;
 
 	if(DC != bsp.config.mode)
 	{
@@ -212,22 +238,43 @@ scpi_result_t SCPI_SourceVoltageLevelDCImmediate(scpi_t* context)
 
 		if((bsp.config.dc.value <= SOURCE_DC_MAX_VAL) && (bsp.config.dc.value > SOURCE_DC_DEF_VAL))
 		{
-			tmp_volt = (float)(bsp.config.dc.value/bsp.config.dc.gain);
+			tmp_index = bsp.config.dc.range_index = SET_DCRange(fabs(value.content.value));
+
+			tmp_volt = bsp.config.dc.value + bsp.eeprom.structure.calib.dac8565.offset_a[tmp_index] + bsp.eeprom.structure.calib.dac8565.zero_offset;
+			tmp_volt = tmp_volt/bsp.config.dc.gain;
+			tmp_volt = tmp_volt*bsp.eeprom.structure.calib.dac8565.vout_a[tmp_index];
 
 			DAC8565_SetVOUT(VOUTA, fabs(tmp_volt));
+			osDelay(pdMS_TO_TICKS(2));
 			DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
 		}
 		else if((bsp.config.dc.value >= SOURCE_DC_MIN_VAL) && (bsp.config.dc.value < SOURCE_DC_DEF_VAL))
 		{
-			tmp_volt = (float)(bsp.config.dc.value/bsp.config.dc.gain);
+			tmp_index = bsp.config.dc.range_index = SET_DCRange(fabs(value.content.value));
+
+			tmp_volt = bsp.config.dc.value + bsp.eeprom.structure.calib.dac8565.offset_b[tmp_index] + bsp.eeprom.structure.calib.dac8565.zero_offset;
+			tmp_volt = tmp_volt/bsp.config.dc.gain;
+			tmp_volt = tmp_volt*bsp.eeprom.structure.calib.dac8565.vout_b[tmp_index];
 
 			DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
+			osDelay(pdMS_TO_TICKS(2));
 			DAC8565_SetVOUT(VOUTB, fabs(tmp_volt));
 		}
 		else if(SOURCE_DC_DEF_VAL == bsp.config.dc.value)
 		{
-			DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
-			DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
+
+			if(bsp.eeprom.structure.calib.dac8565.zero_offset >= 0.0)
+			{
+				DAC8565_SetVOUT(VOUTA, bsp.eeprom.structure.calib.dac8565.zero_offset);
+				osDelay(pdMS_TO_TICKS(2));
+				DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
+			}
+			else
+			{
+				DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
+				osDelay(pdMS_TO_TICKS(2));
+				DAC8565_SetVOUT(VOUTB, bsp.eeprom.structure.calib.dac8565.zero_offset);
+			}
 		}
 	}
 
@@ -249,7 +296,7 @@ scpi_result_t SCPI_SourceVoltageLevelDCImmediate(scpi_t* context)
  * @NOTE:
  *
  */
-scpi_result_t SCPI_SourceVoltageLevelDCImmediateQ(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageDCImmediateQ(scpi_t* context)
 {
 	SCPI_ResultFloat(context, bsp.config.dc.value);
 	return SCPI_RES_OK;

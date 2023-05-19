@@ -33,7 +33,7 @@
 
 */
 
-#include <EE24Config.h>
+#include "EE24Config.h"
 #include <stdbool.h>
 #include <stdint.h>
 

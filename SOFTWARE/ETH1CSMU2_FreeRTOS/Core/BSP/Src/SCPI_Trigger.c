@@ -7,12 +7,12 @@
 
 
 #include <stdio.h>
-#include <SCPI_Trigger.h>
+#include "SCPI_Trigger.h"
 
 #include "DWT_Delay.h"
 
 extern scpi_choice_def_t boolean_select[];
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 extern osThreadId_t TriggerTaskHandle;
 
  scpi_choice_def_t trigger_source_select[] =

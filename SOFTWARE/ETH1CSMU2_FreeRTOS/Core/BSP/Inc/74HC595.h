@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_74HC595_H_
 #define THIRD_PARTY_BSP_INC_74HC595_H_
 
-#include <BSP.h>
+#include "BSP.h"
 
 #define number_of_registers    2
 
@@ -40,7 +40,7 @@ typedef enum
 #define SR1_ATT_A0		0x08
 #define SR1_ATT_A1		0x10
 #define SR1_FGEN_LPF	0x20
-#define SR_ADC_SEL		0x40
+#define SR1_ADC_SEL		0x40
 
 #define	SR_INVERT_MASK	0xFF
 

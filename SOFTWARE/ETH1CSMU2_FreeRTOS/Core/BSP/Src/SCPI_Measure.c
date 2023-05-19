@@ -5,7 +5,7 @@
  *      Author: grzegorz
  */
 
-#include <SCPI_Measure.h>
+#include "SCPI_Measure.h"
 
 
 scpi_result_t SCPI_MeasureQ(scpi_t * context)

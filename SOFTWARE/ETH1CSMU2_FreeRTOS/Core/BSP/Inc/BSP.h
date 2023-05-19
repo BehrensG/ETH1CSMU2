@@ -85,9 +85,13 @@ typedef struct bsp_ip4_lan
 //size 12
 typedef struct bsp_dac8565
 {
+	float offset_a[3];
+	float offset_b[3];
+	float vout_a[3];
+	float vout_b[3];
+	float vout_c[3];
+	float vout_d[3];
 	float zero_offset;
-	float pos_gain;
-	float neg_gain;
 
 }bsp_dac8565_t;
 
@@ -118,7 +122,7 @@ typedef struct bsp_calib
 {
 	bsp_dac8565_t dac8565;
 	bsp_fgen_t fgen;
-	uint32_t calib_count;
+	uint32_t count;
 	bsp_ads8681_t ads8681[2];
 	bsp_ad7980_t ad7980[2];
 	int8_t string[STRING_LENGTH];
@@ -229,6 +233,8 @@ typedef struct bsp_config_dc
 {
 	uint8_t gain;
 	float value;
+	float range[3];
+	uint8_t range_index;
 }bsp_config_dc_t;
 
 typedef struct bsp_config_meas
@@ -269,7 +275,7 @@ typedef struct _bsp_sn74hc595_t
 	uint8_t shift_reg[2];
 }bsp_sn74hc595_t;
 
-struct _bsp
+struct bsp_t
 {
 	bsp_eeprom_union_t eeprom;
 	bsp_trigger_t trigger;

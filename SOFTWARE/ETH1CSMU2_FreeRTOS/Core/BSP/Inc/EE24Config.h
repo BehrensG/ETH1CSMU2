@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_EE24CONFIG_H_
 #define THIRD_PARTY_BSP_INC_EE24CONFIG_H_
 
-#include "main.h"
+#include "BSP.h"
 
 extern I2C_HandleTypeDef hi2c4;
 #define		_EEPROM_SIZE_KBIT			8

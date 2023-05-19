@@ -9,7 +9,7 @@
 #include "AD7980.h"
 
 extern SPI_HandleTypeDef hspi4;
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 
 HAL_StatusTypeDef AD7980_ReadData(uint16_t count)
 {

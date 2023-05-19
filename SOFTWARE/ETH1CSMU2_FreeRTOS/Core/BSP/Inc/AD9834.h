@@ -8,7 +8,7 @@
 #ifndef THIRD_PARTY_BSP_INC_AD9834_H_
 #define THIRD_PARTY_BSP_INC_AD9834_H_
 
-#include <BSP.h>
+#include "BSP.h"
 
 #define B28         0x2000    /*set to true here (frequency is 28 bits wide)*/
 #define HLB         0x1000    /*ignored since B28 == true*/

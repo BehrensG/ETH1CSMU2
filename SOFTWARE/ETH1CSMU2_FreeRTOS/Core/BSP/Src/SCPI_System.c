@@ -5,15 +5,16 @@
  *      Author: grzegorz
  */
 
-#include <SCPI_Def.h>
-#include <SCPI_System.h>
+#include "SCPI_Def.h"
+#include "SCPI_System.h"
 #include "types.h"
 #include "scpi/scpi.h"
 #include "EEPROM.h"
 #include "HDC1080.h"
 
 extern I2C_HandleTypeDef hi2c3;
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
+extern bsp_eeprom_union_t eeprom_default;
 
 scpi_choice_def_t LAN_state_select[] =
 {
@@ -630,7 +631,7 @@ scpi_result_t SCPI_SystemSecureState(scpi_t * context)
 	if(!strcmp((const char*)password_read, (const char*)password_reference))
 	{
 		bsp.security.status = state;
-		return SCPI_RES_ERR;
+		return SCPI_RES_OK;
 	}
 	else
 	{
@@ -770,7 +771,7 @@ scpi_result_t SCPI_SystemServiceEEPROM(scpi_t * context)
 		return SCPI_RES_ERR;
 	}
 
-	if(!bsp.security.status)
+	if(bsp.security.status)
 	{
 		SCPI_ErrorPush(context, SCPI_ERROR_SERVICE_MODE_SECURE);
 		return SCPI_RES_ERR;
@@ -786,7 +787,7 @@ scpi_result_t SCPI_SystemServiceEEPROM(scpi_t * context)
 	}
 	else if(DEFAULT == select)
 	{
-		if(BSP_OK != EEPROM_Write(&bsp.eeprom, EEPROM_CFG_SIZE))
+		if(BSP_OK != EEPROM_Write(&eeprom_default, EEPROM_CFG_SIZE))
 		{
 			SCPI_ErrorPush(context, SCPI_ERROR_SYSTEM_ERROR);
 			return SCPI_RES_ERR;

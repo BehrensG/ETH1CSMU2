@@ -8,7 +8,7 @@
 
 #include "74HC595.h"
 
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 
 void SN74HC595_Delay()
 {

@@ -17,7 +17,6 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <SCPI_Server.h>
 #include "main.h"
 #include "cmsis_os.h"
 #include "lwip.h"
@@ -32,7 +31,7 @@
 #include "DAC8565.h"
 #include "ADS8681.h"
 #include "FGEN.h"
-
+#include "SCPI_Server.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -101,7 +100,7 @@ const osMessageQueueAttr_t QueueTrigger_attributes = {
 };
 /* USER CODE BEGIN PV */
 extern uint8_t shiftRegisters[];
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

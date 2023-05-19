@@ -14,6 +14,7 @@
 "./Core/BSP/Src/HDC1080.o"
 "./Core/BSP/Src/LED.o"
 "./Core/BSP/Src/MAX5127.o"
+"./Core/BSP/Src/SCPI_Calibration.o"
 "./Core/BSP/Src/SCPI_Def.o"
 "./Core/BSP/Src/SCPI_Fetch.o"
 "./Core/BSP/Src/SCPI_Measure.o"

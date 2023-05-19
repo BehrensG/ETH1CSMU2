@@ -11,7 +11,8 @@
 
 #include "EEPROM.h"
 
-struct _bsp bsp;
+struct bsp_t bsp;
+bsp_eeprom_union_t eeprom_default;
 
 static void BSP_Init_Common()
 {
@@ -48,6 +49,14 @@ static void BSP_Init_Common()
 	}
 
 	bsp.config.mode = DC;
+
+	bsp.config.dc.range_index = 2;
+	bsp.config.dc.range[0] = 0.1;
+	bsp.config.dc.range[1] = 1;
+	bsp.config.dc.range[2] = 10;
+
+	bsp.security.status = 1;
+
 }
 
 void BSP_Init_DefualtEEPROM()
@@ -90,11 +99,33 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.calib.ads8681[1].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[1].gain[2] = 1.0;
 
-	bsp.eeprom.structure.calib.calib_count = 1;
+	bsp.eeprom.structure.calib.count = 0;
 
-	bsp.eeprom.structure.calib.dac8565.neg_gain = 1.0;
-	bsp.eeprom.structure.calib.dac8565.pos_gain = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_a[0] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_a[1] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_a[2] = 1.0;
+
+	bsp.eeprom.structure.calib.dac8565.offset_a[0] = 0.0027;
+	bsp.eeprom.structure.calib.dac8565.offset_a[1] = 0.002;
+	bsp.eeprom.structure.calib.dac8565.offset_a[2] = 0.0;
+
+	bsp.eeprom.structure.calib.dac8565.vout_b[0] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_b[1] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_b[2] = 1.0;
+
+	bsp.eeprom.structure.calib.dac8565.offset_b[0] = -0.0002;
+	bsp.eeprom.structure.calib.dac8565.offset_b[1] = 0.0;
+	bsp.eeprom.structure.calib.dac8565.offset_b[2] = 0.0;
+
 	bsp.eeprom.structure.calib.dac8565.zero_offset = 0.0;
+
+	bsp.eeprom.structure.calib.dac8565.vout_c[0] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_c[1] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_c[2] = 1.0;
+
+	bsp.eeprom.structure.calib.dac8565.vout_d[0] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_d[1] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_d[2] = 1.0;
 
 	bsp.eeprom.structure.calib.fgen.amplitude_gain = 1.0;
 	bsp.eeprom.structure.calib.fgen.offset_gain = 1.0;
@@ -104,6 +135,8 @@ void BSP_Init_DefualtEEPROM()
 	strncpy(bsp.eeprom.structure.info.serial_number, SCPI_IDN4, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.software_version, SCPI_IDN3, STRING_LENGTH);
 	memset(bsp.eeprom.structure.calib.string, 0, sizeof(bsp.eeprom.structure.calib.string));
+
+	eeprom_default = bsp.eeprom;
 
 }
 
@@ -137,6 +170,7 @@ BSP_StatusTypeDef BSP_Init()
 	BSP_StatusTypeDef eeprom_status;
 
 	BSP_Init_Common();
+	BSP_Init_DefualtEEPROM();
 
 	if(!(LL_GPIO_ReadInputPort(MCU_DEFAULT_GPIO_Port) & MCU_DEFAULT_Pin))
 	{

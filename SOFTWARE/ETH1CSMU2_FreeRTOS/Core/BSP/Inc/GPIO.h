@@ -33,10 +33,8 @@ typedef enum
 	DG419_VOLT_MEAS_SENS,
 	DG419_VOLT_ZERO,
 	DG419_CURR_ZERO,
-	DG419_ADC1_VOLT,
-	DG419_ADC2_VOLT,
-	DG419_ADC1_CURR,
-	DG419_ADC2_CURR
+	DG419_ADC1_SEL,
+	DG419_ADC2_SEL
 }dg419_gpio_select;
 
 
@@ -56,6 +54,9 @@ typedef enum
 	DG444_GAIN_CURR
 }dg444_gain_select;
 
+void CXN_Relays_Control(cxn_gpio_select gpio, uint8_t state);
+void CXN_Relays_AllOff();
 void DG419_Switch(dg419_gpio_select dg419, uint8_t state);
+void DG444_Switch(dg444_gain_select dg444, uint8_t gain);
 
 #endif /* THIRD_PARTY_BSP_INC_GPIO_H_ */

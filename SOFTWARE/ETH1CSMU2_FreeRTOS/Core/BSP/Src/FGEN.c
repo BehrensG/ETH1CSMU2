@@ -13,7 +13,7 @@
 #include "AD5322.h"
 
 
-extern struct _bsp bsp;
+extern struct bsp_t bsp;
 
 void FGEN_ClockDivider(dds_clk_div_e clk_div)
 {
