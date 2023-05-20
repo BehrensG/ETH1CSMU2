@@ -38,6 +38,19 @@
 #define MAC_4 0x00
 #define MAC_5 0x00
 
+#define ADC_SAMPLE_SIZE	10000
+#define LIST_SIZE		10000
+
+#define CURR_POS 0
+#define CURR_NEG 1
+
+#define VOLTAGE 0
+#define CURRENT 1
+
+#define STRING_LENGTH 		16
+
+#define PASSWORD "ETH1CSMU2"
+
 #define TCPIP_DEFAULT_PORT 2000
 
 typedef enum
@@ -56,9 +69,25 @@ typedef enum
   BSP_CALIB_OUT_OF_RANGE	= 0x0BU
 } BSP_StatusTypeDef;
 
-#define STRING_LENGTH 		16
+enum trigger_enum
+{
+	TRG_IMM = 1,
+	TRG_EXT = 2,
+	TRG_BUS = 3,
+	TRG_OUT = 4
+};
 
-#define PASSWORD "ETH1CSMU2"
+enum trigger_slope_enum
+{
+	POS = 1,
+	NEG = 2
+};
+
+enum format_data_enum
+{
+	DATA_FORMAT_ASCII = 0,
+	DATA_FORMAT_REAL = 1
+};
 
 #pragma pack(push, 1)
 
@@ -89,8 +118,8 @@ typedef struct bsp_dac8565
 	float offset_b[3];
 	float vout_a[3];
 	float vout_b[3];
-	float vout_c[3];
-	float vout_d[3];
+	float vout_c[4];
+	float vout_d[4];
 	float zero_offset;
 
 }bsp_dac8565_t;
@@ -183,17 +212,16 @@ typedef struct _bsp_config_relay
 
 }bsp_config_relay_t;
 
-typedef struct bsp_config_fgen
+typedef struct bsp_config_ac
 {
 	float frequency;
 	float amplitude;
 	float offset;
-	uint8_t gain;
+	float amplit_gain;
+	float offset_gain;
+	float offset_adj;
 
-}bsp_config_fgen_t;
-
-#define ADC_SAMPLE_SIZE	10000
-#define LIST_SIZE		10000
+}bsp_config_ac_t;
 
 typedef struct bsp_adc
 {
@@ -215,12 +243,12 @@ typedef struct bsp_config_dds
 
 }bsp_config_dds_t;
 
-typedef enum e_func_mode
+typedef enum e_function_mode
 {
 	DC = 1,
 	LIST = 2,
-	SINE = 3
-}e_func_mode_t;
+	AC = 3
+}e_function_mode_t;
 
 typedef struct bsp_config_arb
 {
@@ -229,12 +257,29 @@ typedef struct bsp_config_arb
 	uint32_t delay;
 }bsp_config_arb_t;
 
-typedef struct bsp_config_dc
+typedef struct bsp_config_curr
 {
-	uint8_t gain;
+	float gain;
+	float value[2];
+	float resistor[4];
+	float range[4];
+	uint8_t index[2];
+	uint8_t mode;
+
+}bsp_config_curr_t;
+
+typedef struct bsp_config_volt
+{
+	float gain;
 	float value;
 	float range[3];
-	uint8_t range_index;
+	uint8_t index;
+}bsp_config_volt_t;
+
+typedef struct bsp_config_dc
+{
+	bsp_config_volt_t voltage;
+	bsp_config_curr_t current;
 }bsp_config_dc_t;
 
 typedef struct bsp_config_meas
@@ -251,18 +296,17 @@ typedef struct bsp_config_curr_range
 
 typedef struct _bsp_config
 {
-	bsp_config_fgen_t fgen;
+	bsp_config_ac_t ac;
 	bsp_config_arb_t list;
 	bsp_config_dc_t dc;
 	bsp_config_adc_t adc;
 	bsp_config_dds_t dds;
 	bsp_config_relay_t relay;
 	bsp_config_meas_t measure;
-	e_func_mode_t mode;
+	e_function_mode_t mode;
 	bsp_config_curr_range_t curr_range;
 
 }bsp_config_t;
-
 
 typedef struct _bsp_adc_ads8681
 {
@@ -274,6 +318,12 @@ typedef struct _bsp_sn74hc595_t
 {
 	uint8_t shift_reg[2];
 }bsp_sn74hc595_t;
+
+typedef struct _bsp_state_t
+{
+	uint8_t calib_mode;
+}bsp_state_t;
+
 
 struct bsp_t
 {
@@ -289,27 +339,10 @@ struct bsp_t
 	bsp_adc_ads8681_t ads8681[2];
 	bsp_sn74hc595_t sn74hc595;
 	bsp_adc_t adc[2];
+	bsp_state_t state;
+
 };
 
-enum trigger_enum
-{
-	TRG_IMM = 1,
-	TRG_EXT = 2,
-	TRG_BUS = 3,
-	TRG_OUT = 4
-};
-
-enum trigger_slope_enum
-{
-	POS = 1,
-	NEG = 2
-};
-
-enum format_data_enum
-{
-	DATA_FORMAT_ASCII = 0,
-	DATA_FORMAT_REAL = 1
-};
 
 BSP_StatusTypeDef BSP_Init();
 

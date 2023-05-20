@@ -74,7 +74,7 @@ static uint32_t FGEN_ConvertFrequency(float freq)
 BSP_StatusTypeDef FGEN_SetAmplitude(float amplitude)
 {
 
-	float tmp_amp = (float)(FGEN_AMPL_MAX - amplitude);
+	float tmp_amp = (float)(fabs(FGEN_AMPL_MAX - amplitude));
 
 
 	return AD5322_SetVOUTA(tmp_amp);

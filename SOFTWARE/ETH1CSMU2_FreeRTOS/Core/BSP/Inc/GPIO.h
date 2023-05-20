@@ -58,5 +58,6 @@ void CXN_Relays_Control(cxn_gpio_select gpio, uint8_t state);
 void CXN_Relays_AllOff();
 void DG419_Switch(dg419_gpio_select dg419, uint8_t state);
 void DG444_Switch(dg444_gain_select dg444, uint8_t gain);
+void AQY212_Switch(aqy212_switch aqy212);
 
 #endif /* THIRD_PARTY_BSP_INC_GPIO_H_ */

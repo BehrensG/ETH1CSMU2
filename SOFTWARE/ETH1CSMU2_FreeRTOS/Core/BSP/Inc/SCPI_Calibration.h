@@ -16,8 +16,9 @@
 scpi_result_t SCPI_CalibrationVoltageADC1Value(scpi_t* context);
 scpi_result_t SCPI_CalibrationVoltageADC2Value(scpi_t* context);
 scpi_result_t SCPI_CalibrationVoltageDCValue(scpi_t* context);
-scpi_result_t SCPI_CalibrationFGENOffsetValue(scpi_t* context);
-scpi_result_t SCPI_CalibrationFGENAmplitudeValue(scpi_t* context);
+scpi_result_t SCPI_CalibrationCurrentDCValue(scpi_t* context);
+scpi_result_t SCPI_CalibrationACOffsetValue(scpi_t* context);
+scpi_result_t SCPI_CalibrationACAmplitudeValue(scpi_t* context);
 scpi_result_t SCPI_CalibrationCurrentADC1Value(scpi_t* context);
 scpi_result_t SCPI_CalibrationCurrentADC2Value(scpi_t* context);
 scpi_result_t SCPI_CalibrationStateQ(scpi_t* context);

@@ -19,8 +19,7 @@ HAL_StatusTypeDef AD5322_Init()
 
 HAL_StatusTypeDef AD5322_SetVOUTA(float voltage)
 {
-	float tmp =(voltage/AD5322_VOLTA_GAIN);
-	uint16_t data = (uint16_t)(tmp/AD5322_VOUTA_LSB);
+	uint16_t data = (uint16_t)(voltage/AD5322_VOUTA_LSB);
 	data = data & 0x0FFF;
 
 	return AD5322_Send(&data);

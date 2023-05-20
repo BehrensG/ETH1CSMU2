@@ -280,14 +280,19 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:RELAy:OUTput", .callback = SCPI_SourceRelayOutput,},
 	{.pattern = "SOURce:RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
 
-	{.pattern = "SOURce:VOLTage:MODE", .callback = SCPI_SourceVoltageMode,},
-	{.pattern = "SOURce:VOLTage:MODE?", .callback = SCPI_SourceVoltageModeQ,},
+	//{.pattern = "SOURce:FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
+//	{.pattern = "SOURce:FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
 
-	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageDCImmediate,}, //Changes the output level of the specified source channel immediately.
+	{.pattern = "SOURce:FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
+	{.pattern = "SOURce:FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
+
+	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageDCImmediate,},
 	{.pattern = "SOURce:VOLTage:DC[:IMMediate]?", .callback = SCPI_SourceVoltageDCImmediateQ,},
+	{.pattern = "SOURce:CURRent:DC:POSitive[:IMMediate]", .callback = SCPI_SourceCurrentDCPositiveImmediate,},
+	{.pattern = "SOURce:CURRent:DC:NEGative[:IMMediate]", .callback = SCPI_SourceCurrentDCNegativeImmediate,},
 
-	{.pattern = "SOURce:VOLTage:FGEN[:IMMediate]", .callback = SCPI_SourceVoltageFgenImmediate,},
-	{.pattern = "SOURce:VOLTage:FGEN[:IMMediate]?", .callback = SCPI_SourceVoltageFgenImmediateQ,},
+	{.pattern = "SOURce:VOLTage:AC[:IMMediate]", .callback = SCPI_SourceVoltageACImmediate,},
+	{.pattern = "SOURce:VOLTage:AC[:IMMediate]?", .callback = SCPI_SourceVoltageACImmediateQ,},
 
 	{.pattern = "SOURce:VOLTage:LIST[:LOAD]", .callback = SCPI_SourceVoltageListLoad,}, //Sets the number of sweep steps for the current or voltage sweep output.
 	{.pattern = "SOURce:VOLTage:LIST[:LOAD]?", .callback = SCPI_SourceVoltageListLoadQ,},
@@ -314,8 +319,9 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "CALIbration:VOLTage:ADC1[:VALue]", .callback = SCPI_CalibrationVoltageADC1Value,},
 	{.pattern = "CALIbration:VOLTage:ADC2[:VALue]", .callback = SCPI_CalibrationVoltageADC2Value,},
 	{.pattern = "CALIbration:VOLTage:DC[:VALue]", .callback = SCPI_CalibrationVoltageDCValue,},
-	{.pattern = "CALIbration:VOLTage:FGEN:OFFset[:VALue]", .callback = SCPI_CalibrationFGENOffsetValue,},
-	{.pattern = "CALIbration:VOLTage:FGEN:AMPLitude[:VALue]", .callback = SCPI_CalibrationFGENAmplitudeValue,},
+	{.pattern = "CALIbration:CURRent:DC[:VALue]", .callback = SCPI_CalibrationCurrentDCValue,},
+	{.pattern = "CALIbration:VOLTage:AC:OFFset[:VALue]", .callback = SCPI_CalibrationACOffsetValue,},
+	{.pattern = "CALIbration:VOLTage:AC:AMPLitude[:VALue]", .callback = SCPI_CalibrationACAmplitudeValue,},
 	{.pattern = "CALIbration:CURRent:ADC1[:VALue]", .callback = SCPI_CalibrationCurrentADC1Value,},
 	{.pattern = "CALIbration:CURRent:ADC2[:VALue]", .callback = SCPI_CalibrationCurrentADC2Value,},
 	{.pattern = "CALIbration:STATe?", .callback = SCPI_CalibrationStateQ,},

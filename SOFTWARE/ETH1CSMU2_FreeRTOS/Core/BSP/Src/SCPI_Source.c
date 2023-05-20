@@ -27,43 +27,9 @@ extern struct bsp_t bsp;
  * @NOTE:
  *
  */
-static int8_t CURR_RangeSelect(float value, float* curr_val, uint8_t* index, float* resistor)
-{
-	float curr_range[4] = {CURR_RANGE_200uA, CURR_RANGE_2mA, CURR_RANGE_20mA, CURR_RANGE_200mA};
-	float resistors[4] = {1000, 100, 10, 1};
 
-	for(uint8_t x = 0; x < 4; x++)
-	{
-		if(value == curr_range[x])
-		{
-			*curr_val = curr_range[x];
-			*index = x;
-			*resistor = resistors[x];
-			return 1;
-		}
-	}
-
-	return 0;
-}
 scpi_result_t SCPI_SourceCurrentRange(scpi_t* context)
 {
-
-	float value, curr_val, resistor;
-	uint8_t index;
-	if(!SCPI_ParamFloat(context, &value, TRUE))
-	{
-		return SCPI_RES_ERR;
-	}
-
-	if(!CURR_RangeSelect(value, &curr_val, &index, &resistor))
-	{
-		SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
-		return SCPI_RES_ERR;
-	}
-
-	bsp.config.curr_range.index = index;
-	bsp.config.curr_range.value = curr_val;
-	bsp.config.curr_range.resistor = resistor;
 
 	return SCPI_RES_OK;
 }
@@ -106,7 +72,7 @@ scpi_choice_def_t function_select[] =
 {
     {"DC", 1},
     {"LIST", 2},
-	{"SINE",3},
+	{"AC",3},
     SCPI_CHOICE_LIST_END
 };
 
@@ -126,7 +92,7 @@ scpi_choice_def_t function_select[] =
  * The selection of the source mode will have a influence on the parameters of [SOURce:]FUNCtion[:SHAPe].
  */
 
-scpi_result_t SCPI_SourceVoltageMode(scpi_t* context)
+scpi_result_t SCPI_SourceFunctionMode(scpi_t* context)
 {
 	int32_t select = 0;
 
@@ -141,20 +107,20 @@ scpi_result_t SCPI_SourceVoltageMode(scpi_t* context)
 	{
 	case DC: DG419_Switch(DG419_SIGN_SEL,GPIO_OFF); break;
 	case LIST: DG419_Switch(DG419_SIGN_SEL,GPIO_OFF); break;
-	case SINE: DG419_Switch(DG419_SIGN_SEL,GPIO_ON); break;
+	case AC: DG419_Switch(DG419_SIGN_SEL,GPIO_ON); break;
 	}
 
 
 	return SCPI_RES_OK;
 }
 
-scpi_result_t SCPI_SourceVoltageModeQ(scpi_t* context)
+scpi_result_t SCPI_SourceFunctionModeQ(scpi_t* context)
 {
 	switch(bsp.config.mode)
 	{
 		case DC: SCPI_ResultCharacters(context, "DC", 2); break;
 		case LIST: SCPI_ResultCharacters(context, "LIST", 3); break;
-		case SINE: SCPI_ResultCharacters(context, "SINE", 4); break;
+		case AC: SCPI_ResultCharacters(context, "AC", 4); break;
 	}
 	return SCPI_RES_OK;
 }
@@ -175,20 +141,20 @@ scpi_result_t SCPI_SourceVoltageModeQ(scpi_t* context)
  *
  */
 
-static uint8_t SET_DCRange(float value)
+static uint8_t VOLT_GetRangeIndex(float value)
 {
 
 	for(uint8_t x = 0; x < 3; x++)
 	{
-		if((bsp.config.dc.range[2] >= value) && (bsp.config.dc.range[1] < value))
+		if((bsp.config.dc.voltage.range[2] >= value) && (bsp.config.dc.voltage.range[1] < value))
 		{
 			return 2;
 		}
-		else if((bsp.config.dc.range[1] >= value) && (bsp.config.dc.range[0] < value))
+		else if((bsp.config.dc.voltage.range[1] >= value) && (bsp.config.dc.voltage.range[0] < value))
 		{
 			return 1;
 		}
-		else if((bsp.config.dc.range[0] >= value))
+		else if((bsp.config.dc.voltage.range[0] >= value))
 		{
 			return 0;
 		}
@@ -198,13 +164,15 @@ static uint8_t SET_DCRange(float value)
 		}
 
 	}
+	return 2;
 }
 
 scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 {
 	scpi_number_t value;
 	float tmp_volt;
-	uint8_t tmp_index;
+	uint8_t index;
+
 
 	if(DC != bsp.config.mode)
 	{
@@ -220,66 +188,190 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 	{
 		switch(value.content.tag)
 		{
-			case SCPI_NUM_MIN: bsp.config.dc.value = SOURCE_DC_MIN_VAL; break;
-			case SCPI_NUM_MAX: bsp.config.dc.value = SOURCE_DC_MAX_VAL; break;
-			case SCPI_NUM_DEF: bsp.config.dc.value = SOURCE_DC_DEF_VAL; break;
+			case SCPI_NUM_MIN: bsp.config.dc.voltage.value = SOURCE_VOLT_DC_MIN_VAL; break;
+			case SCPI_NUM_MAX: bsp.config.dc.voltage.value = SOURCE_VOLT_DC_MAX_VAL; break;
+			case SCPI_NUM_DEF: bsp.config.dc.voltage.value = SOURCE_VOLT_DC_DEF_VAL; break;
 			default: SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE); return SCPI_RES_ERR;
 		}
 	}
 	else
 	{
-		if((value.content.value > SOURCE_DC_MAX_VAL) || (value.content.value < SOURCE_DC_MIN_VAL))
+		if((value.content.value > SOURCE_VOLT_DC_MAX_VAL) || (value.content.value < SOURCE_VOLT_DC_MIN_VAL))
 		{
 			SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
 			return SCPI_RES_ERR;
 		}
 
-		bsp.config.dc.value = (float)(value.content.value);
+		bsp.config.dc.voltage.value = (float)(value.content.value);
 
-		if((bsp.config.dc.value <= SOURCE_DC_MAX_VAL) && (bsp.config.dc.value > SOURCE_DC_DEF_VAL))
+		if((bsp.config.dc.voltage.value <= SOURCE_VOLT_DC_MAX_VAL) && (bsp.config.dc.voltage.value > SOURCE_VOLT_DC_DEF_VAL))
 		{
-			tmp_index = bsp.config.dc.range_index = SET_DCRange(fabs(value.content.value));
+			index = bsp.config.dc.voltage.index = VOLT_GetRangeIndex(fabs(value.content.value));
 
-			tmp_volt = bsp.config.dc.value + bsp.eeprom.structure.calib.dac8565.offset_a[tmp_index] + bsp.eeprom.structure.calib.dac8565.zero_offset;
-			tmp_volt = tmp_volt/bsp.config.dc.gain;
-			tmp_volt = tmp_volt*bsp.eeprom.structure.calib.dac8565.vout_a[tmp_index];
+			tmp_volt = 12.0f - (bsp.config.dc.voltage.value + bsp.eeprom.structure.calib.dac8565.offset_a[index])*bsp.eeprom.structure.calib.dac8565.vout_a[index];
+			tmp_volt = tmp_volt/bsp.config.dc.voltage.gain;
+
+			DAC8565_SetVOUT(VOUTA, 4.0f);
+			osDelay(pdMS_TO_TICKS(2));
+			DAC8565_SetVOUT(VOUTB, tmp_volt);
+			bsp.state.calib_mode = VOLTAGE;
+		}
+		else if((bsp.config.dc.voltage.value >= SOURCE_VOLT_DC_MIN_VAL) && (bsp.config.dc.voltage.value < SOURCE_VOLT_DC_DEF_VAL))
+		{
+			index = bsp.config.dc.voltage.index = VOLT_GetRangeIndex(fabs(value.content.value));
+
+			tmp_volt = 12.0f - (fabs(bsp.config.dc.voltage.value) + bsp.eeprom.structure.calib.dac8565.offset_b[index])*bsp.eeprom.structure.calib.dac8565.vout_b[index];
+			tmp_volt = tmp_volt/bsp.config.dc.voltage.gain;
 
 			DAC8565_SetVOUT(VOUTA, fabs(tmp_volt));
 			osDelay(pdMS_TO_TICKS(2));
-			DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
+			DAC8565_SetVOUT(VOUTB, 4.0f);
+			bsp.state.calib_mode = VOLTAGE;
 		}
-		else if((bsp.config.dc.value >= SOURCE_DC_MIN_VAL) && (bsp.config.dc.value < SOURCE_DC_DEF_VAL))
-		{
-			tmp_index = bsp.config.dc.range_index = SET_DCRange(fabs(value.content.value));
-
-			tmp_volt = bsp.config.dc.value + bsp.eeprom.structure.calib.dac8565.offset_b[tmp_index] + bsp.eeprom.structure.calib.dac8565.zero_offset;
-			tmp_volt = tmp_volt/bsp.config.dc.gain;
-			tmp_volt = tmp_volt*bsp.eeprom.structure.calib.dac8565.vout_b[tmp_index];
-
-			DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
-			osDelay(pdMS_TO_TICKS(2));
-			DAC8565_SetVOUT(VOUTB, fabs(tmp_volt));
-		}
-		else if(SOURCE_DC_DEF_VAL == bsp.config.dc.value)
+		else if(SOURCE_VOLT_DC_DEF_VAL == bsp.config.dc.voltage.value)
 		{
 
 			if(bsp.eeprom.structure.calib.dac8565.zero_offset >= 0.0)
 			{
 				DAC8565_SetVOUT(VOUTA, bsp.eeprom.structure.calib.dac8565.zero_offset);
 				osDelay(pdMS_TO_TICKS(2));
-				DAC8565_SetVOUT(VOUTB, SOURCE_DC_DEF_VAL);
+				DAC8565_SetVOUT(VOUTB, SOURCE_VOLT_DC_DEF_VAL);
+				bsp.state.calib_mode = VOLTAGE;
 			}
 			else
 			{
-				DAC8565_SetVOUT(VOUTA, SOURCE_DC_DEF_VAL);
+				DAC8565_SetVOUT(VOUTA, SOURCE_VOLT_DC_DEF_VAL);
 				osDelay(pdMS_TO_TICKS(2));
 				DAC8565_SetVOUT(VOUTB, bsp.eeprom.structure.calib.dac8565.zero_offset);
+				bsp.state.calib_mode = VOLTAGE;
 			}
 		}
 	}
 
 	return SCPI_RES_OK;
 }
+
+
+static int8_t CURR_GetRangeIndex(float value)
+{
+	for(uint8_t x = 0; x < 4; x++)
+	{
+		if((bsp.config.dc.current.range[3] >= value) && (bsp.config.dc.current.range[2] < value))
+		{
+			return 3;
+		}
+		else if((bsp.config.dc.current.range[2] >= value) && (bsp.config.dc.current.range[1] < value))
+		{
+			return 2;
+		}
+		else if((bsp.config.dc.current.range[1] >= value) && (bsp.config.dc.current.range[0] < value))
+		{
+			return 1;
+		}
+		else if((bsp.config.dc.current.range[0] >= value))
+		{
+			return 0;
+		}
+		else
+		{
+			return 2;
+		}
+
+	}
+	return 3;
+}
+
+
+static scpi_result_t CURR_SetLimit(scpi_t* context, float* current)
+{
+	scpi_number_t value;
+	float tmp_curr;
+
+
+	if(DC != bsp.config.mode)
+	{
+		SCPI_ErrorPush(context, SCPI_ERROR_SETTINGS_CONFLICT);
+		return SCPI_RES_ERR;
+	}
+	if(!SCPI_ParamNumber(context, scpi_special_numbers_def, &value, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	if(value.special)
+	{
+		switch(value.content.tag)
+		{
+			case SCPI_NUM_MIN: bsp.config.dc.current.value[CURR_POS] = SOURCE_CURR_DC_MIN_VAL; break;
+			case SCPI_NUM_MAX: bsp.config.dc.current.value[CURR_POS] = SOURCE_CURR_DC_MAX_VAL; break;
+			case SCPI_NUM_DEF: bsp.config.dc.current.value[CURR_POS] = SOURCE_CURR_DC_DEF_VAL; break;
+			default: SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE); return SCPI_RES_ERR;
+		}
+	}
+	else
+	{
+		if((value.content.value > SOURCE_CURR_DC_MAX_VAL) || (value.content.value < SOURCE_CURR_DC_MIN_VAL))
+		{
+			SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
+			return SCPI_RES_ERR;
+		}
+
+		tmp_curr = (float)(value.content.value);
+
+		if((tmp_curr <= SOURCE_CURR_DC_MAX_VAL) && (tmp_curr > 0.0f))
+		{
+			*current = fabs(tmp_curr);
+		}
+			return SCPI_RES_OK;
+		}
+}
+
+
+scpi_result_t SCPI_SourceCurrentDCPositiveImmediate(scpi_t* context)
+{
+	uint8_t index;
+	float tmp_curr;
+
+	if(SCPI_RES_OK ==CURR_SetLimit(context,	&bsp.config.dc.current.value[CURR_POS]))
+	{
+		index = bsp.config.dc.current.index[CURR_POS] = CURR_GetRangeIndex(bsp.config.dc.current.value[CURR_POS]);
+
+		AQY212_Switch(index);
+		osDelay(pdMS_TO_TICKS(2));
+
+		tmp_curr = bsp.config.dc.current.value[CURR_POS]*bsp.config.dc.current.gain*bsp.config.dc.current.resistor[index];
+		tmp_curr = tmp_curr*bsp.eeprom.structure.calib.dac8565.vout_d[index];
+
+		DAC8565_SetVOUT(VOUTD, tmp_curr);
+		osDelay(pdMS_TO_TICKS(2));
+		bsp.config.dc.current.mode = CURR_POS;
+	}
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceCurrentDCNegativeImmediate(scpi_t* context)
+{
+	uint8_t index;
+	float tmp_curr;
+
+	if(SCPI_RES_OK ==CURR_SetLimit(context,	&bsp.config.dc.current.value[CURR_NEG]))
+		{
+			index = bsp.config.dc.current.index[CURR_NEG] = CURR_GetRangeIndex(bsp.config.dc.current.value[CURR_NEG]);
+
+			AQY212_Switch(index);
+			osDelay(pdMS_TO_TICKS(2));
+
+			tmp_curr = bsp.config.dc.current.value[CURR_NEG]*bsp.config.dc.current.gain*bsp.config.dc.current.resistor[index];
+			tmp_curr = tmp_curr*bsp.eeprom.structure.calib.dac8565.vout_c[index];
+			DAC8565_SetVOUT(VOUTC, tmp_curr);
+			osDelay(pdMS_TO_TICKS(2));
+			bsp.config.dc.current.mode = CURR_NEG;
+		}
+
+	return SCPI_RES_OK;
+}
+
 
 /*
  * SOURce:VOLTage:DC[:IMMediate] <dc_value>
@@ -298,7 +390,7 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
  */
 scpi_result_t SCPI_SourceVoltageDCImmediateQ(scpi_t* context)
 {
-	SCPI_ResultFloat(context, bsp.config.dc.value);
+	SCPI_ResultFloat(context, bsp.config.dc.voltage.value);
 	return SCPI_RES_OK;
 }
 
@@ -314,43 +406,43 @@ scpi_result_t SCPI_SourceVoltageDCImmediateQ(scpi_t* context)
  *
  */
 
-static scpi_result_t SINE_Frequency(scpi_t * context);
-static scpi_result_t SINE_Voltage(scpi_t * context);
-static scpi_result_t SINE_Offset(scpi_t * context);
+static scpi_result_t AC_Frequency(scpi_t * context);
+static scpi_result_t AC_Voltage(scpi_t * context);
+static scpi_result_t AC_Offset(scpi_t * context);
 
-scpi_result_t SCPI_SourceVoltageFgenImmediate(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageACImmediate(scpi_t* context)
 {
 	BSP_StatusTypeDef ret;
 	float tmp;
-	if(SCPI_RES_OK != SINE_Frequency(context))
+	if(SCPI_RES_OK != AC_Frequency(context))
 	{
 		return SCPI_RES_ERR;
 	}
-	if(SCPI_RES_OK != SINE_Voltage(context))
+	if(SCPI_RES_OK != AC_Voltage(context))
 	{
 		return SCPI_RES_ERR;
 	}
-	if(SCPI_RES_OK != SINE_Offset(context))
+	if(SCPI_RES_OK != AC_Offset(context))
 	{
 		return SCPI_RES_ERR;
 	}
 
-	tmp = fabs(bsp.config.fgen.amplitude) + fabs(bsp.config.fgen.offset);
+	tmp = fabs(bsp.config.ac.amplitude) + fabs(bsp.config.ac.offset);
 
-	if(tmp > SOURCE_SINE_MAX_VAL)
+	if(tmp > SOURCE_AC_MAX_VAL)
 	{
 		SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
 		return SCPI_RES_ERR;
 	}
 
-	ret = FGEN_SetAmplitude(bsp.config.fgen.amplitude);
-	ret = FGEN_SetFrequency(bsp.config.fgen.frequency);
-	ret = FGEN_SetOffset(bsp.config.fgen.offset);
+	ret = FGEN_SetAmplitude(bsp.config.ac.amplitude/bsp.config.ac.amplit_gain);
+	ret = FGEN_SetFrequency(bsp.config.ac.frequency);
+	ret = FGEN_SetOffset(-1*bsp.config.ac.offset/bsp.config.ac.offset_gain);
 
 	return SCPI_RES_OK;
 }
 
-static scpi_result_t SINE_Frequency(scpi_t * context)
+static scpi_result_t AC_Frequency(scpi_t * context)
 {
 	scpi_number_t freq;
 
@@ -363,9 +455,9 @@ static scpi_result_t SINE_Frequency(scpi_t * context)
 	{
 		switch(freq.content.tag)
 		{
-		case SCPI_NUM_MIN: bsp.config.fgen.frequency = SOURCE_FGEN_MIN_FREQ; break;
-		case SCPI_NUM_MAX: bsp.config.fgen.frequency = SOURCE_FGEN_MAX_FREQ; break;
-		case SCPI_NUM_DEF: bsp.config.fgen.frequency = SOURCE_FGEN_DEF_FREQ; break;
+		case SCPI_NUM_MIN: bsp.config.ac.frequency = SOURCE_AC_MIN_FREQ; break;
+		case SCPI_NUM_MAX: bsp.config.ac.frequency = SOURCE_AC_MAX_FREQ; break;
+		case SCPI_NUM_DEF: bsp.config.ac.frequency = SOURCE_AC_DEF_FREQ; break;
 		default: SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE); return SCPI_RES_ERR;
 		}
 	}
@@ -373,7 +465,7 @@ static scpi_result_t SINE_Frequency(scpi_t * context)
 	{
 		if(SCPI_UNIT_NONE == freq.unit || SCPI_UNIT_UNITLESS == freq.unit)
 		{
-			if(freq.content.value < SOURCE_FGEN_MIN_FREQ || freq.content.value > SOURCE_FGEN_MAX_FREQ)
+			if(freq.content.value < SOURCE_AC_MIN_FREQ || freq.content.value > SOURCE_AC_MAX_FREQ)
 			{
 				SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
 				return SCPI_RES_ERR;
@@ -394,12 +486,12 @@ static scpi_result_t SINE_Frequency(scpi_t * context)
 		}
 	}
 
-	bsp.config.fgen.frequency = (float)(freq.content.value);
+	bsp.config.ac.frequency = (float)(freq.content.value);
 
 	return SCPI_RES_OK;
 }
 
-static scpi_result_t SINE_Voltage(scpi_t * context)
+static scpi_result_t AC_Voltage(scpi_t * context)
 {
 	scpi_number_t volt;
 
@@ -412,9 +504,9 @@ static scpi_result_t SINE_Voltage(scpi_t * context)
 	{
 		switch(volt.content.tag)
 		{
-		case SCPI_NUM_MIN: bsp.config.fgen.amplitude = SOURCE_SINE_MIN_VAL; break;
-		case SCPI_NUM_MAX: bsp.config.fgen.amplitude = SOURCE_SINE_MAX_VAL; break;
-		case SCPI_NUM_DEF: bsp.config.fgen.amplitude = SOURCE_SINE_DEF_VAL; break;
+		case SCPI_NUM_MIN: bsp.config.ac.amplitude = SOURCE_AC_MIN_VAL; break;
+		case SCPI_NUM_MAX: bsp.config.ac.amplitude = SOURCE_AC_MAX_VAL; break;
+		case SCPI_NUM_DEF: bsp.config.ac.amplitude = SOURCE_AC_DEF_VAL; break;
 		default: SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE); return SCPI_RES_ERR;
 		}
 	}
@@ -422,7 +514,7 @@ static scpi_result_t SINE_Voltage(scpi_t * context)
 	{
 		if(SCPI_UNIT_NONE == volt.unit || SCPI_UNIT_UNITLESS == volt.unit)
 		{
-			if(volt.content.value < SOURCE_SINE_MIN_VAL || volt.content.value > SOURCE_SINE_MAX_VAL)
+			if(volt.content.value < SOURCE_AC_MIN_VAL || volt.content.value > SOURCE_AC_MAX_VAL)
 			{
 				SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
 				return SCPI_RES_ERR;
@@ -444,12 +536,12 @@ static scpi_result_t SINE_Voltage(scpi_t * context)
 
 	}
 
-	bsp.config.fgen.amplitude = (float)(fabs(volt.content.value));
+	bsp.config.ac.amplitude = (float)(fabs(volt.content.value));
 
 	return SCPI_RES_OK;
 }
 
-static scpi_result_t SINE_Offset(scpi_t * context)
+static scpi_result_t AC_Offset(scpi_t * context)
 {
 	scpi_number_t offset;
 
@@ -462,9 +554,9 @@ static scpi_result_t SINE_Offset(scpi_t * context)
 	{
 		switch(offset.content.tag)
 		{
-		case SCPI_NUM_MIN: bsp.config.fgen.offset = SOURCE_SINE_MIN_VAL; break;
-		case SCPI_NUM_MAX: bsp.config.fgen.offset = SOURCE_SINE_MAX_VAL; break;
-		case SCPI_NUM_DEF: bsp.config.fgen.offset = SOURCE_SINE_OFFSET_DEF_VAL; break;
+		case SCPI_NUM_MIN: bsp.config.ac.offset = SOURCE_AC_MIN_VAL; break;
+		case SCPI_NUM_MAX: bsp.config.ac.offset = SOURCE_AC_MAX_VAL; break;
+		case SCPI_NUM_DEF: bsp.config.ac.offset = SOURCE_AC_OFFSET_DEF_VAL; break;
 		default: SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE); return SCPI_RES_ERR;
 		}
 	}
@@ -472,7 +564,7 @@ static scpi_result_t SINE_Offset(scpi_t * context)
 	{
 		if(SCPI_UNIT_NONE == offset.unit || SCPI_UNIT_UNITLESS == offset.unit)
 		{
-			if(offset.content.value < SOURCE_SINE_MIN_VAL || offset.content.value > SOURCE_SINE_MAX_VAL)
+			if(offset.content.value < SOURCE_AC_MIN_VAL || offset.content.value > SOURCE_AC_MAX_VAL)
 			{
 				SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
 				return SCPI_RES_ERR;
@@ -494,13 +586,13 @@ static scpi_result_t SINE_Offset(scpi_t * context)
 
 	}
 
-	bsp.config.fgen.offset = (float)(offset.content.value);
+	bsp.config.ac.offset = (float)(offset.content.value);
 
 	return SCPI_RES_OK;
 }
 
 
-scpi_result_t SCPI_SourceVoltageFgenImmediateQ(scpi_t* context)
+scpi_result_t SCPI_SourceVoltageACImmediateQ(scpi_t* context)
 {
 
 	return SCPI_RES_OK;

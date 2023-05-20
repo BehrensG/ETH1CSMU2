@@ -27,13 +27,19 @@ static void BSP_Init_Common()
 	bsp.sn74hc595.shift_reg[0] = 0;
 	bsp.sn74hc595.shift_reg[1] = 0;
 
-	bsp.config.dc.gain = 3;
-	bsp.config.dc.value = 0.0;
+	bsp.config.dc.voltage.gain = 3.0;
+	bsp.config.dc.voltage.value = 0.0;
+	bsp.config.dc.current.gain = 10.0;
+	bsp.config.dc.current.value[CURR_POS] = 0.2;
+	bsp.config.dc.current.value[CURR_NEG] = 0.2;
 
-	bsp.config.fgen.gain = 2;
-	bsp.config.fgen.offset = 0.0;
-	bsp.config.fgen.amplitude = 0.0;
-	bsp.config.fgen.frequency = 0.0;
+
+	bsp.config.ac.amplit_gain = 13;
+	bsp.config.ac.offset_gain = 2;
+	bsp.config.ac.offset = 0.0;
+	bsp.config.ac.amplitude = 0.0;
+	bsp.config.ac.frequency = 0.0;
+	bsp.config.ac.offset_adj = 0.05;
 
 	bsp.config.list.delay = 0;
 
@@ -49,12 +55,25 @@ static void BSP_Init_Common()
 	}
 
 	bsp.config.mode = DC;
-
-	bsp.config.dc.range_index = 2;
-	bsp.config.dc.range[0] = 0.1;
-	bsp.config.dc.range[1] = 1;
-	bsp.config.dc.range[2] = 10;
-
+	bsp.config.dc.voltage.index = 2;
+	bsp.config.dc.voltage.range[0] = 0.1;
+	bsp.config.dc.voltage.range[1] = 1;
+	bsp.config.dc.voltage.range[2] = 10;
+	bsp.config.dc.current.range[0] = 0.0001;
+	bsp.config.dc.current.range[1] = 0.001;
+	bsp.config.dc.current.range[2] = 0.01;
+	bsp.config.dc.current.range[3] = 0.1;
+	bsp.config.dc.current.gain = 10.0;
+	bsp.config.dc.current.index[CURR_POS] = 3;
+	bsp.config.dc.current.index[CURR_NEG] = 3;
+	bsp.config.dc.current.resistor[CURR_POS] = 1;
+	bsp.config.dc.current.resistor[CURR_NEG] = 1;
+	bsp.config.dc.current.value[CURR_POS] = 0.1;
+	bsp.config.dc.current.value[CURR_NEG] = 0.1;
+	bsp.config.dc.current.resistor[0] = 1000;
+	bsp.config.dc.current.resistor[1] = 100;
+	bsp.config.dc.current.resistor[2] = 10;
+	bsp.config.dc.current.resistor[3] = 1;
 	bsp.security.status = 1;
 
 }
@@ -105,31 +124,34 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.calib.dac8565.vout_a[1] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_a[2] = 1.0;
 
-	bsp.eeprom.structure.calib.dac8565.offset_a[0] = 0.0027;
-	bsp.eeprom.structure.calib.dac8565.offset_a[1] = 0.002;
-	bsp.eeprom.structure.calib.dac8565.offset_a[2] = 0.0;
+	bsp.eeprom.structure.calib.dac8565.offset_a[0] = -0.005;
+	bsp.eeprom.structure.calib.dac8565.offset_a[1] = -0.005;
+	bsp.eeprom.structure.calib.dac8565.offset_a[2] = -0.005;
 
 	bsp.eeprom.structure.calib.dac8565.vout_b[0] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_b[1] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_b[2] = 1.0;
 
-	bsp.eeprom.structure.calib.dac8565.offset_b[0] = -0.0002;
-	bsp.eeprom.structure.calib.dac8565.offset_b[1] = 0.0;
-	bsp.eeprom.structure.calib.dac8565.offset_b[2] = 0.0;
+	bsp.eeprom.structure.calib.dac8565.offset_b[0] = 0.005;
+	bsp.eeprom.structure.calib.dac8565.offset_b[1] = 0.005;
+	bsp.eeprom.structure.calib.dac8565.offset_b[2] = 0.005;
 
 	bsp.eeprom.structure.calib.dac8565.zero_offset = 0.0;
 
 	bsp.eeprom.structure.calib.dac8565.vout_c[0] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_c[1] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_c[2] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_c[3] = 1.0;
 
 	bsp.eeprom.structure.calib.dac8565.vout_d[0] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_d[1] = 1.0;
 	bsp.eeprom.structure.calib.dac8565.vout_d[2] = 1.0;
+	bsp.eeprom.structure.calib.dac8565.vout_d[3] = 1.0;
 
 	bsp.eeprom.structure.calib.fgen.amplitude_gain = 1.0;
 	bsp.eeprom.structure.calib.fgen.offset_gain = 1.0;
 	bsp.eeprom.structure.calib.fgen.zero_offset = 0.0;
+
 
 	strncpy(bsp.eeprom.structure.service.password, PASSWORD, STRING_LENGTH);
 	strncpy(bsp.eeprom.structure.info.serial_number, SCPI_IDN4, STRING_LENGTH);

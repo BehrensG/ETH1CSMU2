@@ -30,30 +30,7 @@ scpi_result_t SCPI_CalibrationCurrentADC2Value(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
-static uint8_t SET_DCRange(float value)
-{
 
-	for(uint8_t x = 0; x < 3; x++)
-	{
-		if((bsp.config.dc.range[2] >= value) && (bsp.config.dc.range[1] < value))
-		{
-			return 2;
-		}
-		else if((bsp.config.dc.range[1] >= value) && (bsp.config.dc.range[0] < value))
-		{
-			return 1;
-		}
-		else if((bsp.config.dc.range[0] >= value))
-		{
-			return 0;
-		}
-		else
-		{
-			return 2;
-		}
-
-	}
-}
 
 scpi_result_t SCPI_CalibrationVoltageDCValue(scpi_t* context)
 {
@@ -65,32 +42,32 @@ scpi_result_t SCPI_CalibrationVoltageDCValue(scpi_t* context)
 		return SCPI_RES_ERR;
 	}
 
-	if(bsp.config.dc.value > 0.0)
+	if(bsp.config.dc.voltage.value > 0.0)
 	{
-		dc_max = bsp.config.dc.value + bsp.config.dc.value*0.05;
-		dc_min = bsp.config.dc.value - bsp.config.dc.value*0.05;
+		dc_max = bsp.config.dc.voltage.value + bsp.config.dc.voltage.value*0.1;
+		dc_min = bsp.config.dc.voltage.value - bsp.config.dc.voltage.value*0.1;
 
 		if((dc_max >= dc_calib) && (dc_min <= dc_calib))
 		{
-			index = SET_DCRange(fabs(dc_calib));
-			bsp.eeprom.structure.calib.dac8565.vout_a[index] = fabs(bsp.config.dc.value/dc_calib);
+			index = bsp.config.dc.voltage.index;
+			bsp.eeprom.structure.calib.dac8565.vout_a[index] = fabs(bsp.config.dc.voltage.value/dc_calib);
 		}
 	}
-	else if(bsp.config.dc.value < 0.0)
+	else if(bsp.config.dc.voltage.value < 0.0)
 	{
-		dc_max = bsp.config.dc.value - bsp.config.dc.value*0.05;
-		dc_min = bsp.config.dc.value + bsp.config.dc.value*0.05;
+		dc_max = bsp.config.dc.voltage.value - bsp.config.dc.voltage.value*0.1;
+		dc_min = bsp.config.dc.voltage.value + bsp.config.dc.voltage.value*0.1;
 
 		if((dc_max >= dc_calib) && (dc_min <= dc_calib))
 		{
-			index = SET_DCRange(fabs(dc_calib));
-			bsp.eeprom.structure.calib.dac8565.vout_b[index] = fabs(bsp.config.dc.value/dc_calib);
+			index = bsp.config.dc.voltage.index;
+			bsp.eeprom.structure.calib.dac8565.vout_b[index] = fabs(bsp.config.dc.voltage.value/dc_calib);
 		}
 	}
-	else if(0.0 == bsp.config.dc.value)
+	else if(0.0 == bsp.config.dc.voltage.value)
 	{
-		dc_max = 0.001;
-		dc_min = -0.001;
+		dc_max = 0.01;
+		dc_min = -0.01;
 
 		if((dc_max >= dc_calib) && (dc_min <= dc_calib))
 		{
@@ -103,12 +80,47 @@ scpi_result_t SCPI_CalibrationVoltageDCValue(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
-scpi_result_t SCPI_CalibrationFGENOffsetValue(scpi_t* context)
+scpi_result_t SCPI_CalibrationCurrentDCValue(scpi_t* context)
+{
+	float dc_calib = 0.0, dc_min = 0.0, dc_max = 0.0;
+	uint8_t index, mode;
+	mode = bsp.config.dc.current.mode;
+
+	if(!SCPI_ParamFloat(context, &dc_calib, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	if(bsp.config.dc.current.value[mode] > 0.0)
+	{
+		dc_max = bsp.config.dc.current.value[mode] + bsp.config.dc.current.value[mode]*3;
+		dc_min = bsp.config.dc.current.value[mode] - bsp.config.dc.current.value[mode]*3;
+
+		if((dc_max >= dc_calib) && (dc_min <= dc_calib))
+		{
+			index = bsp.config.dc.current.index[mode];
+
+			if(CURR_POS == mode)
+			{
+				bsp.eeprom.structure.calib.dac8565.vout_d[index] = fabs(bsp.config.dc.current.value[mode]/dc_calib);
+			}
+			else
+			{
+				bsp.eeprom.structure.calib.dac8565.vout_c[index] = fabs(bsp.config.dc.current.value[mode]/dc_calib);
+			}
+
+		}
+	}
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_CalibrationACOffsetValue(scpi_t* context)
 {
 	return SCPI_RES_OK;
 }
 
-scpi_result_t SCPI_CalibrationFGENAmplitudeValue(scpi_t* context)
+scpi_result_t SCPI_CalibrationACAmplitudeValue(scpi_t* context)
 {
 	return SCPI_RES_OK;
 }

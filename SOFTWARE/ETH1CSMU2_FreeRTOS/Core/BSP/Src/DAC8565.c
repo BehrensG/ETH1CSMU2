@@ -19,8 +19,8 @@ void DAC8565_Init()
 	DAC8565_DisableInteralReference();
 	DAC8565_SetVOUT(VOUTA, 0.0);
 	DAC8565_SetVOUT(VOUTB, 0.0);
-	DAC8565_SetVOUT(VOUTC, 2.0);
-	DAC8565_SetVOUT(VOUTD, 2.0);
+	DAC8565_SetVOUT(VOUTC, 1.0);
+	DAC8565_SetVOUT(VOUTD, 1.0);
 }
 
 HAL_StatusTypeDef DAC8565_SetVOUT(DAC8565_ChannelSelect channel, float voltage)

@@ -30,7 +30,7 @@ typedef enum
 #define AT_30dBV			30
 
 #define FGEN_OFFSET_MAX		6.0
-#define FGEN_AMPL_MAX		9.6
+#define FGEN_AMPL_MAX		1.2
 
 
 BSP_StatusTypeDef FGEN_SetFrequency(float freq);
