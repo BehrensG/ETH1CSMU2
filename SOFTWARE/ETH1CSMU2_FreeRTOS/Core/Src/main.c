@@ -24,7 +24,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "LED.h"
-#include "DWT_Delay.h"
 #include "74HC595.h"
 #include "AD9834.h"
 #include "MAX5217.h"
@@ -32,6 +31,7 @@
 #include "ADS8681.h"
 #include "FGEN.h"
 #include "SCPI_Server.h"
+#include "Delay.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +60,8 @@ SPI_HandleTypeDef hspi3;
 SPI_HandleTypeDef hspi4;
 SPI_HandleTypeDef hspi5;
 DMA_HandleTypeDef hdma_spi4_rx;
+
+TIM_HandleTypeDef htim3;
 
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -114,6 +116,7 @@ static void MX_I2C3_Init(void);
 static void MX_I2C4_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_SPI2_Init(void);
+static void MX_TIM3_Init(void);
 void StartDefaultTask(void *argument);
 void StartLEDTask(void *argument);
 void StartTriggerTask(void *argument);
@@ -163,6 +166,7 @@ int main(void)
   MX_I2C4_Init();
   MX_SPI1_Init();
   MX_SPI2_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   DAC8565_Init();
   DWT_Init();
@@ -172,6 +176,7 @@ int main(void)
   ADS8681_Init();
   FGEN_Init();
   uint32_t tmp = EEPROM_CFG_SIZE;
+  TIM_DelayInit();
 //  AD9834_Init();
   /* USER CODE END 2 */
 
@@ -581,6 +586,51 @@ static void MX_SPI5_Init(void)
   /* USER CODE BEGIN SPI5_Init 2 */
 
   /* USER CODE END SPI5_Init 2 */
+
+}
+
+/**
+  * @brief TIM3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM3_Init(void)
+{
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
+  htim3.Instance = TIM3;
+  htim3.Init.Prescaler = 216 -1;
+  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim3.Init.Period = 0xffff -1;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim3, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
 
 }
 

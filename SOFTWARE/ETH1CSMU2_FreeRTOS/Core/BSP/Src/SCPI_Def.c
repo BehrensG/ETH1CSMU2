@@ -57,6 +57,16 @@
 
 extern struct bsp_t bsp;
 
+scpi_choice_def_t scpi_boolean_select[] =
+{
+    {"OFF", 0},
+    {"ON", 1},
+	{"0", 0},
+	{"1", 1},
+    SCPI_CHOICE_LIST_END
+};
+
+
 size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
 {
     scpi_parameter_t channel_list_param;
@@ -289,10 +299,20 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageDCImmediate,},
 	{.pattern = "SOURce:VOLTage:DC[:IMMediate]?", .callback = SCPI_SourceVoltageDCImmediateQ,},
 	{.pattern = "SOURce:CURRent:DC:POSitive[:IMMediate]", .callback = SCPI_SourceCurrentDCPositiveImmediate,},
+	{.pattern = "SOURce:CURRent:DC:POSitive[:IMMediate]?", .callback = SCPI_SourceCurrentDCPositiveImmediateQ,},
 	{.pattern = "SOURce:CURRent:DC:NEGative[:IMMediate]", .callback = SCPI_SourceCurrentDCNegativeImmediate,},
+	{.pattern = "SOURce:CURRent:DC:NEGative[:IMMediate]?", .callback = SCPI_SourceCurrentDCNegativeImmediateQ,},
 
 	{.pattern = "SOURce:VOLTage:AC[:IMMediate]", .callback = SCPI_SourceVoltageACImmediate,},
 	{.pattern = "SOURce:VOLTage:AC[:IMMediate]?", .callback = SCPI_SourceVoltageACImmediateQ,},
+	{.pattern = "SOURce:VOLTage:AC:AMPLitude[:IMMediate]", .callback = SCPI_SourceVoltageACAmplitudeImmediate,},
+	{.pattern = "SOURce:VOLTage:AC:FREQuency[:IMMediate]", .callback = SCPI_SourceVoltageACFrequencyImmediate,},
+	{.pattern = "SOURce:VOLTage:AC:OFFSet[:IMMediate]", .callback = SCPI_SourceVoltageACOffsetImmediate,},
+
+	{.pattern = "SOURce:CURRent:AC:POSitive[:IMMediate]", .callback = SCPI_SourceCurrentDCPositiveImmediate,},
+	{.pattern = "SOURce:CURRent:AC:POSitive[:IMMediate]?", .callback = SCPI_SourceCurrentDCPositiveImmediateQ,},
+	{.pattern = "SOURce:CURRent:AC:NEGative[:IMMediate]", .callback = SCPI_SourceCurrentDCNegativeImmediate,},
+	{.pattern = "SOURce:CURRent:AC:NEGative[:IMMediate]?", .callback = SCPI_SourceCurrentDCNegativeImmediateQ,},
 
 	{.pattern = "SOURce:VOLTage:LIST[:LOAD]", .callback = SCPI_SourceVoltageListLoad,}, //Sets the number of sweep steps for the current or voltage sweep output.
 	{.pattern = "SOURce:VOLTage:LIST[:LOAD]?", .callback = SCPI_SourceVoltageListLoadQ,},
@@ -302,10 +322,16 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:VOLTage:LIST:STOP", .callback = SCPI_SourceVoltageListStop,},
 	{.pattern = "SOURce:VOLTage:LIST:DELay", .callback = SCPI_SourceVoltageListDelay,},
 
-	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive", .callback = SCPI_SenseCurrentDCProtectionLevelPositive,},
-	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:POSitive?", .callback = SCPI_SenseCurrentDCProtectionLevelPositiveQ,},
-	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:NEGative", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
-	{.pattern = "SENSe:CURRent:DC:PROTection[:LEVel]:NEGative?", .callback = SCPI_SenseCurrentDCProtectionLevelNegative,},
+	{.pattern = "SENSe:FUNCtion[:ON]", .callback = SCPI_SenseFunctionOn,},
+	{.pattern = "SENSe:FUNCtion[:ON]?", .callback = SCPI_SenseFunctionOnQ,},
+	{.pattern = "SENSe:SELEct:ADC", .callback = SCPI_SenseSelectADC,},
+	{.pattern = "SENSe:SELEct:ADC?", .callback = SCPI_SenseSelectADCQ,},
+	{.pattern = "SENSe:COUNt", .callback = SCPI_SenseCount,},
+	{.pattern = "SENSe:COUNt?", .callback = SCPI_SenseCountQ,},
+	{.pattern = "SENSe:VOLTage:GAIN", .callback = SCPI_SenseVoltageGain,},
+	{.pattern = "SENSe:VOLTage:GAIN?", .callback = SCPI_SenseVoltageGainQ,},
+	{.pattern = "SENSe:CURRent:GAIN", .callback = SCPI_SenseCurrentGain,},
+	{.pattern = "SENSe:CURRent:GAIN?", .callback = SCPI_SenseCurrentGainQ,},
 
 	{.pattern = "FETCh?", .callback = SCPI_FetchQ,},
 	{.pattern = "FETCh:ARRay?", .callback = SCPI_FetchArrayQ,},

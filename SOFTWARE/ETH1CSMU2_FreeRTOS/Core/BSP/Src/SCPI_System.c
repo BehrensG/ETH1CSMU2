@@ -15,6 +15,7 @@
 extern I2C_HandleTypeDef hi2c3;
 extern struct bsp_t bsp;
 extern bsp_eeprom_union_t eeprom_default;
+extern scpi_choice_def_t scpi_boolean_select[];
 
 scpi_choice_def_t LAN_state_select[] =
 {
@@ -31,14 +32,6 @@ scpi_choice_def_t temperature_unit_select[] =
     SCPI_CHOICE_LIST_END
 };
 
-scpi_choice_def_t security_state_select[] =
-{
-    {"OFF", 0},
-    {"ON", 1},
-	{"0", 0},
-	{"1", 1},
-    SCPI_CHOICE_LIST_END
-};
 
 scpi_choice_def_t EEPROM_state_select[] =
 {
@@ -174,14 +167,14 @@ scpi_result_t SCPI_SystemCommunicateLANIPAddress(scpi_t * context)
 }
 
 /*
- * SYSTem:COMMunicate:LAN:IPADdress? [{CURRent|STATic}]
+ * SYSTem:COMMunicate:LAN:IPADdress? [{LAN_CURRENT|STATic}]
  *
  * @INFO:
  * Query the IP4 address. Result is a string. Typical return "192.168.1.126"
  *
  * @PARAMETERS:
- * 				CURRent		read the value currently being used by the instrument (default)
- * 				STATic		read the value currently stored in nonvolatile memory within the instrument
+ * 				LAN_CURRENT		read the value LAN_CURRENTly being used by the instrument (default)
+ * 				STATic		read the value LAN_CURRENTly stored in nonvolatile memory within the instrument
  *
  * @NOTE:
  * Readout may not be the actual address used by the instrument if DHCP is enabled.
@@ -198,7 +191,7 @@ scpi_result_t SCPI_SystemCommunicateLANIPAddressQ(scpi_t * context)
 		return SCPI_RES_ERR;
 	}
 
-	if(CURRENT == value)
+	if(LAN_CURRENT == value)
 	{
 		sprintf(str, "%d.%d.%d.%d", bsp.ip4.ip[0],
 									bsp.ip4.ip[1],
@@ -265,14 +258,14 @@ scpi_result_t SCPI_SystemCommunicateLANIPSmask(scpi_t * context)
 }
 
 /*
- * SYSTem:COMMunicate:LAN:SMASk? [{CURRent|STATic}]
+ * SYSTem:COMMunicate:LAN:SMASk? [{LAN_CURRENT|STATic}]
  *
  * @INFO:
  * Query IP4 subnet mask. Result is a string. Typical return "255.255.255.0".
  *
  * @PARAMETERS:
- * 				CURRent		read the value currently being used by the instrument (default)
- * 				STATic		read the value currently stored in nonvolatile memory within the instrument
+ * 				LAN_CURRENT		read the value LAN_CURRENTly being used by the instrument (default)
+ * 				STATic		read the value LAN_CURRENTly stored in nonvolatile memory within the instrument
  *
  * @NOTE:
  * Readout may not be the actual mask used by the instrument if DHCP is enabled.
@@ -286,9 +279,9 @@ scpi_result_t SCPI_SystemCommunicateLANIPSmaskQ(scpi_t * context)
 
 	if(!SCPI_ParamChoice(context, LAN_state_select, &value, FALSE))
 	{
-		value = CURRENT;
+		value = LAN_CURRENT;
 	}
-	if(CURRENT == value)
+	if(LAN_CURRENT == value)
 	{
 		sprintf(str, "%d.%d.%d.%d", bsp.ip4.netmask[0],
 									bsp.ip4.netmask[1],
@@ -353,7 +346,7 @@ scpi_result_t SCPI_SystemCommunicateLANGateway(scpi_t * context)
 }
 
 /*
- * SYSTem:COMMunicate:LAN:GATEway? [{CURRent|STATic}]
+ * SYSTem:COMMunicate:LAN:GATEway? [{LAN_CURRENT|STATic}]
  *
  * @INFO:
  * Query the gateway address. Typical return "192.168.1.1".
@@ -367,9 +360,9 @@ scpi_result_t SCPI_SystemCommunicateLANGatewayQ(scpi_t * context)
 
 	if(!SCPI_ParamChoice(context, LAN_state_select, &value, FALSE))
 	{
-		value = CURRENT;
+		value = LAN_CURRENT;
 	}
-	if(CURRENT == value)
+	if(LAN_CURRENT == value)
 	{
 
 		sprintf(str, "%d.%d.%d.%d", bsp.ip4.gateway[0],
@@ -531,7 +524,7 @@ scpi_result_t SCPI_SystemCommunicateLANPortQ(scpi_t * context)
 		return SCPI_RES_ERR;
 	}
 
-	if(CURRENT == value)
+	if(LAN_CURRENT == value)
 	{
 		SCPI_ResultUInt16(context,bsp.ip4.port);
 	}
@@ -618,7 +611,7 @@ scpi_result_t SCPI_SystemSecureState(scpi_t * context)
 	size_t length = 0;
 	int8_t* password_reference = bsp.eeprom.structure.service.password;
 
-	if(!SCPI_ParamChoice(context, security_state_select, &state, TRUE))
+	if(!SCPI_ParamChoice(context, scpi_boolean_select, &state, TRUE))
 	{
 		return SCPI_RES_ERR;
 	}

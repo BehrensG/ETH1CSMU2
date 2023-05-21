@@ -44,11 +44,15 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageDCImmediateQ(scpi_t * context);
 
 scpi_result_t SCPI_SourceCurrentDCPositiveImmediate(scpi_t * context);
+scpi_result_t SCPI_SourceCurrentDCPositiveImmediateQ(scpi_t * context);
 scpi_result_t SCPI_SourceCurrentDCNegativeImmediate(scpi_t * context);
-
+scpi_result_t SCPI_SourceCurrentDCNegativeImmediateQ(scpi_t * context);
 
 scpi_result_t SCPI_SourceVoltageACImmediate(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageACImmediateQ(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageACAmplitudeImmediate(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageACFrequencyImmediate(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageACOffsetImmediate(scpi_t * context);
 
 scpi_result_t SCPI_SourceVoltageListLoad(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListLoadQ(scpi_t * context);

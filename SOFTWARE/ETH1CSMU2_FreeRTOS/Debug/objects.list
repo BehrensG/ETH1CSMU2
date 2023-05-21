@@ -5,7 +5,7 @@
 "./Core/BSP/Src/ADS8681.o"
 "./Core/BSP/Src/BSP.o"
 "./Core/BSP/Src/DAC8565.o"
-"./Core/BSP/Src/DWT_Delay.o"
+"./Core/BSP/Src/Delay.o"
 "./Core/BSP/Src/EE24.o"
 "./Core/BSP/Src/EEPROM.o"
 "./Core/BSP/Src/FGEN.o"

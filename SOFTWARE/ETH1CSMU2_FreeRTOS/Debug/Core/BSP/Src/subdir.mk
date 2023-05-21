@@ -12,7 +12,7 @@ C_SRCS += \
 ../Core/BSP/Src/ADS8681.c \
 ../Core/BSP/Src/BSP.c \
 ../Core/BSP/Src/DAC8565.c \
-../Core/BSP/Src/DWT_Delay.c \
+../Core/BSP/Src/Delay.c \
 ../Core/BSP/Src/EE24.c \
 ../Core/BSP/Src/EEPROM.c \
 ../Core/BSP/Src/FGEN.c \
@@ -40,7 +40,7 @@ OBJS += \
 ./Core/BSP/Src/ADS8681.o \
 ./Core/BSP/Src/BSP.o \
 ./Core/BSP/Src/DAC8565.o \
-./Core/BSP/Src/DWT_Delay.o \
+./Core/BSP/Src/Delay.o \
 ./Core/BSP/Src/EE24.o \
 ./Core/BSP/Src/EEPROM.o \
 ./Core/BSP/Src/FGEN.o \
@@ -68,7 +68,7 @@ C_DEPS += \
 ./Core/BSP/Src/ADS8681.d \
 ./Core/BSP/Src/BSP.d \
 ./Core/BSP/Src/DAC8565.d \
-./Core/BSP/Src/DWT_Delay.d \
+./Core/BSP/Src/Delay.d \
 ./Core/BSP/Src/EE24.d \
 ./Core/BSP/Src/EEPROM.d \
 ./Core/BSP/Src/FGEN.d \
@@ -96,7 +96,7 @@ Core/BSP/Src/%.o Core/BSP/Src/%.su Core/BSP/Src/%.cyclo: ../Core/BSP/Src/%.c Cor
 clean: clean-Core-2f-BSP-2f-Src
 
 clean-Core-2f-BSP-2f-Src:
-	-$(RM) ./Core/BSP/Src/74HC595.cyclo ./Core/BSP/Src/74HC595.d ./Core/BSP/Src/74HC595.o ./Core/BSP/Src/74HC595.su ./Core/BSP/Src/AD5322.cyclo ./Core/BSP/Src/AD5322.d ./Core/BSP/Src/AD5322.o ./Core/BSP/Src/AD5322.su ./Core/BSP/Src/AD7980.cyclo ./Core/BSP/Src/AD7980.d ./Core/BSP/Src/AD7980.o ./Core/BSP/Src/AD7980.su ./Core/BSP/Src/AD9834.cyclo ./Core/BSP/Src/AD9834.d ./Core/BSP/Src/AD9834.o ./Core/BSP/Src/AD9834.su ./Core/BSP/Src/ADS8681.cyclo ./Core/BSP/Src/ADS8681.d ./Core/BSP/Src/ADS8681.o ./Core/BSP/Src/ADS8681.su ./Core/BSP/Src/BSP.cyclo ./Core/BSP/Src/BSP.d ./Core/BSP/Src/BSP.o ./Core/BSP/Src/BSP.su ./Core/BSP/Src/DAC8565.cyclo ./Core/BSP/Src/DAC8565.d ./Core/BSP/Src/DAC8565.o ./Core/BSP/Src/DAC8565.su ./Core/BSP/Src/DWT_Delay.cyclo ./Core/BSP/Src/DWT_Delay.d ./Core/BSP/Src/DWT_Delay.o ./Core/BSP/Src/DWT_Delay.su ./Core/BSP/Src/EE24.cyclo ./Core/BSP/Src/EE24.d ./Core/BSP/Src/EE24.o ./Core/BSP/Src/EE24.su ./Core/BSP/Src/EEPROM.cyclo ./Core/BSP/Src/EEPROM.d ./Core/BSP/Src/EEPROM.o ./Core/BSP/Src/EEPROM.su ./Core/BSP/Src/FGEN.cyclo ./Core/BSP/Src/FGEN.d ./Core/BSP/Src/FGEN.o ./Core/BSP/Src/FGEN.su ./Core/BSP/Src/Frontend.cyclo ./Core/BSP/Src/Frontend.d ./Core/BSP/Src/Frontend.o ./Core/BSP/Src/Frontend.su ./Core/BSP/Src/GPIO.cyclo ./Core/BSP/Src/GPIO.d ./Core/BSP/Src/GPIO.o ./Core/BSP/Src/GPIO.su ./Core/BSP/Src/HDC1080.cyclo ./Core/BSP/Src/HDC1080.d ./Core/BSP/Src/HDC1080.o ./Core/BSP/Src/HDC1080.su ./Core/BSP/Src/LED.cyclo ./Core/BSP/Src/LED.d ./Core/BSP/Src/LED.o ./Core/BSP/Src/LED.su ./Core/BSP/Src/MAX5127.cyclo ./Core/BSP/Src/MAX5127.d ./Core/BSP/Src/MAX5127.o ./Core/BSP/Src/MAX5127.su ./Core/BSP/Src/SCPI_Calibration.cyclo ./Core/BSP/Src/SCPI_Calibration.d ./Core/BSP/Src/SCPI_Calibration.o ./Core/BSP/Src/SCPI_Calibration.su ./Core/BSP/Src/SCPI_Def.cyclo ./Core/BSP/Src/SCPI_Def.d ./Core/BSP/Src/SCPI_Def.o ./Core/BSP/Src/SCPI_Def.su ./Core/BSP/Src/SCPI_Fetch.cyclo ./Core/BSP/Src/SCPI_Fetch.d ./Core/BSP/Src/SCPI_Fetch.o ./Core/BSP/Src/SCPI_Fetch.su ./Core/BSP/Src/SCPI_Measure.cyclo ./Core/BSP/Src/SCPI_Measure.d ./Core/BSP/Src/SCPI_Measure.o ./Core/BSP/Src/SCPI_Measure.su ./Core/BSP/Src/SCPI_Sense.cyclo ./Core/BSP/Src/SCPI_Sense.d ./Core/BSP/Src/SCPI_Sense.o ./Core/BSP/Src/SCPI_Sense.su ./Core/BSP/Src/SCPI_Server.cyclo ./Core/BSP/Src/SCPI_Server.d ./Core/BSP/Src/SCPI_Server.o ./Core/BSP/Src/SCPI_Server.su ./Core/BSP/Src/SCPI_Source.cyclo ./Core/BSP/Src/SCPI_Source.d ./Core/BSP/Src/SCPI_Source.o ./Core/BSP/Src/SCPI_Source.su ./Core/BSP/Src/SCPI_System.cyclo ./Core/BSP/Src/SCPI_System.d ./Core/BSP/Src/SCPI_System.o ./Core/BSP/Src/SCPI_System.su ./Core/BSP/Src/SCPI_Trigger.cyclo ./Core/BSP/Src/SCPI_Trigger.d ./Core/BSP/Src/SCPI_Trigger.o ./Core/BSP/Src/SCPI_Trigger.su ./Core/BSP/Src/TCP_Package.cyclo ./Core/BSP/Src/TCP_Package.d ./Core/BSP/Src/TCP_Package.o ./Core/BSP/Src/TCP_Package.su
+	-$(RM) ./Core/BSP/Src/74HC595.cyclo ./Core/BSP/Src/74HC595.d ./Core/BSP/Src/74HC595.o ./Core/BSP/Src/74HC595.su ./Core/BSP/Src/AD5322.cyclo ./Core/BSP/Src/AD5322.d ./Core/BSP/Src/AD5322.o ./Core/BSP/Src/AD5322.su ./Core/BSP/Src/AD7980.cyclo ./Core/BSP/Src/AD7980.d ./Core/BSP/Src/AD7980.o ./Core/BSP/Src/AD7980.su ./Core/BSP/Src/AD9834.cyclo ./Core/BSP/Src/AD9834.d ./Core/BSP/Src/AD9834.o ./Core/BSP/Src/AD9834.su ./Core/BSP/Src/ADS8681.cyclo ./Core/BSP/Src/ADS8681.d ./Core/BSP/Src/ADS8681.o ./Core/BSP/Src/ADS8681.su ./Core/BSP/Src/BSP.cyclo ./Core/BSP/Src/BSP.d ./Core/BSP/Src/BSP.o ./Core/BSP/Src/BSP.su ./Core/BSP/Src/DAC8565.cyclo ./Core/BSP/Src/DAC8565.d ./Core/BSP/Src/DAC8565.o ./Core/BSP/Src/DAC8565.su ./Core/BSP/Src/Delay.cyclo ./Core/BSP/Src/Delay.d ./Core/BSP/Src/Delay.o ./Core/BSP/Src/Delay.su ./Core/BSP/Src/EE24.cyclo ./Core/BSP/Src/EE24.d ./Core/BSP/Src/EE24.o ./Core/BSP/Src/EE24.su ./Core/BSP/Src/EEPROM.cyclo ./Core/BSP/Src/EEPROM.d ./Core/BSP/Src/EEPROM.o ./Core/BSP/Src/EEPROM.su ./Core/BSP/Src/FGEN.cyclo ./Core/BSP/Src/FGEN.d ./Core/BSP/Src/FGEN.o ./Core/BSP/Src/FGEN.su ./Core/BSP/Src/Frontend.cyclo ./Core/BSP/Src/Frontend.d ./Core/BSP/Src/Frontend.o ./Core/BSP/Src/Frontend.su ./Core/BSP/Src/GPIO.cyclo ./Core/BSP/Src/GPIO.d ./Core/BSP/Src/GPIO.o ./Core/BSP/Src/GPIO.su ./Core/BSP/Src/HDC1080.cyclo ./Core/BSP/Src/HDC1080.d ./Core/BSP/Src/HDC1080.o ./Core/BSP/Src/HDC1080.su ./Core/BSP/Src/LED.cyclo ./Core/BSP/Src/LED.d ./Core/BSP/Src/LED.o ./Core/BSP/Src/LED.su ./Core/BSP/Src/MAX5127.cyclo ./Core/BSP/Src/MAX5127.d ./Core/BSP/Src/MAX5127.o ./Core/BSP/Src/MAX5127.su ./Core/BSP/Src/SCPI_Calibration.cyclo ./Core/BSP/Src/SCPI_Calibration.d ./Core/BSP/Src/SCPI_Calibration.o ./Core/BSP/Src/SCPI_Calibration.su ./Core/BSP/Src/SCPI_Def.cyclo ./Core/BSP/Src/SCPI_Def.d ./Core/BSP/Src/SCPI_Def.o ./Core/BSP/Src/SCPI_Def.su ./Core/BSP/Src/SCPI_Fetch.cyclo ./Core/BSP/Src/SCPI_Fetch.d ./Core/BSP/Src/SCPI_Fetch.o ./Core/BSP/Src/SCPI_Fetch.su ./Core/BSP/Src/SCPI_Measure.cyclo ./Core/BSP/Src/SCPI_Measure.d ./Core/BSP/Src/SCPI_Measure.o ./Core/BSP/Src/SCPI_Measure.su ./Core/BSP/Src/SCPI_Sense.cyclo ./Core/BSP/Src/SCPI_Sense.d ./Core/BSP/Src/SCPI_Sense.o ./Core/BSP/Src/SCPI_Sense.su ./Core/BSP/Src/SCPI_Server.cyclo ./Core/BSP/Src/SCPI_Server.d ./Core/BSP/Src/SCPI_Server.o ./Core/BSP/Src/SCPI_Server.su ./Core/BSP/Src/SCPI_Source.cyclo ./Core/BSP/Src/SCPI_Source.d ./Core/BSP/Src/SCPI_Source.o ./Core/BSP/Src/SCPI_Source.su ./Core/BSP/Src/SCPI_System.cyclo ./Core/BSP/Src/SCPI_System.d ./Core/BSP/Src/SCPI_System.o ./Core/BSP/Src/SCPI_System.su ./Core/BSP/Src/SCPI_Trigger.cyclo ./Core/BSP/Src/SCPI_Trigger.d ./Core/BSP/Src/SCPI_Trigger.o ./Core/BSP/Src/SCPI_Trigger.su ./Core/BSP/Src/TCP_Package.cyclo ./Core/BSP/Src/TCP_Package.d ./Core/BSP/Src/TCP_Package.o ./Core/BSP/Src/TCP_Package.su
 
 .PHONY: clean-Core-2f-BSP-2f-Src
 

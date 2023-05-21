@@ -12,7 +12,7 @@
 
 #define SECURITY_ON 1
 #define SECURITY_OFF 0
-#define CURRENT 0
+#define LAN_CURRENT 1
 #define STATIC 1
 #define DEFAULT 2
 #define NET_STR_WRONG_FORMAT 1

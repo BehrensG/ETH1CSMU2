@@ -9,11 +9,15 @@
 #define THIRD_PARTY_BSP_INC_DWT_DELAY_H_
 
 #include <stdint.h>
+#include "main.h"
 
 #define DWT_DELAY_NEWBIE 0
 
 void DWT_Init(void);
 void DWT_Delay_us(uint32_t us);
 void DWT_Delay_ns(uint32_t ns);
+
+void TIM_DelayInit();
+void TIM_Delay_us(uint16_t us);
 
 #endif /* THIRD_PARTY_BSP_INC_DWT_DELAY_H_ */

@@ -44,14 +44,20 @@
 #define CURR_POS 0
 #define CURR_NEG 1
 
-#define VOLTAGE 0
-#define CURRENT 1
+#define MODE_VOLTAGE 0
+#define MODE_CURRENT 1
+
+#define ADC_VOLTAGE 0
+#define ADC_CURRENT 1
 
 #define STRING_LENGTH 		16
 
 #define PASSWORD "ETH1CSMU2"
 
 #define TCPIP_DEFAULT_PORT 2000
+
+#define SELECT_ADC1		1
+#define SELECT_ADC2		2
 
 typedef enum
 {
@@ -137,6 +143,7 @@ typedef struct bsp_ads8681
 {
 
 	float gain[3];
+	float offset[3];
 
 }bsp_ads8681_t;
 
@@ -144,6 +151,7 @@ typedef struct bsp_ad7980
 {
 
 	float gain[3];
+	float offset[3];
 
 }bsp_ad7980_t;
 
@@ -208,6 +216,8 @@ typedef struct bsp_temperature
 
 typedef struct _bsp_config_relay
 {
+	uint8_t gain_val;
+	uint8_t gain_index;
 	uint8_t state[MAXROW];
 
 }bsp_config_relay_t;
@@ -225,17 +235,10 @@ typedef struct bsp_config_ac
 
 typedef struct bsp_adc
 {
-	uint8_t gain;
 	float meas[ADC_SAMPLE_SIZE];
 
 }bsp_adc_t;
 
-typedef struct bsp_config_adc
-{
-	uint16_t samples;
-	uint8_t select;
-
-}bsp_config_adc_t;
 
 typedef struct bsp_config_dds
 {
@@ -284,7 +287,11 @@ typedef struct bsp_config_dc
 
 typedef struct bsp_config_meas
 {
+	uint16_t delay;
+	uint32_t count;
 	uint8_t enable;
+	uint8_t adc_type;
+	uint8_t gain[2];
 }bsp_config_meas_t;
 
 typedef struct bsp_config_curr_range
@@ -299,7 +306,6 @@ typedef struct _bsp_config
 	bsp_config_ac_t ac;
 	bsp_config_arb_t list;
 	bsp_config_dc_t dc;
-	bsp_config_adc_t adc;
 	bsp_config_dds_t dds;
 	bsp_config_relay_t relay;
 	bsp_config_meas_t measure;

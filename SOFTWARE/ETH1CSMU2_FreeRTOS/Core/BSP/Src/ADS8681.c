@@ -5,9 +5,9 @@
  *      Author: grzegorz
  */
 
+#include <Delay.h>
 #include "ADS8681.h"
 #include "main.h"
-#include "DWT_Delay.h"
 
 double ADS8681_LSB[5] = {0.000375000, 0.000312500, 0.000187500, 0.000156250, 0.000078125};
 

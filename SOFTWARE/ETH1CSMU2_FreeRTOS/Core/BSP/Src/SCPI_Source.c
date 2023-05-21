@@ -14,7 +14,7 @@
 #include "FGEN.h"
 
 extern struct bsp_t bsp;
-
+extern uint8_t adc_gain_value[3];
 /*
  * [SOURce]:CURRent:RANGe <range>
  *
@@ -214,7 +214,7 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 			DAC8565_SetVOUT(VOUTA, 4.0f);
 			osDelay(pdMS_TO_TICKS(2));
 			DAC8565_SetVOUT(VOUTB, tmp_volt);
-			bsp.state.calib_mode = VOLTAGE;
+			bsp.state.calib_mode = MODE_VOLTAGE;
 		}
 		else if((bsp.config.dc.voltage.value >= SOURCE_VOLT_DC_MIN_VAL) && (bsp.config.dc.voltage.value < SOURCE_VOLT_DC_DEF_VAL))
 		{
@@ -226,7 +226,7 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 			DAC8565_SetVOUT(VOUTA, fabs(tmp_volt));
 			osDelay(pdMS_TO_TICKS(2));
 			DAC8565_SetVOUT(VOUTB, 4.0f);
-			bsp.state.calib_mode = VOLTAGE;
+			bsp.state.calib_mode = MODE_VOLTAGE;
 		}
 		else if(SOURCE_VOLT_DC_DEF_VAL == bsp.config.dc.voltage.value)
 		{
@@ -236,14 +236,14 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 				DAC8565_SetVOUT(VOUTA, bsp.eeprom.structure.calib.dac8565.zero_offset);
 				osDelay(pdMS_TO_TICKS(2));
 				DAC8565_SetVOUT(VOUTB, SOURCE_VOLT_DC_DEF_VAL);
-				bsp.state.calib_mode = VOLTAGE;
+				bsp.state.calib_mode = MODE_VOLTAGE;
 			}
 			else
 			{
 				DAC8565_SetVOUT(VOUTA, SOURCE_VOLT_DC_DEF_VAL);
 				osDelay(pdMS_TO_TICKS(2));
 				DAC8565_SetVOUT(VOUTB, bsp.eeprom.structure.calib.dac8565.zero_offset);
-				bsp.state.calib_mode = VOLTAGE;
+				bsp.state.calib_mode = MODE_VOLTAGE;
 			}
 		}
 	}
@@ -350,6 +350,12 @@ scpi_result_t SCPI_SourceCurrentDCPositiveImmediate(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
+scpi_result_t SCPI_SourceCurrentDCPositiveImmediateQ(scpi_t * context)
+{
+	SCPI_ResultFloat(context, bsp.config.dc.current.value[CURR_POS]);
+	return SCPI_RES_OK;
+}
+
 scpi_result_t SCPI_SourceCurrentDCNegativeImmediate(scpi_t* context)
 {
 	uint8_t index;
@@ -372,6 +378,11 @@ scpi_result_t SCPI_SourceCurrentDCNegativeImmediate(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
+scpi_result_t SCPI_SourceCurrentDCNegativeImmediateQ(scpi_t * context)
+{
+	SCPI_ResultFloat(context, bsp.config.dc.current.value[CURR_NEG]);
+	return SCPI_RES_OK;
+}
 
 /*
  * SOURce:VOLTage:DC[:IMMediate] <dc_value>
@@ -437,6 +448,66 @@ scpi_result_t SCPI_SourceVoltageACImmediate(scpi_t* context)
 
 	ret = FGEN_SetAmplitude(bsp.config.ac.amplitude/bsp.config.ac.amplit_gain);
 	ret = FGEN_SetFrequency(bsp.config.ac.frequency);
+	ret = FGEN_SetOffset(-1*bsp.config.ac.offset/bsp.config.ac.offset_gain);
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageACAmplitudeImmediate(scpi_t* context)
+{
+	BSP_StatusTypeDef ret;
+	float tmp;
+
+	if(SCPI_RES_OK != AC_Voltage(context))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	tmp = fabs(bsp.config.ac.amplitude) + fabs(bsp.config.ac.offset);
+
+	if(tmp > SOURCE_AC_MAX_VAL)
+	{
+		SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
+		return SCPI_RES_ERR;
+	}
+
+	ret = FGEN_SetAmplitude(bsp.config.ac.amplitude/bsp.config.ac.amplit_gain);
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageACFrequencyImmediate(scpi_t* context)
+{
+	BSP_StatusTypeDef ret;
+	float tmp;
+	if(SCPI_RES_OK != AC_Frequency(context))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	ret = FGEN_SetFrequency(bsp.config.ac.frequency);
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageACOffsetImmediate(scpi_t* context)
+{
+	BSP_StatusTypeDef ret;
+	float tmp;
+
+	if(SCPI_RES_OK != AC_Offset(context))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	tmp = fabs(bsp.config.ac.amplitude) + fabs(bsp.config.ac.offset);
+
+	if(tmp > SOURCE_AC_MAX_VAL)
+	{
+		SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
+		return SCPI_RES_ERR;
+	}
+
 	ret = FGEN_SetOffset(-1*bsp.config.ac.offset/bsp.config.ac.offset_gain);
 
 	return SCPI_RES_OK;

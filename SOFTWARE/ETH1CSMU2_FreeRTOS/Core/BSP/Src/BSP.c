@@ -29,10 +29,6 @@ static void BSP_Init_Common()
 
 	bsp.config.dc.voltage.gain = 3.0;
 	bsp.config.dc.voltage.value = 0.0;
-	bsp.config.dc.current.gain = 10.0;
-	bsp.config.dc.current.value[CURR_POS] = 0.2;
-	bsp.config.dc.current.value[CURR_NEG] = 0.2;
-
 
 	bsp.config.ac.amplit_gain = 13;
 	bsp.config.ac.offset_gain = 2;
@@ -43,7 +39,12 @@ static void BSP_Init_Common()
 
 	bsp.config.list.delay = 0;
 
-	bsp.config.measure.enable = 0;
+	bsp.config.measure.delay = 0;
+	bsp.config.measure.count = 1;
+	bsp.config.measure.enable = 1;
+	bsp.config.measure.gain[ADC_VOLTAGE] = 1;
+	bsp.config.measure.gain[ADC_CURRENT] = 1;
+	bsp.config.measure.adc_type = SELECT_ADC1;
 
 	bsp.config.curr_range.value = 0.2f;
 	bsp.config.curr_range.index = 3;
@@ -105,18 +106,30 @@ void BSP_Init_DefualtEEPROM()
 	bsp.eeprom.structure.calib.ad7980[0].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[0].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[0].gain[2] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[0].offset[0] = 0.0;
+	bsp.eeprom.structure.calib.ad7980[0].offset[1] = 0.0;
+	bsp.eeprom.structure.calib.ad7980[0].offset[2] = 0.0;
 
 	bsp.eeprom.structure.calib.ad7980[1].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[1].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ad7980[1].gain[2] = 1.0;
+	bsp.eeprom.structure.calib.ad7980[1].offset[0] = 0.0;
+	bsp.eeprom.structure.calib.ad7980[1].offset[1] = 0.0;
+	bsp.eeprom.structure.calib.ad7980[1].offset[2] = 0.0;
 
 	bsp.eeprom.structure.calib.ads8681[0].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[0].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[0].gain[2] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[0].offset[0] = 0.0;
+	bsp.eeprom.structure.calib.ads8681[0].offset[1] = 0.0;
+	bsp.eeprom.structure.calib.ads8681[0].offset[2] = 0.0;
 
 	bsp.eeprom.structure.calib.ads8681[1].gain[0] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[1].gain[1] = 1.0;
 	bsp.eeprom.structure.calib.ads8681[1].gain[2] = 1.0;
+	bsp.eeprom.structure.calib.ads8681[1].offset[0] = 0.0;
+	bsp.eeprom.structure.calib.ads8681[1].offset[1] = 0.0;
+	bsp.eeprom.structure.calib.ads8681[1].offset[2] = 0.0;
 
 	bsp.eeprom.structure.calib.count = 0;
 

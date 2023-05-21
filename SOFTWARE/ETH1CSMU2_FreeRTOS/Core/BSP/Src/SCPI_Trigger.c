@@ -6,10 +6,10 @@
  */
 
 
+#include <Delay.h>
 #include <stdio.h>
 #include "SCPI_Trigger.h"
 
-#include "DWT_Delay.h"
 
 extern scpi_choice_def_t boolean_select[];
 extern struct bsp_t bsp;

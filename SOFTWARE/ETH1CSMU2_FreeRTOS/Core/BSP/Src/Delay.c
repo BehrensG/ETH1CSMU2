@@ -5,8 +5,21 @@
  *      Author: grzegorz
  */
 
+#include "Delay.h"
 #include "main.h"          // change to whatever MCU you use
-#include "DWT_Delay.h"
+
+extern TIM_HandleTypeDef htim3;
+
+void TIM_DelayInit()
+{
+	HAL_TIM_Base_Start(&htim3);
+}
+
+void TIM_Delay_us(uint16_t us)
+{
+	__HAL_TIM_SET_COUNTER(&htim3, 0);
+	while (__HAL_TIM_GET_COUNTER(&htim3) < us);
+}
 
 /**
  * Initialization routine.
