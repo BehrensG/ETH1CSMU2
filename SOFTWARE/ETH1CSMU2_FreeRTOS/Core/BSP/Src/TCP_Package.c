@@ -6,9 +6,7 @@
  */
 #include <stdio.h>
 #include "BSP.h"
-
-#define TCP_PACKGE_SIZE 10000
-
+#include "TCP_Package.h"
 
 char* TCP_Package(float* meas, uint16_t start, uint16_t size)
 {

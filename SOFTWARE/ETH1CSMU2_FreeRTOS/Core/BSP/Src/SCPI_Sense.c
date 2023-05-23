@@ -54,7 +54,7 @@ scpi_result_t SCPI_SenseSelectADC(scpi_t* context)
 		return SCPI_RES_ERR;
 	}
 
-	if((1 != adc_type) || (2 != adc_type))
+	if((SELECT_ADC1 != adc_type) || (SELECT_ADC2 != adc_type))
 	{
 		SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE);
 		return SCPI_RES_ERR;
@@ -105,6 +105,21 @@ scpi_result_t SCPI_SenseCountQ(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
+static uint8_t GAIN_GetIndex(uint32_t value)
+{
+	uint8_t gain[3] = {1, 10, 100};
+
+	for(uint8_t x = 0; x < 2; x++)
+	{
+		if(gain[x] == value)
+		{
+			return x;
+		}
+	}
+
+	return 0;
+}
+
 scpi_result_t SCPI_SenseVoltageGain(scpi_t* context)
 {
 	uint32_t gain;
@@ -121,6 +136,7 @@ scpi_result_t SCPI_SenseVoltageGain(scpi_t* context)
 	}
 
 	bsp.config.measure.gain[ADC_VOLTAGE] = gain;
+	bsp.config.measure.gain_index[ADC_VOLTAGE] = GAIN_GetIndex(gain);
 	DG444_Switch(DG444_GAIN_VOLT, gain);
 
 	return SCPI_RES_OK;
@@ -148,6 +164,7 @@ scpi_result_t SCPI_SenseCurrentGain(scpi_t* context)
 	}
 
 	bsp.config.measure.gain[ADC_CURRENT] = gain;
+	bsp.config.measure.gain_index[ADC_CURRENT] = GAIN_GetIndex(gain);
 	DG444_Switch(DG444_GAIN_CURR, gain);
 
 	return SCPI_RES_OK;

@@ -292,6 +292,7 @@ typedef struct bsp_config_meas
 	uint8_t enable;
 	uint8_t adc_type;
 	uint8_t gain[2];
+	uint8_t gain_index[2];
 }bsp_config_meas_t;
 
 typedef struct bsp_config_curr_range
@@ -328,6 +329,7 @@ typedef struct _bsp_sn74hc595_t
 typedef struct _bsp_state_t
 {
 	uint8_t calib_mode;
+	uint32_t meas_count;
 }bsp_state_t;
 
 

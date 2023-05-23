@@ -8,6 +8,8 @@
 #ifndef BSP_INC_TCP_PACKAGE_H_
 #define BSP_INC_TCP_PACKAGE_H_
 
+#define TCP_PACKGE_SIZE 10000
+
 char* TCP_Package(float* meas, uint16_t start, uint16_t size);
 
 #endif /* BSP_INC_TCP_PACKAGE_H_ */
