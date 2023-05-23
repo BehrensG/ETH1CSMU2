@@ -317,7 +317,6 @@ typedef struct _bsp_config
 
 typedef struct _bsp_adc_ads8681
 {
-	float zero_offset;
 	uint8_t range;
 }bsp_adc_ads8681_t;
 

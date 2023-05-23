@@ -5,7 +5,7 @@
  *      Author: grzegorz
  */
 
-#include <Delay.h>
+#include "Delay.h"
 #include "ADS8681.h"
 #include "main.h"
 
@@ -43,6 +43,45 @@ static BSP_StatusTypeDef BSP_SPI1_Transmit(uint32_t* buffer, uint32_t size, uint
 	HAL_SPI_Transmit(&hspi1, tx_tmp, 4, 10000);
 
     return BSP_OK;
+}
+
+HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+	uint16_t data[2] = {0x0000,0x00000};
+	float tmp[2];
+	uint8_t volt_gain_index, curr_gain_index;
+
+	volt_gain_index = bsp.config.measure.gain_index[ADC_VOLTAGE];
+	curr_gain_index = bsp.config.measure.gain_index[ADC_CURRENT];
+
+	for(uint16_t x = 0; x < count; x++)
+	{
+		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		ADS8681_ConvertionTime();
+
+		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+		status = BSP_SPI1_Receive(data, 2, 10000);
+		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		tmp[ADC_VOLTAGE] = (float)((data[ADC_VOLTAGE] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_VOLTAGE].range]);
+		tmp[ADC_CURRENT] = (float)((data[ADC_CURRENT] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_CURRENT].range]);
+
+		tmp[ADC_VOLTAGE] = tmp[ADC_VOLTAGE]*bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].gain[volt_gain_index] + bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].offset[volt_gain_index];
+		tmp[ADC_CURRENT] = tmp[ADC_CURRENT]*bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].gain[curr_gain_index] + bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].offset[curr_gain_index];
+
+		bsp.adc[ADC_VOLTAGE].meas[x] = tmp[ADC_VOLTAGE]/bsp.config.measure.gain[ADC_VOLTAGE];
+		bsp.adc[ADC_CURRENT].meas[x] = tmp[ADC_VOLTAGE]/bsp.config.measure.gain[ADC_CURRENT];
+
+		TIM_Delay_us(bsp.config.measure.delay);
+	}
+
+	bsp.state.meas_count = count;
+
+	return status;
 }
 
 BSP_StatusTypeDef ADS8681_RawData(uint16_t* raw_data)
@@ -84,8 +123,8 @@ BSP_StatusTypeDef ADS8681_Init()
 	status = ADS8681_SetID();
 	if(BSP_OK != status) return status;
 
-	range[0] = bsp.ads8681[0].range = ADS8681_RANGE_3VREF;
-	range[1] = bsp.ads8681[1].range = ADS8681_RANGE_3VREF;
+	range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_3VREF;
+	range[1] = bsp.ads8681[ADC_CURRENT].range = ADS8681_RANGE_3VREF;
 
 	status = ADS8681_SetDataOutput();
 	if(BSP_OK != status) return status;
