@@ -174,3 +174,30 @@ scpi_result_t SCPI_SenseCurrentGainQ(scpi_t* context)
 	SCPI_ResultUInt8(context, bsp.config.measure.gain[ADC_CURRENT]);
 	return SCPI_RES_OK;
 }
+
+
+scpi_result_t SCPI_SenseMeasureDelay(scpi_t* context)
+{
+
+	uint32_t delay;
+
+	if(SCPI_ParamUInt32(context, &delay, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	bsp.config.measure.delay = delay;
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SenseMeasureDelayQ(scpi_t* context)
+{
+	SCPI_ResultUInt32(context, bsp.config.measure.delay);
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SenseVoltageListMeasureQ(scpi_t* context)
+{
+	return SCPI_RES_OK;
+}

@@ -740,3 +740,8 @@ scpi_result_t SCPI_SourceVoltageListDelay(scpi_t * context)
 {
 	return SCPI_RES_OK;
 }
+
+scpi_result_t SCPI_SourceVoltageListMeasureEnable(scpi_t * context)
+{
+	return SCPI_RES_OK;
+}

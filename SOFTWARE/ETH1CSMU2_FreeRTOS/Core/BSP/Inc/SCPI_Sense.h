@@ -22,4 +22,8 @@ scpi_result_t SCPI_SenseVoltageGain(scpi_t* context);
 scpi_result_t SCPI_SenseVoltageGainQ(scpi_t* context);
 scpi_result_t SCPI_SenseCurrentGain(scpi_t* context);
 scpi_result_t SCPI_SenseCurrentGainQ(scpi_t* context);
+scpi_result_t SCPI_SenseMeasureDelay(scpi_t* context);
+scpi_result_t SCPI_SenseMeasureDelayQ(scpi_t* context);
+scpi_result_t SCPI_SenseVoltageListMeasureQ(scpi_t* context);
+
 #endif /* THIRD_PARTY_BSP_INC_SCPI_SENSE_H_ */

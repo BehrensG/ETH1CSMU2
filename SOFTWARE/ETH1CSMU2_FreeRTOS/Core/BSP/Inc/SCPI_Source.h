@@ -62,5 +62,6 @@ scpi_result_t SCPI_SourceVoltageListPointsQ(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListStart(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListStop(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListDelay(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListMeasureEnable(scpi_t * context);
 
 #endif /* THIRD_PARTY_BSP_INC_SCPI_SOURCE_H_ */

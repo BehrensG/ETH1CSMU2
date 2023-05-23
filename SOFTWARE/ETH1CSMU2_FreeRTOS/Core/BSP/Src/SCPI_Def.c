@@ -321,6 +321,8 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:VOLTage:LIST:STARt", .callback = SCPI_SourceVoltageListStart,},
 	{.pattern = "SOURce:VOLTage:LIST:STOP", .callback = SCPI_SourceVoltageListStop,},
 	{.pattern = "SOURce:VOLTage:LIST:DELay", .callback = SCPI_SourceVoltageListDelay,},
+	{.pattern = "SOURce:VOLTage:LIST:MEASure:ENAble", .callback = SCPI_SourceVoltageListMeasureEnable,},
+
 
 	{.pattern = "SENSe:FUNCtion[:ON]", .callback = SCPI_SenseFunctionOn,},
 	{.pattern = "SENSe:FUNCtion[:ON]?", .callback = SCPI_SenseFunctionOnQ,},
@@ -332,6 +334,9 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SENSe:VOLTage:GAIN?", .callback = SCPI_SenseVoltageGainQ,},
 	{.pattern = "SENSe:CURRent:GAIN", .callback = SCPI_SenseCurrentGain,},
 	{.pattern = "SENSe:CURRent:GAIN?", .callback = SCPI_SenseCurrentGainQ,},
+	{.pattern = "SENSe:MEASure:DELay", .callback = SCPI_SenseMeasureDelay,},
+	{.pattern = "SENSe:MEASure:DELay?", .callback = SCPI_SenseMeasureDelayQ,},
+	{.pattern = "SENSe:VOLTage:LIST:MEASure?", .callback = SCPI_SenseVoltageListMeasureQ,},
 
 	{.pattern = "FETCh?", .callback = SCPI_FetchQ,},
 	{.pattern = "FETCh:ARRay?", .callback = SCPI_FetchArrayQ,},
