@@ -170,6 +170,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   DAC8565_Init();
   DWT_Init();
+  TIM_DelayInit();
   BSP_Init();
   SN74HC595_Init();
   MAX5217_Init();

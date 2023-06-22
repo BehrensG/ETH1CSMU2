@@ -38,7 +38,7 @@ char* TCP_Package(float* meas, uint16_t start, uint16_t size)
 		}
 
 	}
-	ptr += snprintf(tcp_package + ptr, sizeof(tcp_package), "\r\n", 2);
+	//ptr += snprintf(tcp_package + ptr, sizeof(tcp_package), "\r\n", 2);
 
 	return tcp_package;
 }

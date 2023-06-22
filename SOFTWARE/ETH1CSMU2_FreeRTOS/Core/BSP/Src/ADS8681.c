@@ -25,9 +25,9 @@ static BSP_StatusTypeDef BSP_SPI1_Receive(uint32_t* buffer, uint32_t size, uint3
 {
 	uint16_t rx_tmp[4];
 
-		HAL_SPI_Receive(&hspi1, rx_tmp, 4, 10000);
-		buffer[0] = rx_tmp[0] << 16 | rx_tmp[1];
-		buffer[1] = rx_tmp[2] << 16 | rx_tmp[3];
+		HAL_SPI_Receive(&hspi1, rx_tmp, 4, timeout);
+		buffer[0] = rx_tmp[3] << 16 | rx_tmp[2];
+		buffer[1] = rx_tmp[1] << 16 | rx_tmp[0];
 
     return BSP_OK;
 }
@@ -35,12 +35,12 @@ static BSP_StatusTypeDef BSP_SPI1_Receive(uint32_t* buffer, uint32_t size, uint3
 static BSP_StatusTypeDef BSP_SPI1_Transmit(uint32_t* buffer, uint32_t size, uint32_t timeout)
 {
 	uint16_t tx_tmp[4];
-	tx_tmp[0] = (uint16_t) buffer[0];
-	tx_tmp[1] = (uint16_t)(buffer[0] >> 16);
-	tx_tmp[2] = (uint16_t) buffer[1];
-	tx_tmp[3] = (uint16_t)(buffer[1] >> 16);
+	tx_tmp[3] = (uint16_t) buffer[0];
+	tx_tmp[2] = (uint16_t)(buffer[0] >> 16);
+	tx_tmp[1] = (uint16_t) buffer[1];
+	tx_tmp[0] = (uint16_t)(buffer[1] >> 16);
 
-	HAL_SPI_Transmit(&hspi1, tx_tmp, 4, 10000);
+	HAL_SPI_Transmit(&hspi1, tx_tmp, 4, timeout);
 
     return BSP_OK;
 }
@@ -49,8 +49,8 @@ HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
 {
 	HAL_StatusTypeDef status = HAL_OK;
 	uint16_t data[2] = {0x0000,0x00000};
-	float tmp[2];
-	uint8_t volt_gain_index, curr_gain_index;
+	float tmp[2] = {0.0, 0.0};
+	uint8_t volt_gain_index = 0, curr_gain_index = 0;
 
 	volt_gain_index = bsp.config.measure.gain_index[ADC_VOLTAGE];
 	curr_gain_index = bsp.config.measure.gain_index[ADC_CURRENT];
@@ -59,22 +59,23 @@ HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
 	{
 		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
-		ADS8681_ConvertionTime();
+		//ADS8681_ConvertionTime();
+		TIM_Delay_us(1);
 
 		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
-		status = BSP_SPI1_Receive(data, 2, 10000);
+		status = BSP_SPI1_Receive(data, 2, 1000);
 		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 		tmp[ADC_VOLTAGE] = (float)((data[ADC_VOLTAGE] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_VOLTAGE].range]);
 		tmp[ADC_CURRENT] = (float)((data[ADC_CURRENT] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_CURRENT].range]);
 
-		tmp[ADC_VOLTAGE] = tmp[ADC_VOLTAGE]*bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].gain[volt_gain_index] + bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].offset[volt_gain_index];
-		tmp[ADC_CURRENT] = tmp[ADC_CURRENT]*bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].gain[curr_gain_index] + bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].offset[curr_gain_index];
+		tmp[ADC_VOLTAGE] = tmp[ADC_VOLTAGE]*bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].gain[volt_gain_index];
+		tmp[ADC_CURRENT] = tmp[ADC_CURRENT]*bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].gain[curr_gain_index];
 
 		bsp.adc[ADC_VOLTAGE].meas[x] = tmp[ADC_VOLTAGE]/bsp.config.measure.gain[ADC_VOLTAGE];
-		bsp.adc[ADC_CURRENT].meas[x] = tmp[ADC_VOLTAGE]/bsp.config.measure.gain[ADC_CURRENT];
+		bsp.adc[ADC_CURRENT].meas[x] = tmp[ADC_CURRENT]/bsp.config.measure.gain[ADC_CURRENT];
 
 		TIM_Delay_us(bsp.config.measure.delay);
 	}
@@ -97,7 +98,7 @@ BSP_StatusTypeDef ADS8681_RawData(uint16_t* raw_data)
 	LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 	LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
-	status = BSP_SPI1_Receive(rx_data, 2, 10000);
+	status = BSP_SPI1_Receive(rx_data, 2, 1000);
 	LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 	if(BSP_OK != status)
@@ -219,8 +220,8 @@ static BSP_StatusTypeDef ADS8681_SetID()
 	status = ADS8681_ReadLSB(rx_data);
 	if(BSP_OK != status) return status;
 
-	tx_data[1] = ADS8681_ID1;
-	tx_data[0] = ADS8681_ID2;
+	tx_data[0] = ADS8681_ID1;
+	tx_data[1] = ADS8681_ID2;
 
 	for (uint8_t x = 0; x < 2; x++)
 	{
@@ -242,7 +243,7 @@ static BSP_StatusTypeDef ADS8681_ReadLSB(uint8_t* data)
 
 	LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 	//status = HAL_SPI_Receive(&hspi3, (uint8_t*)rx_data, 2, 1000);
-	status = BSP_SPI1_Receive(rx_data, 2,10000);
+	status = BSP_SPI1_Receive(rx_data, 2,1000);
 	LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 
@@ -257,14 +258,16 @@ static BSP_StatusTypeDef ADS8681_WriteHWORD(uint8_t* cmd, uint8_t* reg, uint16_t
 {
 
 	BSP_StatusTypeDef status = BSP_OK;
-	uint32_t tx_data[2] = {0x00000000,0x00000000};
+	uint16_t tx_data[4] = {0x00000000,0x00000000};
 
-	tx_data[0] = cmd[0] << 24 | reg[0] << 16 | (data[0] & 0x0000FFFF);
-	tx_data[1] = cmd[1] << 24 | reg[1] << 16 | (data[1] & 0x0000FFFF);
+	tx_data[0] = cmd[0] << 8 | reg[0];
+	tx_data[1] = data[0] & 0x0000FFFF;
+	tx_data[2] = cmd[1] << 8 | reg[1];
+	tx_data[3] = data[1] & 0x0000FFFF;
 
 	LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 	//status = HAL_SPI_Transmit(&hspi3, (uint8_t*)tx_data, 2, 1000);
-	status = BSP_SPI1_Transmit(tx_data, 2, 10000);
+	status = BSP_SPI1_Transmit(tx_data, 4, 1000);
 	LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 	return status;
@@ -302,7 +305,7 @@ static BSP_StatusTypeDef ADS8681_WriteLSB(uint8_t* cmd, uint8_t* reg, uint8_t* d
 
 	LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 	//status = HAL_SPI_Transmit(&hspi3, (uint8_t*)tx_data, 2, 1000);
-	status = BSP_SPI1_Transmit(tx_data, 2, 10000);
+	status = BSP_SPI1_Transmit(tx_data, 2, 1000);
 	LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 	return status;

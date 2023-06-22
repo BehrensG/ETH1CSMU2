@@ -54,7 +54,7 @@ scpi_result_t SCPI_SenseSelectADC(scpi_t* context)
 		return SCPI_RES_ERR;
 	}
 
-	if((SELECT_ADC1 != adc_type) || (SELECT_ADC2 != adc_type))
+	if((SELECT_ADC1 != adc_type) && (SELECT_ADC2 != adc_type))
 	{
 		SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE);
 		return SCPI_RES_ERR;
