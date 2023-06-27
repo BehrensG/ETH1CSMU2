@@ -48,7 +48,8 @@ static BSP_StatusTypeDef BSP_SPI1_Transmit(uint32_t* buffer, uint32_t size, uint
 HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
 {
 	HAL_StatusTypeDef status = HAL_OK;
-	uint16_t data[2] = {0x0000,0x00000};
+	uint32_t rx_data[2] = {0x00,0x00};
+	uint16_t data[2] = {0x00, 0x00};
 	float tmp[2] = {0.0, 0.0};
 	uint8_t volt_gain_index = 0, curr_gain_index = 0;
 
@@ -65,8 +66,11 @@ HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
 		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
 
 		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
-		status = BSP_SPI1_Receive(data, 2, 1000);
+		status = BSP_SPI1_Receive(rx_data, 2, 1000);
 		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		data[0] = (uint16_t)(rx_data[0]);
+		data[1] = (uint16_t)(rx_data[1]);
 
 		tmp[ADC_VOLTAGE] = (float)((data[ADC_VOLTAGE] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_VOLTAGE].range]);
 		tmp[ADC_CURRENT] = (float)((data[ADC_CURRENT] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_CURRENT].range]);
@@ -74,8 +78,8 @@ HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
 		tmp[ADC_VOLTAGE] = tmp[ADC_VOLTAGE]*bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].gain[volt_gain_index];
 		tmp[ADC_CURRENT] = tmp[ADC_CURRENT]*bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].gain[curr_gain_index];
 
-		bsp.adc[ADC_VOLTAGE].meas[x] = tmp[ADC_VOLTAGE]/bsp.config.measure.gain[ADC_VOLTAGE];
-		bsp.adc[ADC_CURRENT].meas[x] = tmp[ADC_CURRENT]/bsp.config.measure.gain[ADC_CURRENT];
+		bsp.adc[ADC_VOLTAGE].meas[x] = tmp[ADC_VOLTAGE]/(float)(bsp.config.measure.gain[ADC_VOLTAGE]);
+		bsp.adc[ADC_CURRENT].meas[x] = tmp[ADC_CURRENT]/(float)(bsp.config.measure.gain[ADC_CURRENT]);
 
 		TIM_Delay_us(bsp.config.measure.delay);
 	}

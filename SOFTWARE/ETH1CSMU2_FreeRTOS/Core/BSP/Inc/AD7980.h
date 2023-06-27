@@ -15,6 +15,7 @@
 
 #define AD7980_FSR_CENTER	0x8000
 #define AD7980_LSB			7.62939453125E-5
+#define AD7980_GAIN			4.81927711
 
 HAL_StatusTypeDef AD7980_ReadData(uint16_t count);
 void AD7980_RXDataToVoltage(uint16_t count);

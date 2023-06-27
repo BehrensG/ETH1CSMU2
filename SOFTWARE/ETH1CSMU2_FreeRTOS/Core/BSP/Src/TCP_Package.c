@@ -5,6 +5,7 @@
  *      Author: grzegorz
  */
 #include <stdio.h>
+#include <string.h>
 #include "BSP.h"
 #include "TCP_Package.h"
 
@@ -15,6 +16,7 @@ char* TCP_Package(float* meas, uint16_t start, uint16_t size)
 	last = size - 1;
 	static char tcp_package[TCP_PACKGE_SIZE];
 
+	memset(tcp_package,0,sizeof tcp_package);
 
 	for (uint32_t x = 0; x < size; x++)
 	{
