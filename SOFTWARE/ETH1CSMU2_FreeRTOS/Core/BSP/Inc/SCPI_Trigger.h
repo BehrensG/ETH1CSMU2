@@ -23,6 +23,8 @@ enum e_trigger_source
 	TRIG_OUT
 };
 
+
+scpi_result_t SCPI_InitiateImmediate(scpi_t* context);
 scpi_result_t SCPI_TriggerDelay(scpi_t* context);
 scpi_result_t SCPI_TriggerDelayQ(scpi_t* context);
 scpi_result_t SCPI_TriggerImmediate(scpi_t* context);

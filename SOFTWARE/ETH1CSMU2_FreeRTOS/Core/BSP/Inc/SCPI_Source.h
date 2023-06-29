@@ -12,19 +12,19 @@
 #include "cmsis_os.h"
 #include "scpi/scpi.h"
 
-#define SOURCE_VOLT_DC_MAX_VAL			12.0f
-#define SOURCE_VOLT_DC_MIN_VAL			-12.0f
+#define SOURCE_VOLT_DC_MAX_VAL			11.0f
+#define SOURCE_VOLT_DC_MIN_VAL			-11.0f
 #define SOURCE_VOLT_DC_DEF_VAL			0.0f
 #define SOURCE_CURR_DC_MAX_VAL			0.2f
 #define SOURCE_CURR_DC_MIN_VAL			0.0f
 #define SOURCE_CURR_DC_DEF_VAL			0.2f
 
 #define SOURCE_AC_MIN_FREQ				1.0f
-#define SOURCE_AC_MAX_FREQ				100000.0f
+#define SOURCE_AC_MAX_FREQ				200000.0f
 #define SOURCE_AC_DEF_FREQ				1000.0f
 
-#define SOURCE_AC_MAX_VAL				12.0f
-#define SOURCE_AC_MIN_VAL				-12.0f
+#define SOURCE_AC_MAX_VAL				11.0f
+#define SOURCE_AC_MIN_VAL				-11.0f
 #define SOURCE_AC_DEF_VAL				1.0f
 #define SOURCE_AC_OFFSET_DEF_VAL		0.0f
 
@@ -34,8 +34,8 @@ scpi_result_t SCPI_SourceCurrentRange(scpi_t* context);
 scpi_result_t SCPI_SourceCurrentRangeQ(scpi_t* context);
 scpi_result_t SCPI_SourceCurrentRangeAuto(scpi_t* context);
 
-scpi_result_t SCPI_SourceRelayOutput(scpi_t* context);
-scpi_result_t SCPI_SourceRelayOutputQ(scpi_t* context);
+scpi_result_t SCPI_Output(scpi_t* context);
+scpi_result_t SCPI_OutputQ(scpi_t* context);
 
 scpi_result_t SCPI_SourceFunctionMode(scpi_t* context);
 scpi_result_t SCPI_SourceFunctionModeQ(scpi_t* context);

@@ -669,7 +669,7 @@ scpi_result_t SCPI_SourceVoltageACImmediateQ(scpi_t* context)
 	return SCPI_RES_OK;
 }
 
-scpi_result_t SCPI_SourceRelayOutput(scpi_t * context)
+scpi_result_t SCPI_Output(scpi_t * context)
 {
 	scpi_channel_value_t array[MAXCOL*MAXROW] = {0};
 	size_t channel_size = 0;
@@ -699,7 +699,7 @@ scpi_result_t SCPI_SourceRelayOutput(scpi_t * context)
 	return SCPI_RES_OK;
 }
 
-scpi_result_t SCPI_SourceRelayOutputQ(scpi_t * context)
+scpi_result_t SCPI_OutputQ(scpi_t * context)
 {
 	SCPI_ResultArrayUInt8(context, bsp.config.relay.state, MAXROW, SCPI_FORMAT_ASCII);
 

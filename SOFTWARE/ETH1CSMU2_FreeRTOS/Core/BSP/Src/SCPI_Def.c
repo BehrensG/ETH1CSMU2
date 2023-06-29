@@ -53,7 +53,10 @@
 #include "DAC8565.h"
 #include "FGEN.h"
 #include "AD7980.h"
+#include "TCP_Package.h"
+
 #include "scpi/scpi.h"
+
 
 extern struct bsp_t bsp;
 
@@ -66,6 +69,25 @@ scpi_choice_def_t scpi_boolean_select[] =
     SCPI_CHOICE_LIST_END
 };
 
+
+void SCPI_ResultSting(scpi_t * context, uint8_t index)
+{
+	uint32_t part = 0, rest = 0;
+	uint32_t start = 0;
+	part = bsp.config.measure.count/MAX_PART_SAMPLES;
+	rest = bsp.config.measure.count % MAX_PART_SAMPLES;
+
+	for(uint8_t x = 0 ; x < part; x++)
+	{
+		SCPI_ResultCharacters(context, TCP_Package(bsp.adc[index].meas, start, MAX_PART_SAMPLES), TCP_PACKGE_SIZE);
+		start += MAX_PART_SAMPLES;
+	}
+	if(rest)
+	{
+		SCPI_ResultCharacters(context, TCP_Package(bsp.adc[index].meas, start, rest), TCP_PACKGE_SIZE);
+	}
+
+}
 
 size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[])
 {
@@ -271,6 +293,7 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SYSTem:TEMPerature:UNIT?", .callback = SCPI_SystemTemperatureUnitQ,},
 	{.pattern = "SYSTem:HUMIdity?", .callback = SCPI_SystemHumidityQ,},
 
+	{.pattern = "INITiate[:IMMediate]", .callback = SCPI_InitiateImmediate,},
 	{.pattern = "TRIGger:DELay", .callback = SCPI_TriggerDelay,},
 	{.pattern = "TRIGger:DELay?", .callback = SCPI_TriggerDelayQ,},
 	{.pattern = "TRIGger[:IMMediate]", .callback = SCPI_TriggerImmediate,},
@@ -287,8 +310,8 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:CURRent:RANGe?", .callback = SCPI_SourceCurrentRangeQ,},
 	{.pattern = "SOURce:CURRent:RANGe:AUTO", .callback = SCPI_SourceCurrentRangeAuto,},
 
-	{.pattern = "SOURce:RELAy:OUTput", .callback = SCPI_SourceRelayOutput,},
-	{.pattern = "SOURce:RELAy:OUTput?", .callback = SCPI_SourceRelayOutputQ,},
+	{.pattern = "OUTput", .callback = SCPI_Output,},
+	{.pattern = "OUTput?", .callback = SCPI_OutputQ,},
 
 	//{.pattern = "SOURce:FUNCtion:MODE", .callback = SCPI_SourceFunctionMode,},
 //	{.pattern = "SOURce:FUNCtion:MODE?", .callback = SCPI_SourceFunctionModeQ,},
@@ -339,9 +362,8 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SENSe:VOLTage:LIST:MEASure?", .callback = SCPI_SenseVoltageListMeasureQ,},
 
 	{.pattern = "FETCh?", .callback = SCPI_FetchQ,},
-	{.pattern = "FETCh:ARRay?", .callback = SCPI_FetchArrayQ,},
-	{.pattern = "FETCh:ARRay:CURRent?", .callback = SCPI_FetchArrayCurrentQ,},
-	{.pattern = "FETCh:ARRay:VOLTage?", .callback = SCPI_FetchArrayVoltageQ,},
+	{.pattern = "FETCh:CURRent?", .callback = SCPI_FetchCurrentQ,},
+	{.pattern = "FETCh:VOLTage?", .callback = SCPI_FetchVoltageQ,},
 
 	{.pattern = "MEASure?", .callback = SCPI_MeasureQ,},
 	{.pattern = "MEASure:CURRent?", .callback = SCPI_MeasureCurrentQ,},

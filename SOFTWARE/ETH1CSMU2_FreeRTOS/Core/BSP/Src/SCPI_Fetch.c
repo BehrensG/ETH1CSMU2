@@ -6,7 +6,7 @@
  */
 
 #include "SCPI_Fetch.h"
-
+#include "SCPI_Def.h"
 
 /*
  * FETCh?
@@ -24,11 +24,13 @@
 
 scpi_result_t SCPI_FetchQ(scpi_t * context)
 {
+	SCPI_ResultSting(context, ADC_VOLTAGE);
+	SCPI_ResultSting(context, ADC_CURRENT);
 	return SCPI_RES_OK;
 }
 
 /*
- * FETCh:ARRay?
+ * FETCh:VOLTage?
  *
  * @INFO:
  * Returns the array data which contains all of the voltage measurement data and current
@@ -41,13 +43,14 @@ scpi_result_t SCPI_FetchQ(scpi_t * context)
  *
  */
 
-scpi_result_t SCPI_FetchArrayQ(scpi_t * context)
+scpi_result_t SCPI_FetchVoltageQ(scpi_t * context)
 {
+	SCPI_ResultSting(context, ADC_VOLTAGE);
 	return SCPI_RES_OK;
 }
 
 /*
- * FETCh:ARRay:VOLTage?
+ * FETCh:CURRent?
  *
  * @INFO:
  * Returns the array data which contains all of the voltage measurement data and current
@@ -60,26 +63,8 @@ scpi_result_t SCPI_FetchArrayQ(scpi_t * context)
  *
  */
 
-scpi_result_t SCPI_FetchArrayVoltageQ(scpi_t * context)
+scpi_result_t SCPI_FetchCurrentQ(scpi_t * context)
 {
-	return SCPI_RES_OK;
-}
-
-/*
- * FETCh:ARRay:CURRent?
- *
- * @INFO:
- * Returns the array data which contains all of the voltage measurement data and current
- * measurement data output setting data specified by the :FORMat:ELEMents:SENSe command. The
- * data is not cleared until the :INITiate, :MEASure, or :READ command is executed.
- *
- * @PARAMETERS:
- *
- * @NOTE:
- *
- */
-
-scpi_result_t SCPI_FetchArrayCurrentQ(scpi_t * context)
-{
+	SCPI_ResultSting(context, ADC_CURRENT);
 	return SCPI_RES_OK;
 }

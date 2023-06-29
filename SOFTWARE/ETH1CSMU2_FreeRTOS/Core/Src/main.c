@@ -1165,7 +1165,7 @@ void StartLEDTask(void *argument)
 	  	  default: LL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin); break;
 	  }
 
-	  osDelay(pdMS_TO_TICKS(500));
+	  osDelay(pdMS_TO_TICKS(1000));
   }
   /* USER CODE END StartLEDTask */
 }

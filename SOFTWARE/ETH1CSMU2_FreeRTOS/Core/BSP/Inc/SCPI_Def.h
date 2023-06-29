@@ -10,6 +10,8 @@
 #define SCPI_IDN3 "0.01"
 #define SCPI_IDN4 "SN000000000001"
 
+#define MAX_PART_SAMPLES 1000
+
 extern const scpi_command_t scpi_commands[];
 extern scpi_interface_t scpi_interface;
 extern char scpi_input_buffer[];
@@ -35,5 +37,7 @@ size_t SCPI_GetChannels(scpi_t* context, scpi_channel_value_t array[]);
 
 void resistor_curr_gain_set();
 void resistor_volt_gain_set();
+
+void SCPI_ResultSting(scpi_t * context, uint8_t index);
 
 #endif /* __SCPI_DEF_H_ */

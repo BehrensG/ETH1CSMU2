@@ -32,6 +32,28 @@ extern osThreadId_t TriggerTaskHandle;
  };
 
 
+ scpi_result_t SCPI_InitiateImmediate(scpi_t* context)
+ {
+
+	if((DC == bsp.config.mode) || (AC == bsp.config.mode))
+	{
+		if(SELECT_ADC1 == bsp.config.measure.adc_type)
+		{
+			ADS8681_ReadData(bsp.config.measure.count);
+		}
+		else if(SELECT_ADC2 == bsp.config.measure.adc_type)
+		{
+			AD7980_ReadData(bsp.config.measure.count);
+		}
+		else
+		{
+			return SCPI_RES_ERR;
+		}
+	}
+
+	return SCPI_RES_OK;
+ }
+
  /*
   * TRIGger:DELay <numeric_value>
   *
