@@ -18,7 +18,7 @@ void SN74HC595_Delay()
 //IO init
 void SN74HC595_Init()
 {
-	uint8_t shift_reg[2];
+	uint8_t shift_reg[2] = {0x0, 0x0};
 	bsp.sn74hc595.shift_reg[SR0] = SR0_V_G1 | SR0_C_G1| SR0_V_AZ | SR0_C_AZ;
 	bsp.sn74hc595.shift_reg[SR1] = SR1_VMEAS_SEL | SR1_ATT_A0 | SR1_ATT_A1 | SR1_SIGN_SEL | SR1_ADC_SEL;
 

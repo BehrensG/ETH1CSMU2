@@ -24,6 +24,7 @@ void TIM_Delay_us(uint16_t us)
 	}
 }
 
+
 /**
  * Initialization routine.
  * You might need to enable access to DWT registers on Cortex-M7

@@ -28,6 +28,8 @@
 #define SOURCE_AC_DEF_VAL				1.0f
 #define SOURCE_AC_OFFSET_DEF_VAL		0.0f
 
+#define SIGN_POS						1
+#define SIGN_NEG						2
 
 
 scpi_result_t SCPI_SourceCurrentRange(scpi_t* context);
@@ -63,5 +65,8 @@ scpi_result_t SCPI_SourceVoltageListStart(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListStop(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListDelay(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListMeasureEnable(scpi_t * context);
+
+scpi_result_t SCPI_SourceVoltageDCCorrection(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageDCCorrectionQ(scpi_t * context);
 
 #endif /* THIRD_PARTY_BSP_INC_SCPI_SOURCE_H_ */

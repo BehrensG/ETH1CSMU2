@@ -49,4 +49,6 @@ BSP_StatusTypeDef ADS8681_RawData(uint16_t* raw_data);
 BSP_StatusTypeDef ADS8681_SetRange(uint8_t* range);
 HAL_StatusTypeDef ADS8681_ReadData(uint16_t count);
 
+void ADS8681_VoltageCorrection(float* meas);
+
 #endif /* THIRD_PARTY_BSP_INC_ADS8681_H_ */

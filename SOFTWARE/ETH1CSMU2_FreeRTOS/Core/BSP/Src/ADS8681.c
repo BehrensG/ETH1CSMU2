@@ -89,6 +89,56 @@ HAL_StatusTypeDef ADS8681_ReadData(uint16_t count)
 	return status;
 }
 
+void ADS8681_VoltageCorrection(float* meas)
+{
+	HAL_StatusTypeDef status = HAL_OK;
+	uint32_t rx_data[2] = {0x00,0x00};
+	uint16_t data[2] = {0x00, 0x00};
+	uint16_t count = 20;
+	float tmp[2] = {0.0, 0.0};
+	float volt_meas[count], curr_meas[count];
+
+	uint8_t volt_gain_index = 0, curr_gain_index = 0;
+
+	volt_gain_index = bsp.config.measure.gain_index[ADC_VOLTAGE];
+	curr_gain_index = bsp.config.measure.gain_index[ADC_CURRENT];
+
+
+	for(uint16_t x = 0; x < count; x++)
+	{
+		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		//ADS8681_ConvertionTime();
+		TIM_Delay_us(1);
+
+		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		LL_GPIO_ResetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+		status = BSP_SPI1_Receive(rx_data, 2, 1000);
+		LL_GPIO_SetOutputPin(SPI1_NSS_GPIO_Port, SPI1_NSS_Pin);
+
+		data[0] = (uint16_t)(rx_data[0]);
+		data[1] = (uint16_t)(rx_data[1]);
+
+		tmp[ADC_VOLTAGE] = (float)((data[ADC_VOLTAGE] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_VOLTAGE].range]);
+		tmp[ADC_CURRENT] = (float)((data[ADC_CURRENT] - ADS8681_FSR_CENTER)*ADS8681_LSB[bsp.ads8681[ADC_CURRENT].range]);
+
+		tmp[ADC_VOLTAGE] = tmp[ADC_VOLTAGE]*bsp.eeprom.structure.calib.ads8681[ADC_VOLTAGE].gain[volt_gain_index];
+		tmp[ADC_CURRENT] = tmp[ADC_CURRENT]*bsp.eeprom.structure.calib.ads8681[ADC_CURRENT].gain[curr_gain_index];
+
+		volt_meas[x] = tmp[ADC_VOLTAGE]/(float)(bsp.config.measure.gain[ADC_VOLTAGE]);
+		curr_meas[x] = tmp[ADC_CURRENT]/(float)(bsp.config.measure.gain[ADC_CURRENT]);
+
+	}
+
+	for (uint16_t i = 0; i < count; i++)
+	{
+		meas[ADC_VOLTAGE] += volt_meas[i]/count;
+		meas[ADC_CURRENT] += curr_meas[i]/count;
+	}
+
+}
+
 BSP_StatusTypeDef ADS8681_RawData(uint16_t* raw_data)
 {
 	BSP_StatusTypeDef status = BSP_OK;
@@ -179,7 +229,7 @@ BSP_StatusTypeDef ADS8681_SetRange(uint8_t* range)
 	status = ADS8681_WriteLSB(cmd, reg, tx_data);
 	if(BSP_OK != status){return status;}
 
-	DWT_Delay_us(10);
+	TIM_Delay_us(10);
 
 	return status;
 }
@@ -205,7 +255,7 @@ static BSP_StatusTypeDef ADS8681_SetID()
 	status = ADS8681_WriteLSB(cmd, reg, tx_data);
 	if(BSP_OK != status) return status;
 
-	HAL_Delay(1);
+	TIM_Delay_us(1000);
 
 	cmd[0] = READ_BYTE;
 	cmd[1] = READ_BYTE;
@@ -219,7 +269,7 @@ static BSP_StatusTypeDef ADS8681_SetID()
 	status = ADS8681_WriteLSB(cmd, reg, tx_data);
 	if(BSP_OK != status) return status;
 
-	HAL_Delay(1);
+	TIM_Delay_us(1000);
 
 	status = ADS8681_ReadLSB(rx_data);
 	if(BSP_OK != status) return status;

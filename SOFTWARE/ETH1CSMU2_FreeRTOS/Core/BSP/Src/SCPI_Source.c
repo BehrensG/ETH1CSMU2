@@ -12,6 +12,8 @@
 #include "GPIO.h"
 #include "DAC8565.h"
 #include "FGEN.h"
+#include "ADS8681.h"
+#include "Delay.h"
 
 extern struct bsp_t bsp;
 extern uint8_t adc_gain_value[3];
@@ -167,6 +169,80 @@ static uint8_t VOLT_GetRangeIndex(float value)
 	return 2;
 }
 
+static void ADC1_RangeSelect(float voltage)
+{
+	BSP_StatusTypeDef status = BSP_OK;
+	float abs_voltage = fabs(voltage);
+	uint8_t range[2] = {0,0};
+
+	if(abs_voltage <= (float)2.5)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_0_625VREF;
+	}
+	else if (abs_voltage <= (float)5.0)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_1_25VREF;
+	}
+	else if (abs_voltage <= (float)6.0)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_1_5VREF;
+	}
+	else if (abs_voltage <= (float)10.0)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_2_5VREF;
+	}
+	else
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_3VREF;
+	}
+
+	status = ADS8681_SetRange(range);
+
+}
+
+static void DCVOLT_Correction(uint8_t signal, uint8_t index)
+{
+	float meas[2] = {0.0, 0.0};
+	float correction = 0.0, tmp_corr = 0.0;
+
+	if(bsp.config.dc.voltage.correction)
+	{
+		if(SELECT_ADC2 == bsp.config.measure.adc_type)
+		{
+			DG419_Switch(DG419_ADC1_SEL, 1);
+			TIM_Delay_us(10000);
+		}
+		TIM_Delay_us(20000);
+		ADS8681_VoltageCorrection(meas);
+
+
+		correction = bsp.config.dc.voltage.value - meas[ADC_VOLTAGE];
+		correction += bsp.config.dc.voltage.value;
+
+		(SELECT_ADC1 == bsp.config.measure.adc_type) ? DG419_Switch(DG419_ADC1_SEL, 1) : DG419_Switch(DG419_ADC2_SEL, 1);
+
+		if(SIGN_POS == signal)
+		{
+			tmp_corr = 12.0f - (correction + bsp.eeprom.structure.calib.dac8565.offset_a[index])*bsp.eeprom.structure.calib.dac8565.vout_a[index];
+			tmp_corr = tmp_corr/bsp.config.dc.voltage.gain;
+
+			DAC8565_SetVOUT(VOUTA, 4.0f);
+			TIM_Delay_us(4000);
+			DAC8565_SetVOUT(VOUTB, tmp_corr);
+			bsp.state.calib_mode = MODE_VOLTAGE;
+		}
+		else if(SIGN_NEG == signal)
+		{
+			tmp_corr = 12.0f - (fabs(correction) + bsp.eeprom.structure.calib.dac8565.offset_b[index])*bsp.eeprom.structure.calib.dac8565.vout_b[index];
+			tmp_corr = tmp_corr/bsp.config.dc.voltage.gain;
+
+			DAC8565_SetVOUT(VOUTA, fabs(tmp_corr));
+			TIM_Delay_us(4000);
+			DAC8565_SetVOUT(VOUTB, 4.0f);
+		}
+	}
+}
+
 scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 {
 	scpi_number_t value;
@@ -211,10 +287,13 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 			tmp_volt = 12.0f - (bsp.config.dc.voltage.value + bsp.eeprom.structure.calib.dac8565.offset_a[index])*bsp.eeprom.structure.calib.dac8565.vout_a[index];
 			tmp_volt = tmp_volt/bsp.config.dc.voltage.gain;
 
+			ADC1_RangeSelect(bsp.config.dc.voltage.value);
+
 			DAC8565_SetVOUT(VOUTA, 4.0f);
 			osDelay(pdMS_TO_TICKS(2));
 			DAC8565_SetVOUT(VOUTB, tmp_volt);
 			bsp.state.calib_mode = MODE_VOLTAGE;
+			DCVOLT_Correction(SIGN_POS, index);
 		}
 		else if((bsp.config.dc.voltage.value >= SOURCE_VOLT_DC_MIN_VAL) && (bsp.config.dc.voltage.value < SOURCE_VOLT_DC_DEF_VAL))
 		{
@@ -223,13 +302,18 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 			tmp_volt = 12.0f - (fabs(bsp.config.dc.voltage.value) + bsp.eeprom.structure.calib.dac8565.offset_b[index])*bsp.eeprom.structure.calib.dac8565.vout_b[index];
 			tmp_volt = tmp_volt/bsp.config.dc.voltage.gain;
 
+			ADC1_RangeSelect(bsp.config.dc.voltage.value);
+
 			DAC8565_SetVOUT(VOUTA, fabs(tmp_volt));
 			osDelay(pdMS_TO_TICKS(2));
 			DAC8565_SetVOUT(VOUTB, 4.0f);
 			bsp.state.calib_mode = MODE_VOLTAGE;
+			DCVOLT_Correction(SIGN_NEG, index);
 		}
 		else if(SOURCE_VOLT_DC_DEF_VAL == bsp.config.dc.voltage.value)
 		{
+
+			ADC1_RangeSelect(bsp.config.dc.voltage.value);
 
 			if(bsp.eeprom.structure.calib.dac8565.zero_offset >= 0.0)
 			{
@@ -324,6 +408,8 @@ static scpi_result_t CURR_SetLimit(scpi_t* context, float* current)
 		}
 			return SCPI_RES_OK;
 		}
+
+	return SCPI_RES_OK;
 }
 
 
@@ -479,7 +565,7 @@ scpi_result_t SCPI_SourceVoltageACAmplitudeImmediate(scpi_t* context)
 scpi_result_t SCPI_SourceVoltageACFrequencyImmediate(scpi_t* context)
 {
 	BSP_StatusTypeDef ret;
-	float tmp;
+
 	if(SCPI_RES_OK != AC_Frequency(context))
 	{
 		return SCPI_RES_ERR;
@@ -702,6 +788,27 @@ scpi_result_t SCPI_Output(scpi_t * context)
 scpi_result_t SCPI_OutputQ(scpi_t * context)
 {
 	SCPI_ResultArrayUInt8(context, bsp.config.relay.state, MAXROW, SCPI_FORMAT_ASCII);
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageDCCorrection(scpi_t * context)
+{
+	scpi_bool_t correction = 0;
+
+	if(!SCPI_ParamBool(context, &correction, TRUE))
+	{
+		return SCPI_RES_ERR;
+	}
+
+	bsp.config.dc.voltage.correction = (uint8_t)correction;
+
+	return SCPI_RES_OK;
+}
+
+scpi_result_t SCPI_SourceVoltageDCCorrectionQ(scpi_t * context)
+{
+	SCPI_ResultBool(context, bsp.config.dc.voltage.correction);
 
 	return SCPI_RES_OK;
 }

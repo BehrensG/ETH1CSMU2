@@ -158,6 +158,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  SN74HC595_Init();
   MX_DMA_Init();
   MX_SPI3_Init();
   MX_SPI4_Init();
@@ -172,7 +173,7 @@ int main(void)
   DWT_Init();
   TIM_DelayInit();
   BSP_Init();
-  SN74HC595_Init();
+  //SN74HC595_Init();
   MAX5217_Init();
   ADS8681_Init();
   FGEN_Init();

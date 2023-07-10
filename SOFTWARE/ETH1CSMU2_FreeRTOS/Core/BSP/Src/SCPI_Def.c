@@ -321,6 +321,8 @@ const scpi_command_t scpi_commands[] = {
 
 	{.pattern = "SOURce:VOLTage:DC[:IMMediate]", .callback = SCPI_SourceVoltageDCImmediate,},
 	{.pattern = "SOURce:VOLTage:DC[:IMMediate]?", .callback = SCPI_SourceVoltageDCImmediateQ,},
+	{.pattern = "SOURce:VOLTage:DC:CORRection", .callback = SCPI_SourceVoltageDCCorrection,},
+	{.pattern = "SOURce:VOLTage:DC:CORRection?", .callback = SCPI_SourceVoltageDCCorrectionQ,},
 	{.pattern = "SOURce:CURRent:DC:POSitive[:IMMediate]", .callback = SCPI_SourceCurrentDCPositiveImmediate,},
 	{.pattern = "SOURce:CURRent:DC:POSitive[:IMMediate]?", .callback = SCPI_SourceCurrentDCPositiveImmediateQ,},
 	{.pattern = "SOURce:CURRent:DC:NEGative[:IMMediate]", .callback = SCPI_SourceCurrentDCNegativeImmediate,},

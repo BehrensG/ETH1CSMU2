@@ -24,11 +24,10 @@ static void BSP_Init_Common()
 	bsp.trigger.count = 0;
 	bsp.data_format = DATA_FORMAT_ASCII;
 	bsp.security.status = 1;
-	bsp.sn74hc595.shift_reg[0] = 0;
-	bsp.sn74hc595.shift_reg[1] = 0;
 
 	bsp.config.dc.voltage.gain = 3.0;
 	bsp.config.dc.voltage.value = 0.0;
+	bsp.config.dc.voltage.correction = 0;
 
 	bsp.config.ac.amplit_gain = 13;
 	bsp.config.ac.offset_gain = 2;

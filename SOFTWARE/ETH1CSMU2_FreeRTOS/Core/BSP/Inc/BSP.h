@@ -277,6 +277,7 @@ typedef struct bsp_config_volt
 	float value;
 	float range[3];
 	uint8_t index;
+	uint8_t correction;
 }bsp_config_volt_t;
 
 typedef struct bsp_config_dc
