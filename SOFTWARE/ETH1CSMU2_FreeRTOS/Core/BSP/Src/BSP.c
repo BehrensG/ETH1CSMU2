@@ -45,6 +45,7 @@ static void BSP_Init_Common()
 	bsp.config.measure.gain[ADC_CURRENT] = 1;
 	bsp.config.measure.adc_type = SELECT_ADC1;
 
+
 	bsp.config.curr_range.value = 0.2f;
 	bsp.config.curr_range.index = 3;
 	bsp.config.curr_range.resistor = 1.0;

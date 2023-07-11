@@ -8,6 +8,7 @@
 #include "SCPI_Sense.h"
 #include "BSP.h"
 #include "GPIO.h"
+#include "ADS8681.h"
 
 extern scpi_choice_def_t scpi_boolean_select[];
 extern struct bsp_t bsp;
@@ -124,7 +125,7 @@ scpi_result_t SCPI_SenseVoltageGain(scpi_t* context)
 {
 	uint32_t gain;
 
-	if(SCPI_ParamUInt32(context, &gain, TRUE))
+	if(!SCPI_ParamUInt32(context, &gain, TRUE))
 	{
 		return SCPI_RES_ERR;
 	}
@@ -135,8 +136,10 @@ scpi_result_t SCPI_SenseVoltageGain(scpi_t* context)
 		return SCPI_RES_ERR;
 	}
 
+
 	bsp.config.measure.gain[ADC_VOLTAGE] = gain;
 	bsp.config.measure.gain_index[ADC_VOLTAGE] = GAIN_GetIndex(gain);
+	ADS8681_RangeSelect(bsp.config.dc.voltage.value*gain);
 	DG444_Switch(DG444_GAIN_VOLT, gain);
 
 	return SCPI_RES_OK;

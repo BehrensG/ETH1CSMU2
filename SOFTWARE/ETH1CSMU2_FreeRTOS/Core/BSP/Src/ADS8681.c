@@ -9,6 +9,8 @@
 #include "ADS8681.h"
 #include "main.h"
 
+
+
 double ADS8681_LSB[5] = {0.000375000, 0.000312500, 0.000187500, 0.000156250, 0.000078125};
 
 extern SPI_HandleTypeDef hspi1;
@@ -30,6 +32,38 @@ static BSP_StatusTypeDef BSP_SPI1_Receive(uint32_t* buffer, uint32_t size, uint3
 		buffer[1] = rx_tmp[1] << 16 | rx_tmp[0];
 
     return BSP_OK;
+}
+
+
+void ADS8681_RangeSelect(float voltage)
+{
+	BSP_StatusTypeDef status = BSP_OK;
+	float abs_voltage = fabs(voltage);
+	uint8_t range[2] = {0,0};
+
+	if(abs_voltage <= (float)2.5)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_0_625VREF;
+	}
+	else if (abs_voltage <= (float)5.0)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_1_25VREF;
+	}
+	else if (abs_voltage <= (float)6.0)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_1_5VREF;
+	}
+	else if (abs_voltage <= (float)10.0)
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_2_5VREF;
+	}
+	else
+	{
+		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_3VREF;
+	}
+
+	status = ADS8681_SetRange(range);
+
 }
 
 static BSP_StatusTypeDef BSP_SPI1_Transmit(uint32_t* buffer, uint32_t size, uint32_t timeout)

@@ -169,36 +169,7 @@ static uint8_t VOLT_GetRangeIndex(float value)
 	return 2;
 }
 
-static void ADC1_RangeSelect(float voltage)
-{
-	BSP_StatusTypeDef status = BSP_OK;
-	float abs_voltage = fabs(voltage);
-	uint8_t range[2] = {0,0};
 
-	if(abs_voltage <= (float)2.5)
-	{
-		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_0_625VREF;
-	}
-	else if (abs_voltage <= (float)5.0)
-	{
-		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_1_25VREF;
-	}
-	else if (abs_voltage <= (float)6.0)
-	{
-		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_1_5VREF;
-	}
-	else if (abs_voltage <= (float)10.0)
-	{
-		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_2_5VREF;
-	}
-	else
-	{
-		range[0] = bsp.ads8681[ADC_VOLTAGE].range = ADS8681_RANGE_3VREF;
-	}
-
-	status = ADS8681_SetRange(range);
-
-}
 
 static void DCVOLT_Correction(uint8_t signal, uint8_t index)
 {
@@ -287,7 +258,7 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 			tmp_volt = 12.0f - (bsp.config.dc.voltage.value + bsp.eeprom.structure.calib.dac8565.offset_a[index])*bsp.eeprom.structure.calib.dac8565.vout_a[index];
 			tmp_volt = tmp_volt/bsp.config.dc.voltage.gain;
 
-			ADC1_RangeSelect(bsp.config.dc.voltage.value);
+			ADS8681_RangeSelect(bsp.config.dc.voltage.value*bsp.config.measure.gain[ADC_VOLTAGE]);
 
 			DAC8565_SetVOUT(VOUTA, 4.0f);
 			osDelay(pdMS_TO_TICKS(2));
@@ -302,7 +273,7 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 			tmp_volt = 12.0f - (fabs(bsp.config.dc.voltage.value) + bsp.eeprom.structure.calib.dac8565.offset_b[index])*bsp.eeprom.structure.calib.dac8565.vout_b[index];
 			tmp_volt = tmp_volt/bsp.config.dc.voltage.gain;
 
-			ADC1_RangeSelect(bsp.config.dc.voltage.value);
+			ADS8681_RangeSelect(bsp.config.dc.voltage.value*bsp.config.measure.gain[ADC_VOLTAGE]);
 
 			DAC8565_SetVOUT(VOUTA, fabs(tmp_volt));
 			osDelay(pdMS_TO_TICKS(2));
@@ -313,7 +284,7 @@ scpi_result_t SCPI_SourceVoltageDCImmediate(scpi_t* context)
 		else if(SOURCE_VOLT_DC_DEF_VAL == bsp.config.dc.voltage.value)
 		{
 
-			ADC1_RangeSelect(bsp.config.dc.voltage.value);
+			ADS8681_RangeSelect(bsp.config.dc.voltage.value*bsp.config.measure.gain[ADC_VOLTAGE]);
 
 			if(bsp.eeprom.structure.calib.dac8565.zero_offset >= 0.0)
 			{
