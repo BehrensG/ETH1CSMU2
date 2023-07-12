@@ -4,6 +4,11 @@
 
   (paper "A4")
 
+  (title_block
+    (date "2023-07-12")
+    (rev "1.1")
+  )
+
   (lib_symbols
     (symbol "Connector:C64AC" (in_bom yes) (on_board yes)
       (property "Reference" "J" (at 0 85.09 0)
