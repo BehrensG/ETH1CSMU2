@@ -28,9 +28,20 @@
 #define SOURCE_AC_DEF_VAL				1.0f
 #define SOURCE_AC_OFFSET_DEF_VAL		0.0f
 
+#define SOURCE_LIST_DELAY_MAX_VAL		60000 // value is in mili-seconds
+#define SOURCE_LIST_DELAY_MIN_VAL		0 // value is in mili-seconds
+#define SOURCE_LIST_DELAY_DEF_VAL		0 // value is in mili-seconds
+
+#define SOURCE_LIST_START_MAX_VAL		(LIST_SIZE -1)
+#define SOURCE_LIST_START_MIN_VAL		0
+#define SOURCE_LIST_START_DEF_VAL		0
+
+#define SOURCE_LIST_STOP_MAX_VAL		(LIST_SIZE-1)
+#define SOURCE_LIST_STOP_MIN_VAL		1
+#define SOURCE_LIST_STOP_DEF_VAL		(LIST_SIZE-1)
+
 #define SIGN_POS						1
 #define SIGN_NEG						2
-
 
 scpi_result_t SCPI_SourceCurrentRange(scpi_t* context);
 scpi_result_t SCPI_SourceCurrentRangeQ(scpi_t* context);
@@ -64,7 +75,10 @@ scpi_result_t SCPI_SourceVoltageListPointsQ(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListStart(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListStop(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListDelay(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListDelayQ(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageListMeasureEnable(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListMeasureEnableQ(scpi_t * context);
+scpi_result_t SCPI_SourceVoltageListImmediate(scpi_t * context);
 
 scpi_result_t SCPI_SourceVoltageDCCorrection(scpi_t * context);
 scpi_result_t SCPI_SourceVoltageDCCorrectionQ(scpi_t * context);

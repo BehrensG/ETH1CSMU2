@@ -13,8 +13,12 @@ static HAL_StatusTypeDef AD5322_Send(uint16_t* data);
 
 HAL_StatusTypeDef AD5322_Init()
 {
-	AD5322_SetVOUTA(1.2);
-	AD5322_SetVOUTB(0);
+	HAL_StatusTypeDef ret;
+
+	ret = AD5322_SetVOUTA(1.2);
+	ret = AD5322_SetVOUTB(0);
+
+	return ret;
 }
 
 HAL_StatusTypeDef AD5322_SetVOUTA(float voltage)

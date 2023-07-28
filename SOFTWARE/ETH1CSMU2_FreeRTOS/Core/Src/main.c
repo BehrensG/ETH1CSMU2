@@ -170,14 +170,13 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   DAC8565_Init();
-  DWT_Init();
   TIM_DelayInit();
   BSP_Init();
   //SN74HC595_Init();
   MAX5217_Init();
   ADS8681_Init();
   FGEN_Init();
-  uint32_t tmp = EEPROM_CFG_SIZE;
+
   TIM_DelayInit();
 //  AD9834_Init();
   /* USER CODE END 2 */

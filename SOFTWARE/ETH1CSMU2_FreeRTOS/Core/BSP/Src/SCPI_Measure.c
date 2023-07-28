@@ -20,13 +20,13 @@ scpi_result_t SCPI_MeasureQ(scpi_t * context)
 	{
 		if(SELECT_ADC1 == bsp.config.measure.adc_type)
 		{
-			ADS8681_ReadData(bsp.config.measure.count);
+			ADS8681_Measure(bsp.config.measure.count);
 			SCPI_ResultSting(context, ADC_VOLTAGE);
 			SCPI_ResultSting(context, ADC_CURRENT);
 		}
 		else if(SELECT_ADC2 == bsp.config.measure.adc_type)
 		{
-			AD7980_ReadData(bsp.config.measure.count);
+			AD7980_Measure(bsp.config.measure.count);
 			SCPI_ResultSting(context, ADC_VOLTAGE);
 			SCPI_ResultSting(context, ADC_CURRENT);
 		}
@@ -45,12 +45,12 @@ scpi_result_t SCPI_MeasureCurrentQ(scpi_t * context)
 	{
 		if(SELECT_ADC1 == bsp.config.measure.adc_type)
 		{
-			ADS8681_ReadData(bsp.config.measure.count);
+			ADS8681_Measure(bsp.config.measure.count);
 			SCPI_ResultSting(context, ADC_CURRENT);
 		}
 		else if(SELECT_ADC2 == bsp.config.measure.adc_type)
 		{
-			AD7980_ReadData(bsp.config.measure.count);
+			AD7980_Measure(bsp.config.measure.count);
 			SCPI_ResultSting(context, ADC_CURRENT);
 		}
 		else
@@ -68,12 +68,12 @@ scpi_result_t SCPI_MeasureVoltageQ(scpi_t * context)
 	{
 		if(SELECT_ADC1 == bsp.config.measure.adc_type)
 		{
-			ADS8681_ReadData(bsp.config.measure.count);
+			ADS8681_Measure(bsp.config.measure.count);
 			SCPI_ResultSting(context, ADC_VOLTAGE);
 		}
 		else if(SELECT_ADC2 == bsp.config.measure.adc_type)
 		{
-			AD7980_ReadData(bsp.config.measure.count);
+			AD7980_Measure(bsp.config.measure.count);
 			SCPI_ResultSting(context, ADC_VOLTAGE);
 		}
 		else

@@ -36,8 +36,6 @@ static void BSP_Init_Common()
 	bsp.config.ac.frequency = 0.0;
 	bsp.config.ac.offset_adj = 0.05;
 
-	bsp.config.list.delay = 0;
-
 	bsp.config.measure.delay = 0;
 	bsp.config.measure.count = 1;
 	bsp.config.measure.enable = 1;
@@ -76,6 +74,18 @@ static void BSP_Init_Common()
 	bsp.config.dc.current.resistor[2] = 10;
 	bsp.config.dc.current.resistor[3] = 1;
 	bsp.security.status = 1;
+
+	bsp.config.list.start = 0;
+	bsp.config.list.stop = LIST_SIZE - 1;
+	bsp.config.list.delay = 0;
+	bsp.config.list.meas_enable = 0;
+	bsp.config.list.mode = LIST_VOLTAGE;
+	bsp.config.list.count = 0;
+
+	for(uint32_t x = 0; x < LIST_SIZE; x++)
+	{
+		bsp.config.list.data[x] = 0;
+	}
 
 }
 

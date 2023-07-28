@@ -39,11 +39,11 @@ extern osThreadId_t TriggerTaskHandle;
 	{
 		if(SELECT_ADC1 == bsp.config.measure.adc_type)
 		{
-			ADS8681_ReadData(bsp.config.measure.count);
+			ADS8681_Measure(bsp.config.measure.count);
 		}
 		else if(SELECT_ADC2 == bsp.config.measure.adc_type)
 		{
-			AD7980_ReadData(bsp.config.measure.count);
+			ADS8681_Measure(bsp.config.measure.count);
 		}
 		else
 		{
@@ -142,7 +142,7 @@ scpi_result_t SCPI_TriggerImmediate(scpi_t* context)
 	if(TRIG_OUT != bsp.trigger.source)
 	{
 		LL_GPIO_TogglePin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);
-		DWT_Delay_us(bsp.trigger.delay);
+		TIM_Delay_us(bsp.trigger.delay);
 		LL_GPIO_TogglePin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);
 
 
@@ -235,7 +235,7 @@ scpi_result_t SCPI_TriggerOutput(scpi_t* context)
 	}
 
 	LL_GPIO_TogglePin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);
-	DWT_Delay_us(bsp.trigger.delay);
+	TIM_Delay_us(bsp.trigger.delay);
 	LL_GPIO_TogglePin(TRIG_OUT_GPIO_Port, TRIG_OUT_Pin);
 
 	return SCPI_RES_OK;

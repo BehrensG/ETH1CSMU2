@@ -253,12 +253,25 @@ typedef enum e_function_mode
 	AC = 3
 }e_function_mode_t;
 
-typedef struct bsp_config_arb
+typedef enum e_list_mode
+{
+	LIST_VOLTAGE = 1,
+	LIST_CURRENT = 2
+
+}e_list_mode_t;
+
+typedef struct bsp_config_list
 {
 	uint16_t size;
 	float data[LIST_SIZE];
 	uint32_t delay;
-}bsp_config_arb_t;
+	uint32_t start;
+	uint32_t stop;
+	uint32_t meas_enable;
+	e_list_mode_t mode;
+	uint32_t count;
+
+}bsp_config_list_t;
 
 typedef struct bsp_config_curr
 {
@@ -306,7 +319,7 @@ typedef struct bsp_config_curr_range
 typedef struct _bsp_config
 {
 	bsp_config_ac_t ac;
-	bsp_config_arb_t list;
+	bsp_config_list_t list;
 	bsp_config_dc_t dc;
 	bsp_config_dds_t dds;
 	bsp_config_relay_t relay;

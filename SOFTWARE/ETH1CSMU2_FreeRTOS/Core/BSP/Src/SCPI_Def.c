@@ -239,9 +239,7 @@ static scpi_result_t SCPI_IdnQ(scpi_t * context)
 
 scpi_result_t SCPI_TS(scpi_t * context)
 {
-	bsp.config.list.data[0] = 1;
-	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[0].meas, 0, 1000), 10000);
-	SCPI_ResultCharacters(context, TCP_Package(bsp.adc[1].meas, 0, 1000), 10000);
+
     return SCPI_RES_OK;
 }
 
@@ -346,7 +344,10 @@ const scpi_command_t scpi_commands[] = {
 	{.pattern = "SOURce:VOLTage:LIST:STARt", .callback = SCPI_SourceVoltageListStart,},
 	{.pattern = "SOURce:VOLTage:LIST:STOP", .callback = SCPI_SourceVoltageListStop,},
 	{.pattern = "SOURce:VOLTage:LIST:DELay", .callback = SCPI_SourceVoltageListDelay,},
+	{.pattern = "SOURce:VOLTage:LIST:DELay?", .callback = SCPI_SourceVoltageListDelayQ,},
 	{.pattern = "SOURce:VOLTage:LIST:MEASure:ENAble", .callback = SCPI_SourceVoltageListMeasureEnable,},
+	{.pattern = "SOURce:VOLTage:LIST:MEASure:ENAble?", .callback = SCPI_SourceVoltageListMeasureEnableQ,},
+	{.pattern = "SOURce:VOLTage:LIST:IMMEdiate", .callback = SCPI_SourceVoltageListImmediate,},
 
 
 	{.pattern = "SENSe:FUNCtion[:ON]", .callback = SCPI_SenseFunctionOn,},

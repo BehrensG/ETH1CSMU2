@@ -17,7 +17,9 @@
 #define AD7980_LSB			7.62939453125E-5
 #define AD7980_GAIN			4.81927711
 
-HAL_StatusTypeDef AD7980_ReadData(uint16_t count);
+HAL_StatusTypeDef AD7980_Measure(uint16_t count);
+HAL_StatusTypeDef AD7980_MeasureForList(uint16_t index);
+
 void AD7980_RXDataToVoltage(uint16_t count);
 
 
