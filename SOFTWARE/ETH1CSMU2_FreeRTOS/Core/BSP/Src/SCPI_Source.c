@@ -1069,6 +1069,8 @@ scpi_result_t SCPI_SourceVoltageListImmediate(scpi_t * context)
 		return SCPI_RES_ERR;
 	}
 
+	if(bsp.config.list.meas_enable){bsp.state.meas_count = 0;};
+
 	for(uint32_t i = bsp.config.list.start; i < bsp.config.list.stop; i++)
 	{
 		if(bsp.config.list.count > index)

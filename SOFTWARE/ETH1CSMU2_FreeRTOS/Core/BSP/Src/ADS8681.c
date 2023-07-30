@@ -153,9 +153,6 @@ HAL_StatusTypeDef ADS8681_MeasureForList(uint16_t index)
 	bsp.adc[ADC_VOLTAGE].meas[index] = tmp[ADC_VOLTAGE]/(float)(bsp.config.measure.gain[ADC_VOLTAGE]);
 	bsp.adc[ADC_CURRENT].meas[index] = tmp[ADC_CURRENT]/(float)(bsp.config.measure.gain[ADC_CURRENT]);
 
-
-	bsp.state.meas_count++;
-
 	return status;
 }
 
